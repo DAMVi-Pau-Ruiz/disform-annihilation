@@ -9,13 +9,15 @@ public class Shoot_Enemy_Movement : MonoBehaviour
 
     [Header("Configuración de Disparo")]
     [Tooltip("Prefab de la bala que se va a disparar")]
-    public GameObject balaPrefab;
+    public GameObject prefabBala;
     [Tooltip("El radio físico de tu objeto Spawner (distancia del centro al borde)")]
     public float radioDelSpawner = 1.5f;
     [Tooltip("Tiempo en segundos entre cada disparo")]
-    public float cadenciaDisparo = 2.0f; // Ajustado a 2 segundos por defecto
+    public float cadenciaDisparo = 2.0f;
     [Tooltip("Velocidad de movimiento de la bala")]
     public float velocidadBala = 15f;
+    [Tooltip("Daño que inflige la bala del enemigo")]
+    public int danoBala = 1;
 
     private Transform playerTransform;
     private NavMeshAgent agent;
@@ -37,7 +39,6 @@ public class Shoot_Enemy_Movement : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        // Inicializamos el cronómetro con el tiempo de espera
         cronometroDisparo = cadenciaDisparo;
     }
 
@@ -47,20 +48,17 @@ public class Shoot_Enemy_Movement : MonoBehaviour
         {
             RotarEnemigo();
 
-            // CORRECCIÓN: El enemigo SOLO controla el tiempo y dispara si está detenido (jugador en rango)
-            if (agent.isStopped)
+            if (agent != null && agent.isStopped)
             {
                 ControlarDisparo();
             }
             else
             {
-                // Opcional: Reinicia el cronómetro si el jugador escapa, 
-                // para que cuando vuelva a entrar tenga que esperar 2 segundos completos antes del primer tiro.
                 cronometroDisparo = cadenciaDisparo;
             }
         }
 
-        if (playerTransform != null && agent.isOnNavMesh && !agent.isStopped)
+        if (playerTransform != null && agent != null && agent.isOnNavMesh && !agent.isStopped)
         {
             agent.SetDestination(playerTransform.position);
         }
@@ -83,26 +81,28 @@ public class Shoot_Enemy_Movement : MonoBehaviour
         if (cronometroDisparo <= 0)
         {
             DispararDesdeSuperficieSpawner();
-            cronometroDisparo = cadenciaDisparo; // Se resetea a 2 segundos
+            cronometroDisparo = cadenciaDisparo;
         }
     }
 
-    private void DispararDesdeSuperficieSpawner()
+    void DispararDesdeSuperficieSpawner()
     {
-        if (balaPrefab == null || playerTransform == null || balaSpawner == null) return;
-
-        Vector3 direccionHaciaJugador = (playerTransform.position - balaSpawner.position).normalized;
-        Vector3 posicionSalidaBala = balaSpawner.position + (direccionHaciaJugador * radioDelSpawner);
-        Quaternion rotacionBala = Quaternion.LookRotation(direccionHaciaJugador);
-
-        GameObject nuevaBala = Instantiate(balaPrefab, posicionSalidaBala, rotacionBala);
-
-        Rigidbody rbBala = nuevaBala.GetComponent<Rigidbody>();
-        if (rbBala != null)
+        if (balaSpawner == null)
         {
-            rbBala.linearVelocity = direccionHaciaJugador * velocidadBala;
+            Debug.LogError("¡No has asignado el 'Bala Spawner' en el Inspector!");
+            return;
+        }
+
+        GameObject balaNueva = Instantiate(prefabBala, balaSpawner.position, balaSpawner.rotation);
+
+        BalaComportamiento scriptBala = balaNueva.GetComponent<BalaComportamiento>();
+        if (scriptBala != null)
+        {
+            // CAMBIO: Añadimos 'gameObject' al final para decirle a la bala "yo soy tu creador"
+            scriptBala.InicializarBala(velocidadBala, danoBala, "Player", gameObject);
         }
     }
+
 
     private void OnDrawGizmosSelected()
     {
@@ -113,23 +113,24 @@ public class Shoot_Enemy_Movement : MonoBehaviour
         }
     }
 
-    // EVENTOS DE COLISIÓN (TRIGGERS)
-    private void OnTriggerEnter(Collider other)
+    // CAMBIO: Ahora son funciones públicas creadas expresamente para que las llame el hijo
+    public void ProcesarTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && agent != null)
         {
             agent.isStopped = true;
             agent.velocity = Vector3.zero;
-            Debug.Log("Jugador detectado: Iniciando temporizador de disparo.");
+            Debug.Log("Jugador detectado por el hijo: Deteniendo enemigo e iniciando temporizador de disparo.");
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void ProcesarTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && agent != null)
         {
             agent.isStopped = false;
-            Debug.Log("Jugador fuera de rango: Disparos pausados.");
+            Debug.Log("Jugador fuera de rango del hijo: Reanudando persecución y pausando disparos.");
         }
     }
+
 }

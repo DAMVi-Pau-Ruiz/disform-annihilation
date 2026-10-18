@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8772928807443387166}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ShootSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,8 @@ GameObject:
   - component: {fileID: 6879882148628311706}
   - component: {fileID: 1795694039847065231}
   - component: {fileID: 3211311382981402754}
-  m_Layer: 0
+  - component: {fileID: 5755911313586391143}
+  m_Layer: 3
   m_Name: LongShoot Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,3 +214,16 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5755911313586391143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560515900986881091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b1ae6c0e09247438a3fab14e59d894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy_Controller
+  health: 2

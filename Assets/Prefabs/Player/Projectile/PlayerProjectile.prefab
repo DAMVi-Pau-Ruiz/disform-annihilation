@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerProjectile
   speed: 15
-  damage: 15
+  damage: 1
 --- !u!54 &3018059529117459758
 Rigidbody:
   m_ObjectHideFlags: 0
