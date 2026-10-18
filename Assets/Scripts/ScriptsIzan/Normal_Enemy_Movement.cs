@@ -1,13 +1,25 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Normal_Enemy_Movement : MonoBehaviour
 {
-    public Transform player;
-
+    private Transform playerTransform;
     private NavMeshAgent agent;
+
+    private void Awake()
+    {
+        
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObject != null)
+        {
+            playerTransform = playerObject.transform;
+        }
+        else
+        {
+            Debug.Log("no se detecta nada ");
+        }
+    }
 
     void Start()
     {
@@ -16,9 +28,11 @@ public class Normal_Enemy_Movement : MonoBehaviour
 
     void Update()
     {
-        if (player != null)
+        
+        if (playerTransform != null && agent.isOnNavMesh)
         {
-            agent.SetDestination(player.position);
+            agent.SetDestination(playerTransform.position);
+            
         }
     }
 }
