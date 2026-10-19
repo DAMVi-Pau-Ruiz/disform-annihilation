@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1613670184946442174}
   - component: {fileID: -8583547575278839812}
   - component: {fileID: 5417021600175059716}
+  - component: {fileID: 5171409554430528792}
   m_Layer: 3
   m_Name: normal Enemy
   m_TagString: Untagged
@@ -154,3 +155,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8680744858086094ebe4f9bcea0f2def, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Normal_Enemy_Movement
+--- !u!114 &5171409554430528792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269638029501393174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b1ae6c0e09247438a3fab14e59d894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy_Controller
+  health: 2

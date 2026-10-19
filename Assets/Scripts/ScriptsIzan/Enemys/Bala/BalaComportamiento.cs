@@ -54,7 +54,14 @@ public class BalaComportamiento : MonoBehaviour
             return;
         }
 
-        // 3. Comprobamos si golpea al objetivo real (el Player)
+        // 3. NUEVO FILTRO: Si la bala choca contra CUALQUIER enemigo (o su objeto padre), pasa de largo sin destruirse
+        bool esEnemigo = other.CompareTag("Enemy") || (other.transform.parent != null && other.transform.parent.CompareTag("Enemy"));
+        if (esEnemigo)
+        {
+            return;
+        }
+
+        // 4. Comprobamos si golpea al objetivo real (el Player)
         bool esObjetivo = other.CompareTag(tagObjetivo) || (other.transform.parent != null && other.transform.parent.CompareTag(tagObjetivo));
 
         if (esObjetivo)
@@ -70,7 +77,7 @@ public class BalaComportamiento : MonoBehaviour
             return;
         }
 
-        // 4. Si choca contra una pared o suelo
+        // 5. Si choca contra una pared o suelo se destruye
         Destroy(gameObject);
     }
 }
