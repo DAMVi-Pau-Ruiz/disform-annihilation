@@ -12,7 +12,7 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
         currentHealth = health;
     }
 
-    // CAMBIO: Ahora es público y coincide exactamente con la interfaz
+    
     public void GetHurt(int quantity)
     {
         if (currentHealth > 0)
