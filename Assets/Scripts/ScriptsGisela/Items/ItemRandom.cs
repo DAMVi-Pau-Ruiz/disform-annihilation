@@ -5,19 +5,23 @@ using System.IO;
 public class ItemRandom : MonoBehaviour
 {
     private List<int> itemIds = new List<int>();
-    //Arrays de los ID's, Tag's, Descripciones, gambling e índice
+    // Arrays de los ID's, Tag's, Descripciones, gambling e índice
     private List<string> itemTag = new List<string>();
     private List<string> itemDescription = new List<string>();
     private List<string> itemGambling = new List<string>();
     private List<int> validIndex = new List<int>();
     private string filePath;
 
-    
     [SerializeField] private string defaultRarity = "comun";
 
+    //  métodos para que la UI pueda leer el resultado actual
+    [HideInInspector] public string lastSelectedTag = "";
+    [HideInInspector] public string lastSelectedDesc = "";
+    [HideInInspector] public string lastSelectedRarity = "";
+    [HideInInspector] public int lastSelectedId = 0;
     void Start()
     {
-        // LLamamos a GetRandomRarity 100 veces para ver cuántas veces sale cada una
+        // Llamamos a GetRandomRarity 100 veces para pruebas 
         for (int i = 0; i < 100; i++)
         {
             GetRandomRarity();
@@ -26,7 +30,7 @@ public class ItemRandom : MonoBehaviour
 
     void Awake()
     {
-        //ruta para guardarlo
+        // Ruta para guardarlo
         filePath = Path.Combine(Application.persistentDataPath, "ItemSystem.csv");
 
         CreateDefaultCsvFile();
@@ -35,7 +39,6 @@ public class ItemRandom : MonoBehaviour
 
     void CreateDefaultCsvFile()
     {
-        //el default de nuestro csv
         string csvContent = "ID,Tag,Description,Rareza\n" +
                             "1,curar,este objeto sana la vida que te han quitado,comun\n" +
                             "2,daño,te hace pupa si aprietas bobo,raro\n" +
@@ -47,13 +50,12 @@ public class ItemRandom : MonoBehaviour
 
     void ReadCsvFile()
     {
-        //lectura de csv donde si no existe nos lo dirá
         if (!File.Exists(filePath))
         {
             Debug.LogError("No se encuentra el archivo CSV en la ruta: " + filePath);
             return;
         }
-        //limpiamos para evitar duplicados y asegurar optimización
+
         itemIds.Clear();
         itemTag.Clear();
         itemDescription.Clear();
@@ -70,7 +72,6 @@ public class ItemRandom : MonoBehaviour
             {
                 if (int.TryParse(parts[0].Trim(), out int id))
                 {
-                    //recorremos los elementos y los agregamos
                     string tag = parts[1].Trim();
                     string description = parts[2].Trim();
                     string gambling = parts[3].Trim().ToLower();
@@ -84,32 +85,29 @@ public class ItemRandom : MonoBehaviour
         }
     }
 
- 
-       public string GetRandomRarity()
+    public string GetRandomRarity()
     {
-        // Obtención de rareza donde el rango será de 1 a 100
         int roll = Random.Range(1, 101);
 
         if (roll <= 45)
         {
-            Debug.Log(defaultRarity);
-        }  // 45% (comun)
+            return defaultRarity; // 45% (comun)
+        }
         else if (roll <= 80)
         {
-            Debug.Log("raro");
-        }// 35% (raro)
+            return "raro"; // 35% (raro)
+        }
         else if (roll <= 95)
         {
-            Debug.Log("epico");
-        }// 15% (epico)
+            return "epico"; // 15% (epico)
+        }
         else
         {
-            Debug.Log("Legendary");// 5% (legendary)
+            return "legendary"; // 5% (legendary)
         }
-        return "si";
-    
     }
-    // Muestra un único item
+
+    // Muestra un único item y guarda los datos para la UI
     public void ItemProbability()
     {
         if (itemIds.Count == 0)
@@ -120,10 +118,9 @@ public class ItemRandom : MonoBehaviour
 
         validIndex.Clear();
 
-        // Obtenemos la rareza real calculada
         string selectedRarity = GetRandomRarity();
+        lastSelectedRarity = selectedRarity;
 
-        // Buscamos qué posiciones del CSV coinciden con esa rareza
         for (int i = 0; i < itemGambling.Count; i++)
         {
             if (itemGambling[i].Trim().ToLower() == selectedRarity.Trim().ToLower())
@@ -132,7 +129,6 @@ public class ItemRandom : MonoBehaviour
             }
         }
 
-        // Si no hay ítems de esa rareza exacta, usamos todos como respaldo
         if (validIndex.Count == 0)
         {
             for (int i = 0; i < itemIds.Count; i++)
@@ -141,17 +137,17 @@ public class ItemRandom : MonoBehaviour
             }
         }
 
-        // Si encontramos ítems válidos, seleccionamos uno al azar y lo imprimimos
         if (validIndex.Count > 0)
         {
             int randomIndex = validIndex[Random.Range(0, validIndex.Count)];
 
             int id = itemIds[randomIndex];
-            string tag = itemTag[randomIndex];
-            string desc = itemDescription[randomIndex];
+            lastSelectedId = id;
+            lastSelectedTag = itemTag[randomIndex];
+            lastSelectedDesc = itemDescription[randomIndex];
             string rarity = itemGambling[randomIndex];
 
-            Debug.Log($"[RESULTADO DE PROBABILIDAD] rareza seleccionada: {selectedRarity} | Ítem obtenido -> ID: {id} | Tag: {tag} | Descripción: {desc} | Rareza CSV: {rarity}");
+            Debug.Log($"[RESULTADO] Rareza: {selectedRarity} | ID: {id} | Tag: {lastSelectedTag} | Desc: {lastSelectedDesc}");
         }
     }
 
