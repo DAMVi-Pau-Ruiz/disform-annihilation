@@ -147,7 +147,7 @@ public class ItemRandom : MonoBehaviour
             lastSelectedDesc = itemDescription[randomIndex];
             string rarity = itemGambling[randomIndex];
 
-            Debug.Log($"[RESULTADO] Rareza: {selectedRarity} | ID: {id} | Tag: {lastSelectedTag} | Desc: {lastSelectedDesc}");
+            Debug.Log($"RESULTADO Rareza: {selectedRarity} | ID: {id} | Tag: {lastSelectedTag} | Desc: {lastSelectedDesc}");
         }
     }
 

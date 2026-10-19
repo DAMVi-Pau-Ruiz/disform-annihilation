@@ -46,7 +46,7 @@ public class ItemUI : MonoBehaviour
                 if (mapping.itemImage != null)
                 {
                     mapping.itemImage.SetActive(true);
-                    Debug.Log($"[UI] Ítem inicial generado automáticamente -> ID: {idObtenido}");
+                    Debug.Log($"[UI] Ítem inicial generado automáticamente - ID: {idObtenido}");
                 }
                 break;
             }
