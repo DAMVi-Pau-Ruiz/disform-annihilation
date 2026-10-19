@@ -100,6 +100,7 @@ public class CameraFollow : MonoBehaviour
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 
+
     private void DetectRoom()
     {
         RoomInfo[] rooms = FindObjectsByType<RoomInfo>(
@@ -110,9 +111,24 @@ public class CameraFollow : MonoBehaviour
         {
             if (room != null && room.Contains(player.position))
             {
-                currentRoom = room;
+                // Solo actuamos cuando entramos en una sala diferente.
+                if (room != currentRoom)
+                {
+                    currentRoom = room;
+
+                    // Buscar los spawners que pertenecen a esta sala.
+                    EnemySpawner[] spawners =
+                        currentRoom.GetComponentsInChildren<EnemySpawner>(true);
+
+                    foreach (EnemySpawner spawner in spawners)
+                    {
+                        spawner.SpawnEnemies();
+                    }
+                }
+
                 return;
             }
         }
     }
+
 }
