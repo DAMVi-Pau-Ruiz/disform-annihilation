@@ -6,6 +6,7 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
     [Header("Projectile")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private float bulletsPerSecond = 2f;
 
     [Header("Health")]
     [SerializeField] private int totalHealth = 10;
@@ -14,6 +15,7 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
     [SerializeField] private InputActionReference shoot;
 
     private int currentHealth;
+    private float nextFireTime;
 
     private void Awake()
     {
@@ -37,14 +39,21 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
 
     private void OnShoot()
     {
-        if (shoot != null && shoot.action != null)
+        if (shoot == null || shoot.action == null)
         {
-            if (shoot.action.WasPressedThisFrame())
-            {
-                Shoot();
-            }
+            return;
+        }
+
+        if (shoot.action.IsPressed() &&
+            bulletsPerSecond > 0f &&
+            Time.time >= nextFireTime)
+        {
+            Shoot();
+            nextFireTime = Time.time + (1f / bulletsPerSecond);
         }
     }
+
+
 
     public void GetHurt(int quantity)
     {

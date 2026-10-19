@@ -12,8 +12,8 @@ public class Shoot_Enemy_Movement : MonoBehaviour
     public GameObject prefabBala;
     [Tooltip("El radio físico de tu objeto Spawner (distancia del centro al borde)")]
     public float radioDelSpawner = 1.5f;
-    [Tooltip("Tiempo en segundos entre cada disparo")]
-    public float cadenciaDisparo = 2.0f;
+    [Tooltip("Cantidad de balas disparadas por segundo")]
+    [SerializeField] private float balasPorSegundo = 2f;
     [Tooltip("Velocidad de movimiento de la bala")]
     public float velocidadBala = 15f;
     [Tooltip("Daño que inflige la bala del enemigo")]
@@ -39,7 +39,7 @@ public class Shoot_Enemy_Movement : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        cronometroDisparo = cadenciaDisparo;
+        cronometroDisparo = ObtenerIntervaloDisparo();
     }
 
     void Update()
@@ -54,7 +54,7 @@ public class Shoot_Enemy_Movement : MonoBehaviour
             }
             else
             {
-                cronometroDisparo = cadenciaDisparo;
+                cronometroDisparo = ObtenerIntervaloDisparo();
             }
         }
 
@@ -76,12 +76,17 @@ public class Shoot_Enemy_Movement : MonoBehaviour
 
     private void ControlarDisparo()
     {
+        if (balasPorSegundo <= 0f)
+        {
+            return;
+        }
+
         cronometroDisparo -= Time.deltaTime;
 
         if (cronometroDisparo <= 0)
         {
             DispararDesdeSuperficieSpawner();
-            cronometroDisparo = cadenciaDisparo;
+            cronometroDisparo = ObtenerIntervaloDisparo();
         }
     }
 
@@ -131,6 +136,16 @@ public class Shoot_Enemy_Movement : MonoBehaviour
             agent.isStopped = false;
             Debug.Log("Jugador fuera de rango del hijo: Reanudando persecución y pausando disparos.");
         }
+    }
+
+    private float ObtenerIntervaloDisparo()
+    {
+        if (balasPorSegundo <= 0f)
+        {
+            return 0f;
+        }
+
+        return 1f / balasPorSegundo;
     }
 
 }

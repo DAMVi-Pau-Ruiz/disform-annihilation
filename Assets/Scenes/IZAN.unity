@@ -233,6 +233,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LongShoot Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 6879882148628311706, guid: 8506151ab8faf0c4e8d78d011b115003, type: 3}
+      propertyPath: cadenciaDisparo
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -510,6 +514,14 @@ PrefabInstance:
     - target: {fileID: 7732575096362935716, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185782490225428317, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: fireRate
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185782490225428317, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: bulletsPerSecond
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
