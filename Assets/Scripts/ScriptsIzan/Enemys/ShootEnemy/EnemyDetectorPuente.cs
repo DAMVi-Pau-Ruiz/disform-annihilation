@@ -2,34 +2,35 @@ using UnityEngine;
 
 public class EnemyDetectorPuente : MonoBehaviour
 {
-    private Shoot_Enemy_Movement scriptPrincipal;
+    // Ahora guardamos la interfaz genérica en lugar de un script concreto
+    private IEnemyAI enemigoPrincipal;
 
     void Start()
     {
-        // Buscamos el script de movimiento en nuestro objeto padre
-        scriptPrincipal = GetComponentInParent<Shoot_Enemy_Movement>();
+        // Buscamos cualquier script en el padre que implemente IEnemyAI
+        enemigoPrincipal = GetComponentInParent<IEnemyAI>();
 
-        if (scriptPrincipal == null)
+        if (enemigoPrincipal == null)
         {
-            Debug.LogError($"¡No se encontró el script Shoot_Enemy_Movement en el padre de {gameObject.name}!");
+            Debug.LogError($"¡No se encontró ningún script de enemigo (IEnemyAI) en el padre de {gameObject.name}!");
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (scriptPrincipal != null)
+        if (enemigoPrincipal != null)
         {
-            // Le reenviamos la colisión al script del padre
-            scriptPrincipal.ProcesarTriggerEnter(other);
+            // Le reenviamos la colisión de forma genérica
+            enemigoPrincipal.ProcesarTriggerEnter(other);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (scriptPrincipal != null)
+        if (enemigoPrincipal != null)
         {
-            // Le reenviamos la salida al script del padre
-            scriptPrincipal.ProcesarTriggerExit(other);
+            // Le reenviamos la salida de forma genérica
+            enemigoPrincipal.ProcesarTriggerExit(other);
         }
     }
 }

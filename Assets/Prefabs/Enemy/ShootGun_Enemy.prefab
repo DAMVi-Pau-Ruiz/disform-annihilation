@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1264675197455096496
+--- !u!1 &9309994306263303
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,21 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8772928807443387166}
-  m_Layer: 3
-  m_Name: ShootSpawn
+  - component: {fileID: 1237762517356017365}
+  - component: {fileID: 849758206366258199}
+  m_Layer: 0
+  m_Name: spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8772928807443387166
+--- !u!4 &1237762517356017365
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1264675197455096496}
+  m_GameObject: {fileID: 9309994306263303}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -31,6 +32,93 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5111425682969647301}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &849758206366258199
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9309994306263303}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &998485572618668265
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1375611151700785465}
+  - component: {fileID: 852419837273491720}
+  - component: {fileID: 2026638467854007293}
+  m_Layer: 0
+  m_Name: Detector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1375611151700785465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998485572618668265}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5111425682969647301}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &852419837273491720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998485572618668265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b2094c901b214459bf6f6882eb58df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDetectorPuente
+--- !u!135 &2026638467854007293
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998485572618668265}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6560515900986881091
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,13 +131,13 @@ GameObject:
   - component: {fileID: 5163626193987517424}
   - component: {fileID: 7503379768690495764}
   - component: {fileID: 2887582152492984604}
-  - component: {fileID: 6879882148628311706}
   - component: {fileID: 1795694039847065231}
   - component: {fileID: 3211311382981402754}
   - component: {fileID: 5755911313586391143}
-  m_Layer: 3
-  m_Name: 'ShootGun Enemy '
-  m_TagString: Untagged
+  - component: {fileID: 3086940793602375654}
+  m_Layer: 0
+  m_Name: ShootGun_Enemy
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,11 +151,12 @@ Transform:
   m_GameObject: {fileID: 6560515900986881091}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8772928807443387166}
+  - {fileID: 1375611151700785465}
+  - {fileID: 1237762517356017365}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!23 &5163626193987517424
@@ -149,24 +238,6 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6879882148628311706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6560515900986881091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e653d668c7a8d3a42b5d0efb981c1ea8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Shoot_Enemy_Movement
-  balaSpawner: {fileID: 8772928807443387166}
-  prefabBala: {fileID: 8804860073146985068, guid: bd2a3cb69bfeede488011e3ece470339, type: 3}
-  radioDelSpawner: 1.08
-  cadenciaDisparo: 1.5
-  velocidadBala: 15
-  danoBala: 1
 --- !u!54 &1795694039847065231
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -192,7 +263,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!135 &3211311382981402754
 SphereCollider:
@@ -213,7 +284,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5755911313586391143
 MonoBehaviour:
@@ -228,3 +299,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_Controller
   health: 2
+--- !u!114 &3086940793602375654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560515900986881091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25b0115ec423f994aa5a1efd9a49f4f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShootGun_Enemy_Movement
+  balaSpawner: {fileID: 1237762517356017365}
+  prefabBala: {fileID: 8804860073146985068, guid: bd2a3cb69bfeede488011e3ece470339, type: 3}
+  radioDelSpawner: 1.5
+  cadenciaDisparo: 2
+  velocidadBala: 15
+  danoBala: 1
+  anguloSeparacion: 15

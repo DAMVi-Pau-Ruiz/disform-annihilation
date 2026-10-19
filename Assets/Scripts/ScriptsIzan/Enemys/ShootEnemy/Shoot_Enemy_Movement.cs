@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Shoot_Enemy_Movement : MonoBehaviour
+public class Shoot_Enemy_Movement : MonoBehaviour, IEnemyAI
 {
     [Header("Referencias")]
     [Tooltip("Arrastra aquí el objeto GameObject/Anillo que hace de Spawner")]
