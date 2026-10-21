@@ -2,35 +2,44 @@ using UnityEngine;
 
 public class Enemy_Controller : MonoBehaviour, IHealthSystem
 {
-    [Header("Health")]
-    [SerializeField] public int health;
+    [Header("Vida del enemigo")]
+    [SerializeField] public int health = 3;
 
     private int currentHealth;
+    private bool estaMuerto = false;
 
-    public void Awake()
+    private void Awake()
     {
         currentHealth = health;
     }
 
-    
     public void GetHurt(int quantity)
     {
-        if (currentHealth > 0)
+        if (estaMuerto || quantity <= 0)
         {
-            currentHealth -= quantity;
-            Debug.Log($"Enemigo dañado. Vida restante: {currentHealth}");
+            return;
+        }
 
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                Die();
-            }
+        currentHealth -= quantity;
+
+        Debug.Log("Enemigo dañado. Vida restante: " + Mathf.Max(0, currentHealth));
+
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            Die();
         }
     }
 
     private void Die()
     {
+        estaMuerto = true;
         Debug.Log("El enemigo ha muerto.");
-        Destroy(gameObject); // O lanzar animación de muerte
+        Destroy(gameObject);
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
     }
 }
