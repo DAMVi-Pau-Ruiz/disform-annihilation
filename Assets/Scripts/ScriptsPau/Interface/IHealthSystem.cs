@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IHealthSystem
 {
-    void GetHurt(int quantity);
+    void GetHurt(float quantity);
 }

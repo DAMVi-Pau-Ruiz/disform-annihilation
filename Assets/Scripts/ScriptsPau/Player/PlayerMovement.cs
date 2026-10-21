@@ -9,8 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private InputActionReference rotate;
 
     [Header("Movement")]
-    [SerializeField] private float baseSpeed = 10f;
-    [SerializeField] private float slowSpeed = 5f;
+    [SerializeField] private float baseSpeed = 10;
 
     [Header("Rotation")]
     [SerializeField] private Camera playerCamera;
@@ -20,11 +19,13 @@ public class PlayerMovement : MonoBehaviour
     private Quaternion targetRotation;
     private bool hasTargetRotation;
     private float moveSpeed;
+    private float slowSpeed;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         moveSpeed = baseSpeed;
+        slowSpeed = baseSpeed / 2;
     }
 
     private void Update()

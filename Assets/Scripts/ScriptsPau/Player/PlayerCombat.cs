@@ -19,7 +19,7 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
     [Header("Cooldowns")]
     [SerializeField] private float invincibleTime = 1;
     
-    private int currentHealth;
+    private float currentHealth;
     private float nextFireTime;
     private bool isInvincible = false;
 
@@ -62,7 +62,7 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
 
 
 
-    public void GetHurt(int quantity)
+    public void GetHurt(float quantity)
     {
         if (isInvincible)
         {
@@ -92,7 +92,7 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
         isInvincible = false;
     }
 
-    public int GetCurrentHealth()
+    public float GetCurrentHealth()
     {
         return currentHealth;
     }
