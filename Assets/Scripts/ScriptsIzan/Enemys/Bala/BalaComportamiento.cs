@@ -47,6 +47,13 @@ public class BalaComportamiento : MonoBehaviour
         {
             return;
         }
+        bool esVacio = other.CompareTag("Vacio");
+
+        if (esVacio)
+        {
+            Debug.Log(esVacio);
+            return;
+        }
 
         // 2. Si golpeamos un radio de detección u otro trigger, pasamos de largo
         if (other.isTrigger)
@@ -77,12 +84,7 @@ public class BalaComportamiento : MonoBehaviour
             return;
         }
 
-        bool esVacio = other.CompareTag("vacio");
-
-        if (esVacio)
-        {
-            return;
-        }
+        
 
         // 5. Si choca contra una pared o suelo se destruye
         Destroy(gameObject);
