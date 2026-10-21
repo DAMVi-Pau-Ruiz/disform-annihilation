@@ -102,7 +102,7 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
         return totalHealth;
     }
 
-    public void AddHealth(int health)
+    public void AddHealth(float health)
     {
         currentHealth += health;
     }

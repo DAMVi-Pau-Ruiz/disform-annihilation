@@ -41,7 +41,7 @@ public class ItemCollectable : MonoBehaviour
                         break;
 
                     case 4: // Revivir / Curar al máximo
-                        int vidaFaltante = playerCombat.GetTotalHealth() - playerCombat.GetCurrentHealth();
+                        float vidaFaltante = playerCombat.GetTotalHealth() - playerCombat.GetCurrentHealth();
                         playerCombat.AddHealth(vidaFaltante);
                         Debug.Log("Curado al máximo.");
                         break;
