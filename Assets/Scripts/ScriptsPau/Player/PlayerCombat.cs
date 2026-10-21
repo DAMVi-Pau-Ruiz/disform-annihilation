@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,12 +16,17 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
     [Header("Inputs")]
     [SerializeField] private InputActionReference shoot;
 
+    [Header("Cooldowns")]
+    [SerializeField] private float invincibleTime = 1;
+    
     private int currentHealth;
     private float nextFireTime;
+    private bool isInvincible = false;
 
     private void Awake()
     {
         currentHealth = totalHealth;
+        StartCoroutine(CooldownCoroutine());
     }
 
     private void Update()
@@ -57,15 +64,41 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
 
     public void GetHurt(int quantity)
     {
+        if (isInvincible)
+        {
+            return;
+        }
+
         if (currentHealth > 0)
         {
             currentHealth -= quantity;
+            StartCoroutine(CooldownCoroutine());
+            Debug.Log("Te has hecho daño");
 
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
-                //muere
+                //vida actual es 0 => muere de forma epica
             }
         }
+    }
+
+    private IEnumerator CooldownCoroutine()
+    {
+        isInvincible = true;
+
+        yield return new WaitForSeconds(invincibleTime);
+
+        isInvincible = false;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public void AddHealth(int health)
+    {
+        currentHealth += health;
     }
 }

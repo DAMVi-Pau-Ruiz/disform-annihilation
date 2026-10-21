@@ -21,6 +21,14 @@ public class PlayerProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        bool esVacio = other.CompareTag("Vacio");
+
+        if (esVacio)
+        {
+            Debug.Log(esVacio);
+            return;
+        }
+        
         // Si la bala toca el objeto hijo "Detector" (que es un Trigger), lo ignora por completo
         if (other.isTrigger)
         {

@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 2263192752225482513}
   m_Layer: 0
   m_Name: Isla
-  m_TagString: Untagged
+  m_TagString: Vacio
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
