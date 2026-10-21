@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3093360323838871326}
   - component: {fileID: 1115533273952434534}
   - component: {fileID: 9185782490225428317}
+  - component: {fileID: 3355335234531814367}
   m_Layer: 0
   m_Name: Disformius
   m_TagString: Player
@@ -162,7 +163,6 @@ MonoBehaviour:
   slow: {fileID: -6257149396502010500, guid: 4423d346512019a4da8b667eb945444a, type: 3}
   rotate: {fileID: 3780382325459256308, guid: 4423d346512019a4da8b667eb945444a, type: 3}
   baseSpeed: 10
-  slowSpeed: 5
   playerCamera: {fileID: 0}
 --- !u!114 &9185782490225428317
 MonoBehaviour:
@@ -178,8 +178,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   firePoint: {fileID: 1039620563941683289}
   projectilePrefab: {fileID: 8771150922929734937, guid: 06f4bbe049c0abd488f252c45090da43, type: 3}
+  bulletsPerSecond: 2
   totalHealth: 10
   shoot: {fileID: -3067424390145102775, guid: 4423d346512019a4da8b667eb945444a, type: 3}
+  invincibleTime: 1
+--- !u!114 &3355335234531814367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905409385213696032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e2ea7110819b6459975459bb17f33c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+  totalHealth: 10
+  baseSpeed: 10
+  damage: 1
 --- !u!1 &2482955783942848887
 GameObject:
   m_ObjectHideFlags: 0
