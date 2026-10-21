@@ -97,6 +97,11 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
         return currentHealth;
     }
 
+    public int GetTotalHealth()
+    {
+        return totalHealth;
+    }
+
     public void AddHealth(int health)
     {
         currentHealth += health;
