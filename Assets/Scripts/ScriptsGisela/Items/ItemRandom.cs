@@ -5,7 +5,6 @@ using System.IO;
 public class ItemRandom : MonoBehaviour
 {
     private List<int> itemIds = new List<int>();
-    // Arrays de los ID's, Tag's, Descripciones, gambling e índice
     private List<string> itemTag = new List<string>();
     private List<string> itemDescription = new List<string>();
     private List<string> itemGambling = new List<string>();
@@ -14,23 +13,15 @@ public class ItemRandom : MonoBehaviour
 
     [SerializeField] private string defaultRarity = "comun";
 
-    //  métodos para que la UI pueda leer el resultado actual
+    // Variables públicas para que la UI u otros scripts lean el resultado
     [HideInInspector] public string lastSelectedTag = "";
     [HideInInspector] public string lastSelectedDesc = "";
     [HideInInspector] public string lastSelectedRarity = "";
     [HideInInspector] public int lastSelectedId = 0;
-    void Start()
-    {
-        // Llamamos a GetRandomRarity 100 veces para pruebas 
-        for (int i = 0; i < 100; i++)
-        {
-            GetRandomRarity();
-        }
-    }
 
     void Awake()
     {
-        // Ruta para guardarlo
+        // Ruta para guardar el CSV por defecto
         filePath = Path.Combine(Application.persistentDataPath, "ItemSystem.csv");
 
         CreateDefaultCsvFile();
@@ -107,13 +98,13 @@ public class ItemRandom : MonoBehaviour
         }
     }
 
-    // Muestra un único item y guarda los datos para la UI
-    public void ItemProbability()
+    // Calcula la probabilidad y devuelve el ID seleccionado
+    public int ItemProbability()
     {
         if (itemIds.Count == 0)
         {
             Debug.LogWarning("No hay ítems guardados.");
-            return;
+            return -1;
         }
 
         validIndex.Clear();
@@ -145,10 +136,11 @@ public class ItemRandom : MonoBehaviour
             lastSelectedId = id;
             lastSelectedTag = itemTag[randomIndex];
             lastSelectedDesc = itemDescription[randomIndex];
-            string rarity = itemGambling[randomIndex];
 
-            Debug.Log($"RESULTADO Rareza: {selectedRarity} | ID: {id} | Tag: {lastSelectedTag} | Desc: {lastSelectedDesc}");
+            Debug.Log($"RESULTADO Rareza: {selectedRarity} | ID: {id} | Tag: {lastSelectedTag}");
+            return id;
         }
-    }
 
+        return -1;
+    }
 }
