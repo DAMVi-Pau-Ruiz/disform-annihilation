@@ -129,7 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8680744858086094ebe4f9bcea0f2def, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Normal_Enemy_Movement
-  "da\xF1oRecibido": 1
+  "da\xF1oPorChoque": 1
+  fuerzaEmpujon: 6
+  duracionEmpujon: 1
 --- !u!114 &5171409554430528792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b1ae6c0e09247438a3fab14e59d894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_Controller
-  health: 2
+  health: 4
 --- !u!54 &4601452440766532360
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -165,11 +167,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Constraints: 4
+  m_CollisionDetection: 1
 --- !u!135 &6306373064512645855
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -185,7 +187,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

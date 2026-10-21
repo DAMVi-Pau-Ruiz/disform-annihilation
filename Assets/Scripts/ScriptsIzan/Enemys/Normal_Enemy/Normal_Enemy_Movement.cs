@@ -51,6 +51,7 @@ public class Normal_Enemy_Movement : MonoBehaviour
             if (tiempoEmpujonRestante <= 0f)
             {
                 recibiendoEmpujon = false;
+                choqueProcesado = false;
             }
 
             return;

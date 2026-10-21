@@ -5,7 +5,7 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
     [Header("Vida del enemigo")]
     [SerializeField] public int health = 3;
 
-    private int currentHealth;
+    private float currentHealth;
     private bool estaMuerto = false;
 
     private void Awake()
@@ -13,7 +13,7 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
         currentHealth = health;
     }
 
-    public void GetHurt(int quantity)
+    public void GetHurt(float quantity)
     {
         if (estaMuerto || quantity <= 0)
         {
@@ -38,7 +38,7 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
         Destroy(gameObject);
     }
 
-    public int GetCurrentHealth()
+    public float GetCurrentHealth()
     {
         return currentHealth;
     }
