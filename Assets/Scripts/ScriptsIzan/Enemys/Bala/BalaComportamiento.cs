@@ -77,6 +77,13 @@ public class BalaComportamiento : MonoBehaviour
             return;
         }
 
+        bool esVacio = other.CompareTag("vacio");
+
+        if (esVacio)
+        {
+            return;
+        }
+
         // 5. Si choca contra una pared o suelo se destruye
         Destroy(gameObject);
     }
