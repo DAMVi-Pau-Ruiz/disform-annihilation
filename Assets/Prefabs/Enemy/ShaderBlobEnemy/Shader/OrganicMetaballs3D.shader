@@ -9,6 +9,7 @@ Shader "Custom/OrganicMetaballs3D"
 
         _EdgeWidth ("Edge Width", Range(0.005, 0.2)) = 0.04
         _Glow ("Glow Intensity", Range(0, 8)) = 3
+        _HitFlash ("Hit Flash", Range(0, 1)) = 0
 
         _ColorA ("Cyan", Color) = (0.05, 0.9, 1, 1)
         _ColorB ("Purple", Color) = (0.55, 0.08, 1, 1)
@@ -54,6 +55,7 @@ Shader "Custom/OrganicMetaballs3D"
                 float _Warp;
                 float _EdgeWidth;
                 float _Glow;
+                float _HitFlash;
                 float4 _ColorA;
                 float4 _ColorB;
                 float4 _ColorC;
@@ -277,6 +279,8 @@ Shader "Custom/OrganicMetaballs3D"
                 color *= 0.35 + fresnel * 0.65;
                 color += lerp(_ColorA.rgb, _ColorB.rgb, fresnel)
                     * glow;
+
+                color = lerp(color, float3(1.0, 1.0, 1.0), saturate(_HitFlash));
 
                 return float4(color, 1.0);
             }
