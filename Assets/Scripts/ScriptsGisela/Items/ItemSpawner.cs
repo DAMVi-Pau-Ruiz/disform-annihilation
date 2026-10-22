@@ -47,8 +47,8 @@ public class ItemSpawner : MonoBehaviour
                 Instantiate(prefabAInstanciar, spawnPoint.position, spawnPoint.rotation);
                 Debug.Log($"[Spawn] Ítem ID {idObtenido} generado en {spawnPoint.name}");
             }
-           
         }
+        hasSpawned = true;
     }
 
     private GameObject ObtenerPrefabPorId(int id)
