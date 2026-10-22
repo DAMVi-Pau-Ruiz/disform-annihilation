@@ -1,37 +1,46 @@
-using System.Collections;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerCombat : MonoBehaviour, IHealthSystem
+public class PlayerCombat : MonoBehaviour
 {
     [Header("Projectile")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private float bulletsPerSecond = 2f;
-
-    [Header("Health")]
-    [SerializeField] private int totalHealth = 10;
 
     [Header("Inputs")]
     [SerializeField] private InputActionReference shoot;
 
-    [Header("Cooldowns")]
-    [SerializeField] private float invincibleTime = 1;
-    
-    private float currentHealth;
+    private PlayerStats stats;
     private float nextFireTime;
-    private bool isInvincible = false;
 
     private void Awake()
     {
-        currentHealth = totalHealth;
-        StartCoroutine(CooldownCoroutine());
+        stats = GetComponent<PlayerStats>();
     }
 
     private void Update()
     {
         OnShoot();
+    }
+
+    private void OnShoot()
+    {
+        if (stats == null || shoot == null || shoot.action == null)
+        {
+            return;
+        }
+
+        float bulletsPerSecond = stats.GetBulletsPerSecond();
+
+        if (shoot.action.IsPressed() &&
+            bulletsPerSecond > 0f &&
+            Time.time >= nextFireTime)
+        {
+            Shoot();
+
+            nextFireTime = Time.time + (1f / bulletsPerSecond);
+        }
     }
 
     private void Shoot()
@@ -41,69 +50,18 @@ public class PlayerCombat : MonoBehaviour, IHealthSystem
             return;
         }
 
-        Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-    }
+        GameObject projectile = Instantiate(
+            projectilePrefab,
+            firePoint.position,
+            firePoint.rotation
+        );
 
-    private void OnShoot()
-    {
-        if (shoot == null || shoot.action == null)
+        PlayerProjectile projectileScript =
+            projectile.GetComponent<PlayerProjectile>();
+
+        if (projectileScript != null)
         {
-            return;
+            projectileScript.Initialize(stats);
         }
-
-        if (shoot.action.IsPressed() &&
-            bulletsPerSecond > 0f &&
-            Time.time >= nextFireTime)
-        {
-            Shoot();
-            nextFireTime = Time.time + (1f / bulletsPerSecond);
-        }
-    }
-
-
-
-    public void GetHurt(float quantity)
-    {
-        if (isInvincible)
-        {
-            return;
-        }
-
-        if (currentHealth > 0)
-        {
-            currentHealth -= quantity;
-            StartCoroutine(CooldownCoroutine());
-            Debug.Log("Te has hecho daño");
-
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                //vida actual es 0 => muere de forma epica
-            }
-        }
-    }
-
-    private IEnumerator CooldownCoroutine()
-    {
-        isInvincible = true;
-
-        yield return new WaitForSeconds(invincibleTime);
-
-        isInvincible = false;
-    }
-
-    public float GetCurrentHealth()
-    {
-        return currentHealth;
-    }
-
-    public int GetTotalHealth()
-    {
-        return totalHealth;
-    }
-
-    public void AddHealth(float health)
-    {
-        currentHealth += health;
     }
 }

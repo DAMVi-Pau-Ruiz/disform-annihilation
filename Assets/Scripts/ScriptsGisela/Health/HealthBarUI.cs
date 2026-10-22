@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class HealthBarUI : MonoBehaviour
 {
     [Header("Referencias")]
-    [SerializeField] private PlayerCombat playerCombat; // Arrastra aquí tu Nave desde la Jerarquía
+    [SerializeField] private PlayerStats playerStats; // Arrastra aquí tu Nave desde la Jerarquía
     private Slider healthSlider;
 
     void Awake()
@@ -14,19 +14,19 @@ public class HealthBarUI : MonoBehaviour
 
     void Start()
     {
-        if (playerCombat != null && healthSlider != null)
+        if (playerStats != null && healthSlider != null)
         {
-            healthSlider.maxValue = playerCombat.GetTotalHealth();
-            healthSlider.value = playerCombat.GetCurrentHealth();
+            healthSlider.maxValue = playerStats.GetTotalHealth();
+            healthSlider.value = playerStats.GetCurrentHealth();
         }
     }
 
     void Update()
     {
         // Actualiza la barra de vida en tiempo real cada frame
-        if (playerCombat != null && healthSlider != null)
+        if (playerStats != null && healthSlider != null)
         {
-            healthSlider.value = playerCombat.GetCurrentHealth();
+            healthSlider.value = playerStats.GetCurrentHealth();
         }
     }
 }
