@@ -610,6 +610,18 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4627392580397342957, guid: b3f1bd5da1389c6479f2f9a4d7892a60, type: 3}
+      propertyPath: enemiesPrefabsToSpawn.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4627392580397342957, guid: b3f1bd5da1389c6479f2f9a4d7892a60, type: 3}
+      propertyPath: 'enemiesPrefabsToSpawn.Array.data[2]'
+      value: 
+      objectReference: {fileID: 269638029501393174, guid: 5d5019ff85ee18d4fbe529dec64cdc1c, type: 3}
+    - target: {fileID: 4627392580397342957, guid: b3f1bd5da1389c6479f2f9a4d7892a60, type: 3}
+      propertyPath: 'enemiesPrefabsToSpawn.Array.data[3]'
+      value: 
+      objectReference: {fileID: 6560515900986881091, guid: bcda3a2094bdc9e4b96fb1223a271cf2, type: 3}
     - target: {fileID: 7372962628853251541, guid: b3f1bd5da1389c6479f2f9a4d7892a60, type: 3}
       propertyPath: m_Name
       value: Room_2x2_Type2
