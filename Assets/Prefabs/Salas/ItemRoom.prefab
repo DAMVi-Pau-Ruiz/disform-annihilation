@@ -33,6 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5154494439811905554}
+  - {fileID: 1718830078337526070}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3113566584649685336
@@ -129,6 +130,62 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3821898838355692122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1718830078337526070}
+  - component: {fileID: 3682551324913648400}
+  m_Layer: 0
+  m_Name: ItemSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1718830078337526070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3821898838355692122}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5695573945174053561}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3682551324913648400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3821898838355692122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a964d28134f544e84ac97df02ee697, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSpawner
+  itemRandom: {fileID: 0}
+  spawnPoints:
+  - {fileID: 1718830078337526070}
+  itemPrefabsList:
+  - itemId: 1
+    prefab: {fileID: 6399806012522493030, guid: a5c2028125eaf154cbfd5a39a12c6e59, type: 3}
+  - itemId: 2
+    prefab: {fileID: 622630464699600835, guid: 98879e3c29200f44d934fadf65456c51, type: 3}
+  - itemId: 3
+    prefab: {fileID: 4120324106466076710, guid: b67c3d1e12dfe5943bd3062497c9b3dc, type: 3}
+  - itemId: 4
+    prefab: {fileID: 7325618997209053052, guid: 7431ef3f486f6434ebf630b9b55e858e, type: 3}
 --- !u!1 &7850013840826190530
 GameObject:
   m_ObjectHideFlags: 0

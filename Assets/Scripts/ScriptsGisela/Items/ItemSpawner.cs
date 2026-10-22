@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
 {
+    private bool hasSpawned;
     [Header("Referencias")]
     [SerializeField] private ItemRandom itemRandom; 
     // Arrastra aquí el objeto con el script ItemRandom
@@ -29,7 +30,10 @@ public class ItemSpawner : MonoBehaviour
 
     public void GenerarItemsEnSpawnPoints()
     {
-    
+        if (hasSpawned)
+        {
+            return;
+        }
 
         // Recorremos los 4 puntos de spawn de manera independiente
         foreach (Transform spawnPoint in spawnPoints)
