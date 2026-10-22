@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using System.Collections;
 
@@ -15,6 +16,7 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
 
     private Renderer[] renderizadores;
     private MaterialPropertyBlock bloqueMaterial;
+    private MaterialPropertyBlock[] bloquesOriginales;
     private Coroutine corrutinaDestello;
 
     private void Awake()
@@ -23,6 +25,14 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
 
         renderizadores = GetComponentsInChildren<Renderer>();
         bloqueMaterial = new MaterialPropertyBlock();
+
+        bloquesOriginales = new MaterialPropertyBlock[renderizadores.Length];
+
+        for (int i = 0; i < renderizadores.Length; i++)
+        {
+            bloquesOriginales[i] = new MaterialPropertyBlock();
+            renderizadores[i].GetPropertyBlock(bloquesOriginales[i]);
+        }
     }
 
     public void GetHurt(float quantity)
@@ -60,32 +70,34 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
                 continue;
             }
 
-            MaterialPropertyBlock bloque = new MaterialPropertyBlock();
+            renderizador.GetPropertyBlock(bloqueMaterial);
 
-            renderizador.GetPropertyBlock(bloque);
+            // Materiales URP/Lit.
+            bloqueMaterial.SetColor("_BaseColor", colorDaño);
+            bloqueMaterial.SetColor("_Color", colorDaño);
 
-            // Para materiales URP/Lit.
-            bloque.SetColor("_BaseColor", colorDaño);
-            bloque.SetColor("_Color", colorDaño);
+            // Shader OrganicMetaballs3D.
+            bloqueMaterial.SetFloat("_HitFlash", 1f);
 
-            // Para nuestro shader OrganicMetaballs3D.
-            bloque.SetFloat("_HitFlash", 1f);
+            // Shader de la sombra roja.
+            bloqueMaterial.SetColor("_ColorSombra", colorDaño);
 
-            renderizador.SetPropertyBlock(bloque);
+            renderizador.SetPropertyBlock(bloqueMaterial);
         }
 
         yield return new WaitForSeconds(duracionDestello);
 
-        foreach (Renderer renderizador in renderizadores)
+        for (int i = 0; i < renderizadores.Length; i++)
         {
-            if (renderizador != null)
+            if (renderizadores[i] != null)
             {
-                renderizador.SetPropertyBlock(null);
+                renderizadores[i].SetPropertyBlock(bloquesOriginales[i]);
             }
         }
 
         corrutinaDestello = null;
     }
+
     private void Die()
     {
         estaMuerto = true;

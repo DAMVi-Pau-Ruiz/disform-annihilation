@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38bc3efbe982cd54ba868aacf850193e, type: 2}
+  - {fileID: 2100000, guid: 61cb9d2347bffa144a31ae25f6136ebb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -145,6 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_Controller
   health: 4
+  duracionDestello: 0.1
+  "colorDa\xF1o": {r: 1, g: 1, b: 1, a: 1}
 --- !u!54 &4601452440766532360
 Rigidbody:
   m_ObjectHideFlags: 0

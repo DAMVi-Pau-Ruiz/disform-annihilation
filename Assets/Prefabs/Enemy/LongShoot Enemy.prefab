@@ -317,3 +317,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_Controller
   health: 5
+  duracionDestello: 0.1
+  "colorDa\xF1o": {r: 1, g: 1, b: 1, a: 1}
