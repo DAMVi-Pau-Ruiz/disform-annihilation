@@ -23,11 +23,6 @@ public class ItemSpawner : MonoBehaviour
     [Header("Prefabs de los Ítems en el Mundo")]
     [SerializeField] private List<ItemPrefabMapping> itemPrefabsList;
 
-    void Start()
-    {
-        GenerarItemsEnSpawnPoints();
-    }
-
     public void GenerarItemsEnSpawnPoints()
     {
         if (hasSpawned)

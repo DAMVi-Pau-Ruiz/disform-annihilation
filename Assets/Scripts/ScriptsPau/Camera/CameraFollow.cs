@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -37,7 +36,7 @@ public class CameraFollow : MonoBehaviour
         if (currentRoom == null)
             return;
 
-        // Obtener las dimensiones reales de la sala
+        // Obtener las dimensiones reales de la sala,
         // teniendo en cuenta su rotación y escala.
         Vector2 halfExtents = GetWorldHalfExtents();
 
@@ -146,13 +145,25 @@ public class CameraFollow : MonoBehaviour
                 {
                     currentRoom = room;
 
-                    // Activar los spawners de esta sala.
+                    // Activar los spawners de enemigos de esta sala.
                     EnemySpawner[] spawners =
                         currentRoom.GetComponentsInChildren<EnemySpawner>(true);
 
                     foreach (EnemySpawner spawner in spawners)
                     {
                         spawner.SpawnEnemies();
+                    }
+
+                    // Si la sala se llama ItemRoom, generar los items.
+                    if (currentRoom.gameObject.name == "ItemRoom")
+                    {
+                        ItemSpawner[] itemSpawners =
+                            currentRoom.GetComponentsInChildren<ItemSpawner>(true);
+
+                        foreach (ItemSpawner itemSpawner in itemSpawners)
+                        {
+                            itemSpawner.GenerarItemsEnSpawnPoints();
+                        }
                     }
                 }
 
