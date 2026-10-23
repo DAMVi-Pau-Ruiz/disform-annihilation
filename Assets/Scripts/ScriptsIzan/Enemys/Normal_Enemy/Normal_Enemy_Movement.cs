@@ -1,112 +1,133 @@
+
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Normal_Enemy_Movement : MonoBehaviour
 {
-    [Header("Daño por choque")]
-    [SerializeField] private int dañoPorChoque = 1;
+    [Header("Combat")]
+    [SerializeField] private float damage = 1f;
 
-    [Header("Empujón")]
-    [SerializeField] private float fuerzaEmpujon = 3f;
-    [SerializeField] private float duracionEmpujon = 0.25f;
+    [Header("Knockback")]
+    [SerializeField] private float knockbackForce = 5f;
+    [SerializeField] private float knockbackDuration = 0.3f;
 
     private Transform playerTransform;
     private NavMeshAgent agent;
     private Enemy_Controller enemyController;
 
-    private Vector3 direccionEmpujon;
-    private float tiempoEmpujonRestante;
-    private bool recibiendoEmpujon;
-    private bool choqueProcesado;
+    private bool isKnockedBack;
+    private bool playerInContact;
+
+    private float knockbackTimer;
+    private Vector3 knockbackDirection;
 
     private void Awake()
     {
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        agent = GetComponent<NavMeshAgent>();
+        enemyController = GetComponent<Enemy_Controller>();
+
+        GameObject playerObject =
+            GameObject.FindGameObjectWithTag("Player");
 
         if (playerObject != null)
         {
             playerTransform = playerObject.transform;
         }
-
-        agent = GetComponent<NavMeshAgent>();
-        enemyController = GetComponent<Enemy_Controller>();
     }
 
     private void Update()
     {
-        if (enemyController == null)
+        if (agent == null || enemyController == null)
         {
             return;
         }
 
-        if (recibiendoEmpujon)
+        if (isKnockedBack)
         {
-            tiempoEmpujonRestante -= Time.deltaTime;
+            knockbackTimer -= Time.deltaTime;
 
-            if (agent != null && agent.isOnNavMesh)
+            if (agent.isOnNavMesh)
             {
-                agent.Move(direccionEmpujon * fuerzaEmpujon * Time.deltaTime);
+                agent.Move(
+                    knockbackDirection *
+                    knockbackForce *
+                    Time.deltaTime
+                );
             }
 
-            if (tiempoEmpujonRestante <= 0f)
+            if (knockbackTimer <= 0f)
             {
-                recibiendoEmpujon = false;
-                choqueProcesado = false;
+                isKnockedBack = false;
+                agent.ResetPath();
             }
 
             return;
         }
 
-        if (playerTransform != null && agent != null && agent.isOnNavMesh)
+        if (playerTransform != null && agent.isOnNavMesh)
         {
             agent.SetDestination(playerTransform.position);
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            RecibirChoque(collision.transform);
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            RecibirChoque(other.transform);
-        }
-    }
-
-    private void RecibirChoque(Transform jugador)
-    {
-        if (recibiendoEmpujon || choqueProcesado || enemyController == null)
+        if (!other.CompareTag("Player") || playerInContact)
         {
             return;
         }
 
-        enemyController.GetHurt(dañoPorChoque);
+        if (enemyController == null)
+        {
+            return;
+        }
 
+        playerInContact = true;
+
+        // El enemigo recibe daño.
+        enemyController.GetHurt(damage);
+
+        // Si muere, no continuamos con el choque.
         if (enemyController.GetCurrentHealth() <= 0)
         {
             return;
         }
 
-        direccionEmpujon = transform.position - jugador.position;
-        direccionEmpujon.y = 0f;
+        // El jugador recibe daño.
+        IHealthSystem playerHealth =
+            other.GetComponent<IHealthSystem>()
+            ?? other.GetComponentInParent<IHealthSystem>();
 
-        if (direccionEmpujon.sqrMagnitude > 0.001f)
+        if (playerHealth != null)
         {
-            direccionEmpujon.Normalize();
+            playerHealth.GetHurt(damage);
+        }
+
+        // Dirección desde el jugador hacia el enemigo.
+        knockbackDirection =
+            transform.position - other.transform.position;
+
+        knockbackDirection.y = 0f;
+
+        if (knockbackDirection.sqrMagnitude > 0.001f)
+        {
+            knockbackDirection.Normalize();
         }
         else
         {
-            direccionEmpujon = -transform.forward;
+            knockbackDirection = -transform.forward;
         }
 
-        tiempoEmpujonRestante = duracionEmpujon;
-        recibiendoEmpujon = true;
-        choqueProcesado = true;
+        // Activamos el retroceso.
+        knockbackTimer = knockbackDuration;
+        isKnockedBack = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInContact = false;
+        }
     }
 }
