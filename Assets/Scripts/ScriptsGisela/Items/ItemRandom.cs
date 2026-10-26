@@ -1,146 +1,60 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.IO;
 
 public class ItemRandom : MonoBehaviour
 {
-    private List<int> itemIds = new List<int>();
-    private List<string> itemTag = new List<string>();
-    private List<string> itemDescription = new List<string>();
-    private List<string> itemGambling = new List<string>();
-    private List<int> validIndex = new List<int>();
-    private string filePath;
+    [Header("Lista de Todos los Ítems (ScriptableObjects)")]
+    [Tooltip("Arrastra aquí tus archivos ItemData creados en el proyecto")]
+    public List<ItemData> allItems;
 
-    [SerializeField] private string defaultRarity = "comun";
-
-    // Variables públicas para que la UI u otros scripts lean el resultado
-    [HideInInspector] public string lastSelectedTag = "";
-    [HideInInspector] public string lastSelectedDesc = "";
-    [HideInInspector] public string lastSelectedRarity = "";
-    [HideInInspector] public int lastSelectedId = 0;
-
-    void Awake()
+    // Método que calcula la rareza por probabilidad y devuelve un ItemData de la lista
+    public ItemData GetRandomItemByRarity()
     {
-        // Ruta para guardar el CSV por defecto
-        filePath = Path.Combine(Application.persistentDataPath, "ItemSystem.csv");
-
-        CreateDefaultCsvFile();
-        ReadCsvFile();
-    }
-
-    void CreateDefaultCsvFile()
-    {
-        string csvContent = "ID,Tag,Description,Rareza\n" +
-                            "1,curar,este objeto sana la vida que te han quitado,comun\n" +
-                            "2,daño,te hace pupa si aprietas bobo,raro\n" +
-                            "3,muerte,te mata,legendary\n" +
-                            "4,revivir,revive por si te has matado,epico\n";
-
-        File.WriteAllText(filePath, csvContent);
-    }
-
-    void ReadCsvFile()
-    {
-        if (!File.Exists(filePath))
+        if (allItems == null || allItems.Count == 0)
         {
-            Debug.LogError("No se encuentra el archivo CSV en la ruta: " + filePath);
-            return;
+            Debug.LogWarning("La lista 'allItems' en ItemRandom está vacía. ¡Añade tus ItemData en el Inspector!");
+            return null;
         }
 
-        itemIds.Clear();
-        itemTag.Clear();
-        itemDescription.Clear();
-        itemGambling.Clear();
-
-        string[] lines = File.ReadAllLines(filePath);
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            if (string.IsNullOrWhiteSpace(lines[i])) continue;
-
-            string[] parts = lines[i].Split(',');
-            if (parts.Length >= 4)
-            {
-                if (int.TryParse(parts[0].Trim(), out int id))
-                {
-                    string tag = parts[1].Trim();
-                    string description = parts[2].Trim();
-                    string gambling = parts[3].Trim().ToLower();
-
-                    itemIds.Add(id);
-                    itemTag.Add(tag);
-                    itemDescription.Add(description);
-                    itemGambling.Add(gambling);
-                }
-            }
-        }
-    }
-
-    public string GetRandomRarity()
-    {
         int roll = Random.Range(1, 101);
+        ItemRarity targetRarity;
 
+        // Probabilidades de rareza:
+        // - Common: 45% (<= 45)
+        // - Rare: 35% (<= 80)
+        // - Epic: 15% (<= 95)
+        // - Legendary: 5% (> 95)
         if (roll <= 45)
         {
-            return defaultRarity; // 45% (comun)
+            targetRarity = ItemRarity.Common;
         }
         else if (roll <= 80)
         {
-            return "raro"; // 35% (raro)
+            targetRarity = ItemRarity.Rare;
         }
         else if (roll <= 95)
         {
-            return "epico"; // 15% (epico)
+            targetRarity = ItemRarity.Epic;
         }
         else
         {
-            return "legendary"; // 5% (legendary)
+            targetRarity = ItemRarity.Legendary;
         }
-    }
 
-    // Calcula la probabilidad y devuelve el ID seleccionado
-    public int ItemProbability()
-    {
-        if (itemIds.Count == 0)
+        // Filtramos de la lista general los ítems que coincidan con la rareza seleccionada
+        List<ItemData> validItems = allItems.FindAll(item => item.rarity == targetRarity);
+
+        // Si por lo que sea no hay ningún ítem configurado con esa rareza exacta, devolvemos uno aleatorio de seguridad
+        if (validItems.Count == 0)
         {
-            Debug.LogWarning("No hay ítems guardados.");
-            return -1;
+            Debug.LogWarning($"No se encontraron ítems con rareza {targetRarity}. Seleccionando uno aleatorio de respaldo.");
+            return allItems[Random.Range(0, allItems.Count)];
         }
 
-        validIndex.Clear();
+        // Devolvemos un ítem aleatorio de los que sí coinciden con la rareza
+        ItemData selectedItem = validItems[Random.Range(0, validItems.Count)];
+        Debug.Log($"[ItemRandom] Rareza: {targetRarity} | Ítem seleccionado: {selectedItem.itemName}");
 
-        string selectedRarity = GetRandomRarity();
-        lastSelectedRarity = selectedRarity;
-
-        for (int i = 0; i < itemGambling.Count; i++)
-        {
-            if (itemGambling[i].Trim().ToLower() == selectedRarity.Trim().ToLower())
-            {
-                validIndex.Add(i);
-            }
-        }
-
-        if (validIndex.Count == 0)
-        {
-            for (int i = 0; i < itemIds.Count; i++)
-            {
-                validIndex.Add(i);
-            }
-        }
-
-        if (validIndex.Count > 0)
-        {
-            int randomIndex = validIndex[Random.Range(0, validIndex.Count)];
-
-            int id = itemIds[randomIndex];
-            lastSelectedId = id;
-            lastSelectedTag = itemTag[randomIndex];
-            lastSelectedDesc = itemDescription[randomIndex];
-
-            Debug.Log($"RESULTADO Rareza: {selectedRarity} | ID: {id} | Tag: {lastSelectedTag}");
-            return id;
-        }
-
-        return -1;
+        return selectedItem;
     }
 }

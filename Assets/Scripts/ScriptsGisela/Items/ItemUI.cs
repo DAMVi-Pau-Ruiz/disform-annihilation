@@ -3,17 +3,18 @@ using System.Collections.Generic;
 
 public class ItemUI : MonoBehaviour
 {
-    [SerializeField] private ItemRandom itemRandom; 
+    [Header("Referencias")]
+    [SerializeField] private ItemRandom itemRandom;
 
     [System.Serializable]
-    public struct ItemImageMapping
+    public struct ItemUIMapping
     {
-        public int itemId;          // ID del ítem (1: curar, 2: daño, 3: muerte, 4: revivir)
-        public GameObject itemImage; // El GameObject de la imagen en el Canvas
+        public ItemData itemData;          // El ScriptableObject del ítem
+        public GameObject itemImageObject; // El GameObject de la imagen en el Canvas
     }
 
-    [Header("Configuración de Imágenes por ID")]
-    [SerializeField] private List<ItemImageMapping> itemImagesList;
+    [Header("Configuración de Imágenes por Ítem")]
+    [SerializeField] private List<ItemUIMapping> itemImagesList;
 
     void Start()
     {
@@ -29,24 +30,23 @@ public class ItemUI : MonoBehaviour
             return;
         }
 
-        // Ejecutamos la función de probabilidad para calcular el ítem ganador del CSV
-        itemRandom.ItemProbability();
+        // 1. Obtenemos un ítem aleatorio usando el nuevo sistema de rarezas
+        ItemData obtenido = itemRandom.GetRandomItemByRarity();
 
-        //  Obtenemos el ID del ítem que ha salido seleccionado
-        int idObtenido = itemRandom.lastSelectedId;
-
-        //  Ocultamos todas las imágenes primero
+        // 2. Ocultamos todas las imágenes de la UI primero
         OcultarTodasLasImagenes();
 
-        //  Buscamos la imagen que coincide con ese ID y la activamos
+        if (obtenido == null) return;
+
+        // 3. Buscamos la imagen que coincide con este ItemData y la activamos
         foreach (var mapping in itemImagesList)
         {
-            if (mapping.itemId == idObtenido)
+            if (mapping.itemData == obtenido)
             {
-                if (mapping.itemImage != null)
+                if (mapping.itemImageObject != null)
                 {
-                    mapping.itemImage.SetActive(true);
-                    Debug.Log($"[UI] Ítem inicial generado automáticamente - ID: {idObtenido}");
+                    mapping.itemImageObject.SetActive(true);
+                    Debug.Log($"[UI] Ítem mostrado en pantalla: {obtenido.itemName}");
                 }
                 break;
             }
@@ -57,9 +57,9 @@ public class ItemUI : MonoBehaviour
     {
         foreach (var mapping in itemImagesList)
         {
-            if (mapping.itemImage != null)
+            if (mapping.itemImageObject != null)
             {
-                mapping.itemImage.SetActive(false);
+                mapping.itemImageObject.SetActive(false);
             }
         }
     }
