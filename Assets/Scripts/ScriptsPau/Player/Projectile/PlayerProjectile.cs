@@ -50,8 +50,8 @@ public class PlayerProjectile : MonoBehaviour
 
             if (health != null)
             {
-                int damage = stats != null
-                    ? stats.GetDamage()
+                float damage = stats != null
+                    ? stats.GetTotalDamage()
                     : 0;
 
                 health.GetHurt(damage);

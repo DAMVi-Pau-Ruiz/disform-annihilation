@@ -13,7 +13,8 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     [SerializeField] private float slowMultiplier = 0.5f;
 
     [Header("Combat")]
-    [SerializeField] private int damage = 5;
+    [SerializeField] private float  damage = 1;
+    [SerializeField] private float damageMultiplier = 1;
     [SerializeField] private float bulletsPerSecond = 2f;
 
     private float currentHealth;
@@ -23,37 +24,85 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     {
         currentHealth = totalHealth;
     }
-
+    //#####################################################
+    //Sistema de vida
+    //#####################################################
+    
+    //Getter de la vida actual
     public float GetCurrentHealth()
     {
         return currentHealth;
     }
 
+    //Getter de la vida total del player
     public int GetTotalHealth()
     {
         return totalHealth;
     }
 
+    //#####################################################
+    //Movimiento
+    //#####################################################
+
+    //Getter de la velocidad base
     public float GetBaseSpeed()
     {
         return baseSpeed;
     }
 
+    //Getter de la velocidad reducida
     public float GetSlowSpeed()
     {
         return baseSpeed * slowMultiplier;
     }
 
-    public int GetDamage()
+    //#####################################################
+    //Daño
+    //#####################################################
+
+    //Getter de daño total
+    public float GetTotalDamage()
+    {
+        return CalculateTotalDamage();
+    }
+    
+    //Calculo de daño * multi
+    private float CalculateTotalDamage()
+    {
+        return damage * damageMultiplier;
+    }
+
+    //Getter del multi de daño
+    public float GetDamageMultiplier()
+    {
+        return damageMultiplier;
+    }
+
+    //Getter del daño base
+    public float GetBaseDamage()
     {
         return damage;
     }
 
+    //Añade daño base
+    public void AddBaseDamage(float amount)
+    {
+        damage += amount;
+    }
+
+    //Añade multi
+    public void AddDamageMultiplier(float amount)
+    {
+        damageMultiplier += amount;
+    }
+
+    //Getter de cadencia de disparo
     public float GetBulletsPerSecond()
     {
         return bulletsPerSecond;
     }
 
+    //GetHurt de la interfaz de combate
     public void GetHurt(float quantity)
     {
         if (isInvincible || currentHealth <= 0)
@@ -76,6 +125,7 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
         }
     }
 
+    //Cura al player
     public void AddHealth(float health)
     {
         currentHealth = Mathf.Clamp(
@@ -85,6 +135,7 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
         );
     }
 
+    //Invulnerabilidad al recibir daño
     private IEnumerator CooldownCoroutine()
     {
         isInvincible = true;
