@@ -128,11 +128,7 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     //Cura al player
     public void AddHealth(float health)
     {
-        currentHealth = Mathf.Clamp(
-            currentHealth + health,
-            0,
-            totalHealth
-        );
+        currentHealth = Mathf.Clamp(currentHealth + health, 0, totalHealth);
     }
 
     //Invulnerabilidad al recibir daño
