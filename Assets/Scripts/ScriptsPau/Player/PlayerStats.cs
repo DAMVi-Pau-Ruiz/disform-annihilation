@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     [SerializeField] private float  damage = 1;
     [SerializeField] private float damageMultiplier = 1;
     [SerializeField] private float bulletsPerSecond = 2f;
+    [SerializeField] private float bulletSpeed = 15;
 
     private float currentHealth;
     private bool isInvincible;
@@ -100,6 +101,36 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     public float GetBulletsPerSecond()
     {
         return bulletsPerSecond;
+    }
+
+    //Añade balas por segundo
+    public void AddBulletsPerSecond(float amount)
+    {
+        bulletsPerSecond += amount; 
+    }
+
+    //Quita balas por segnudo
+    public void SubsBulletsPerSecond(float amount)
+    {
+        bulletsPerSecond -= amount;
+    }
+
+    //Getter de la velocidad de la bala
+    public float GetBulletSpeed()
+    {
+        return bulletSpeed;
+    }
+
+    //Añade velocidad a la bala
+    public void AddBulletSpeed(float amount)
+    {
+        bulletSpeed += amount;
+    }
+
+    //Quita velocidad a la bala
+    public void SubsBulletSpeed(float amount)
+    {
+        bulletSpeed -= amount;
     }
 
     //GetHurt de la interfaz de combate

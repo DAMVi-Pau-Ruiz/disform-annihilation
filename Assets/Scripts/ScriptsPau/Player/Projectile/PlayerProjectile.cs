@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class PlayerProjectile : MonoBehaviour
 {
-    [Header("Movement")]
-    [SerializeField] private float speed = 15f;
-
     private PlayerStats stats;
 
     public void Initialize(PlayerStats playerStats)
@@ -15,8 +12,7 @@ public class PlayerProjectile : MonoBehaviour
 
     private void Update()
     {
-        transform.position +=
-            transform.forward * speed * Time.deltaTime;
+        transform.position += transform.forward * stats.GetBulletSpeed() * Time.deltaTime;
     }
 
     private void OnBecameInvisible()
