@@ -65,9 +65,9 @@ GameObject:
   - component: {fileID: 4835996836636484475}
   - component: {fileID: 1731972704970988387}
   - component: {fileID: 1478152664060294996}
-  - component: {fileID: 6979220715668590584}
   - component: {fileID: 7013570714202622158}
   - component: {fileID: 730097563679808494}
+  - component: {fileID: 9050747453794224648}
   m_Layer: 0
   m_Name: Boss_Sombra
   m_TagString: Enemy
@@ -119,15 +119,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a934d5a1e6d1834bb2d333cd7e5e456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shadow_Boss_Controller
-  velocidad: 70
-  velocidadFaseDos: 90
+  velocidad: 80
+  velocidadFaseDos: 120
   distanciaAtaque: 9
   tiempoPreparacion: 1
   velocidadEmbestida: 200
   duracionEmbestida: 0.5
   tiempoRecuperacion: 0.5
   radioImpactoEmbestida: 5
-  radioGolpeSombra: 12
+  radioGolpeSombra: 9
   preparacionGolpeSombra: 1
   "duracionZonaDa\xF1o": 0.5
   "da\xF1oGolpeSombra": 1
@@ -173,27 +173,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 84
   m_CollisionDetection: 3
---- !u!65 &6979220715668590584
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7956611257409602250}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &7013570714202622158
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -201,7 +180,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7956611257409602250}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 289301614986012343, guid: 14aee3d0d845c1b46b2c546c39e50c0b, type: 3}
 --- !u!23 &730097563679808494
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -251,6 +230,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &9050747453794224648
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7956611257409602250}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.3519042
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8950841251478766314
 GameObject:
   m_ObjectHideFlags: 0
