@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067336b13995c5542ba48ef4081f9605, type: 3}
   m_Name: SmallestCollision
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemId: 0
-  itemName: 
+  itemId: 5
+  itemName: SmallestCollision
   description: 
-  rarity: 0
-  worldPrefab: {fileID: 0}
-  uiImagePrefab: {fileID: 0}
+  rarity: 2
+  worldPrefab: {fileID: 6399806012522493030, guid: e79389c9e1a0bc7428bf5d81a5cbc385, type: 3}
+  uiImagePrefab: {fileID: 6399806012522493030, guid: e79389c9e1a0bc7428bf5d81a5cbc385, type: 3}
   bulletSpeedModifier: 0
   bulletQuantityModifier: 0
   damageModifier: 0
   healthModifier: 0
   grantsShield: 0
-  shrinksCollision: 0
+  shrinksCollision: 1

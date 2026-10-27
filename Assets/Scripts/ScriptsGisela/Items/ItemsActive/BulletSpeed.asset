@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067336b13995c5542ba48ef4081f9605, type: 3}
   m_Name: BulletSpeed
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemId: 0
-  itemName: 
-  description: 
-  rarity: 0
-  worldPrefab: {fileID: 0}
-  uiImagePrefab: {fileID: 0}
-  bulletSpeedModifier: 0
+  itemId: 1
+  itemName: BulletSpeed
+  description: "Velocidad de balas a\xF1adida"
+  rarity: 1
+  worldPrefab: {fileID: 622630464699600835, guid: c60baafdcef59034a82cca3ac99e2496, type: 3}
+  uiImagePrefab: {fileID: 622630464699600835, guid: c60baafdcef59034a82cca3ac99e2496, type: 3}
+  bulletSpeedModifier: 5
   bulletQuantityModifier: 0
   damageModifier: 0
   healthModifier: 0

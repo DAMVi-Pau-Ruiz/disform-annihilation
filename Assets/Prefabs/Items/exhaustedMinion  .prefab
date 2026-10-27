@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff5300d93efc27489563a483da647a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemCollectable
-  itemData: {fileID: 0}
+  itemData: {fileID: 11400000, guid: 9bb872dba15a5974c8b0bc99ad68f883, type: 2}
 --- !u!70 &-1860880631318720619
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

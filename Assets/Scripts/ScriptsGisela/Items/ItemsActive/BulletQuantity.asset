@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067336b13995c5542ba48ef4081f9605, type: 3}
   m_Name: BulletQuantity
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemId: 0
-  itemName: 
-  description: 
-  rarity: 0
-  worldPrefab: {fileID: 0}
-  uiImagePrefab: {fileID: 0}
+  itemId: 2
+  itemName: BulletQuantity
+  description: Cadencia de balas
+  rarity: 2
+  worldPrefab: {fileID: 4120324106466076710, guid: baa7650c22420cf42b71c13e6bc3b585, type: 3}
+  uiImagePrefab: {fileID: 4120324106466076710, guid: baa7650c22420cf42b71c13e6bc3b585, type: 3}
   bulletSpeedModifier: 0
-  bulletQuantityModifier: 0
+  bulletQuantityModifier: 1
   damageModifier: 0
   healthModifier: 0
   grantsShield: 0

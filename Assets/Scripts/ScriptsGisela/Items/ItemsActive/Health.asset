@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067336b13995c5542ba48ef4081f9605, type: 3}
   m_Name: Health
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemId: 0
-  itemName: 
-  description: 
+  itemId: 4
+  itemName: Health
+  description: healin
   rarity: 0
-  worldPrefab: {fileID: 0}
-  uiImagePrefab: {fileID: 0}
+  worldPrefab: {fileID: 6399806012522493030, guid: 4bd0b1931ae3ffa41a06dcfbace324d4, type: 3}
+  uiImagePrefab: {fileID: 6399806012522493030, guid: 4bd0b1931ae3ffa41a06dcfbace324d4, type: 3}
   bulletSpeedModifier: 0
   bulletQuantityModifier: 0
   damageModifier: 0
-  healthModifier: 0
+  healthModifier: 1
   grantsShield: 0
   shrinksCollision: 0

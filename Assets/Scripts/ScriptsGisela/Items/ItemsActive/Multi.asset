@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067336b13995c5542ba48ef4081f9605, type: 3}
   m_Name: Multi
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemId: 0
-  itemName: 
+  itemId: 6
+  itemName: Multi
   description: 
-  rarity: 0
-  worldPrefab: {fileID: 0}
-  uiImagePrefab: {fileID: 0}
-  bulletSpeedModifier: 0
-  bulletQuantityModifier: 0
-  damageModifier: 0
+  rarity: 2
+  worldPrefab: {fileID: 6399806012522493030, guid: 84f322d421fe7e64293af3ff39203281, type: 3}
+  uiImagePrefab: {fileID: 6399806012522493030, guid: 84f322d421fe7e64293af3ff39203281, type: 3}
+  bulletSpeedModifier: -2
+  bulletQuantityModifier: -1
+  damageModifier: 3
   healthModifier: 0
   grantsShield: 0
   shrinksCollision: 0

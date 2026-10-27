@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067336b13995c5542ba48ef4081f9605, type: 3}
   m_Name: MultiplyPain
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemId: 0
-  itemName: 
-  description: 
-  rarity: 0
-  worldPrefab: {fileID: 0}
-  uiImagePrefab: {fileID: 0}
+  itemId: 3
+  itemName: MultiplyPain
+  description: "Multiplicador de da\xF1o"
+  rarity: 3
+  worldPrefab: {fileID: 7325618997209053052, guid: f1a89a323c2030348bd6e47d037fbb71, type: 3}
+  uiImagePrefab: {fileID: 7325618997209053052, guid: f1a89a323c2030348bd6e47d037fbb71, type: 3}
   bulletSpeedModifier: 0
   bulletQuantityModifier: 0
-  damageModifier: 0
+  damageModifier: 2
   healthModifier: 0
   grantsShield: 0
   shrinksCollision: 0

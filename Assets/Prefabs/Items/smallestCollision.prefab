@@ -125,4 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff5300d93efc27489563a483da647a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemCollectable
-  itemData: {fileID: 0}
+  itemData: {fileID: 11400000, guid: fa42cfd342a4dc2498273b7b2c5dd3c6, type: 2}

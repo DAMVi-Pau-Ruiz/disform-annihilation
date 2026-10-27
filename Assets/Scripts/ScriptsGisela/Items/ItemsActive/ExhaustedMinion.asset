@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067336b13995c5542ba48ef4081f9605, type: 3}
   m_Name: ExhaustedMinion
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  itemId: 0
-  itemName: 
-  description: 
-  rarity: 0
-  worldPrefab: {fileID: 0}
-  uiImagePrefab: {fileID: 0}
+  itemId: 7
+  itemName: ExhaustedMinion
+  description: "se hace mas peque\xF1ita pero con menos vida\n"
+  rarity: 1
+  worldPrefab: {fileID: 622630464699600835, guid: 2ecfec63c84d8a9448fd6a49724846dd, type: 3}
+  uiImagePrefab: {fileID: 622630464699600835, guid: 2ecfec63c84d8a9448fd6a49724846dd, type: 3}
   bulletSpeedModifier: 0
   bulletQuantityModifier: 0
   damageModifier: 0
-  healthModifier: 0
+  healthModifier: -5
   grantsShield: 0
-  shrinksCollision: 0
+  shrinksCollision: 1
