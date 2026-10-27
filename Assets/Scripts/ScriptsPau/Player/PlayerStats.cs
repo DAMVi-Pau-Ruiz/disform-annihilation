@@ -106,7 +106,7 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     //Añade balas por segundo
     public void AddBulletsPerSecond(float amount)
     {
-        bulletsPerSecond += amount; 
+        bulletsPerSecond += amount;
     }
 
     //Quita balas por segnudo
