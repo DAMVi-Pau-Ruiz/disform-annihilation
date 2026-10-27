@@ -2,53 +2,100 @@ using UnityEngine;
 
 public class ItemCollectable : MonoBehaviour
 {
-    [Header("Datos del Ítem (ScriptableObject)")]
-    public ItemData itemData; // Arrastra aquí el ItemData correspondiente
+    [Header("Datos del Ítem (Asignado automáticamente por el Spawner)")]
+    public ItemData itemData;
 
     private bool yaRecogido = false;
+    private string uniqueItemId;
+
+    private void Awake()
+    {
+        if (itemData == null)
+        {
+            Debug.LogError($"[Error] El ítem '{gameObject.name}' NO tiene ningún ScriptableObject (itemData) asignado en el Inspector.");
+            return;
+        }
+
+        // ID único basado en el nombre del ScriptableObject + posición redondeada a 2 decimales
+        Vector3 pos = transform.position;
+        string roundedPos = $"({Mathf.Round(pos.x * 100f) / 100f}, {Mathf.Round(pos.y * 100f) / 100f}, {Mathf.Round(pos.z * 100f) / 100f})";
+
+        uniqueItemId = itemData.name + "_" + roundedPos;
+    }
+
+    private void Start()
+    {
+        // Comprobamos al arrancar si ya estaba guardado como recogido
+        if (SaveManager.Instance != null && SaveManager.Instance.IsItemCollected(uniqueItemId))
+        {
+            Destroy(gameObject); // Se autodestruye al instante si ya fue recogido y guardado
+        }
+    }
+
+    public bool IsCollectedInSave(System.Collections.Generic.HashSet<string> collectedSet)
+    {
+        return collectedSet.Contains(uniqueItemId);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (yaRecogido) return;
 
-        if (other.CompareTag("Player"))
+        PlayerStats playerStats = other.GetComponent<PlayerStats>();
+        if (playerStats == null) playerStats = other.GetComponentInParent<PlayerStats>();
+        if (playerStats == null) playerStats = other.GetComponentInChildren<PlayerStats>();
+
+        if (playerStats != null)
         {
             yaRecogido = true;
-            Debug.Log($"¡Ítem recogido!");
 
-            // Obtenemos los componentes del jugador que ya tienes creados
-            PlayerStats playerStats = other.GetComponent<PlayerStats>();
-
-            if (playerStats != null && itemData != null)
+            if (itemData == null)
             {
-                // 1. Aplicamos Salud / Curación usando el método AddHealth o GetHurt que YA existen en tu PlayerStats
-                if (itemData.healthModifier > 0)
-                {
-                    playerStats.AddHealth(itemData.healthModifier);
-                    Debug.Log($"Curación aplicada: {itemData.healthModifier}");
-                }
-                else if (itemData.healthModifier < 0)
-                {
-                    playerStats.GetHurt(Mathf.Abs(itemData.healthModifier));
-                    Debug.Log($"Daño aplicado: {itemData.healthModifier}");
-                }
-
-                // 2. Si el ítem es una reducción de tamaño / colisión
-                if (itemData.shrinksCollision)
-                {
-                    other.transform.localScale = Vector3.one * 0.5f;
-                    Debug.Log("Colisión reducida.");
-                }
-
-                // 3. Aquí puedes añadir lógicas visuales o de otros sistemas si las necesitas
-                if (itemData.grantsShield)
-                {
-                    Debug.Log("¡Escudo activado!");
-                }
+                Destroy(gameObject);
+                return;
             }
 
-            // Destruimos el ítem del mapa al ser recogido
+            Debug.Log($"¡Ítem recogido correctamente: {itemData.itemName}!");
+
+            // 1. Aplicamos modificadores
+            ApplyItemEffects(playerStats);
+
+            // 2. Registramos en memoria (SIN GUARDAR EN DISCO TODAVÍA)
+            if (SaveManager.Instance != null)
+            {
+                SaveManager.Instance.MarkItemAsCollected(uniqueItemId);
+            }
+
+            // 3. Destruimos el ítem de la escena actual
             Destroy(gameObject);
+        }
+    }
+
+    private void ApplyItemEffects(PlayerStats playerStats)
+    {
+        if (itemData.healthModifier != 0)
+        {
+            if (itemData.healthModifier > 0) playerStats.AddHealth(itemData.healthModifier);
+            else playerStats.GetHurt(Mathf.Abs(itemData.healthModifier));
+        }
+
+        if (itemData.damageModifier != 0) playerStats.AddDamageMultiplier(itemData.damageModifier);
+
+        if (itemData.bulletQuantityModifier != 0)
+        {
+            if (itemData.bulletQuantityModifier > 0) playerStats.AddBulletsPerSecond(itemData.bulletQuantityModifier);
+            else playerStats.SubsBulletsPerSecond(Mathf.Abs(itemData.bulletQuantityModifier));
+        }
+
+        if (itemData.bulletSpeedModifier != 0)
+        {
+            if (itemData.bulletSpeedModifier > 0) playerStats.AddBulletSpeed(itemData.bulletSpeedModifier);
+            else playerStats.SubsBulletSpeed(Mathf.Abs(itemData.bulletSpeedModifier));
+        }
+
+        if (itemData.shrinksCollision)
+        {
+            playerStats.transform.localScale = Vector3.one * 0.5f;
         }
     }
 }
