@@ -6,88 +6,96 @@ public class ItemCollectable : MonoBehaviour
     public ItemData itemData;
 
     private bool yaRecogido = false;
+    private string uniqueItemId;
+
+    private void Awake()
+    {
+        if (itemData == null)
+        {
+            Debug.LogError($"[Error] El ítem '{gameObject.name}' NO tiene ningún ScriptableObject (itemData) asignado en el Inspector.");
+            return;
+        }
+
+        // ID único basado en el nombre del ScriptableObject + posición redondeada a 2 decimales
+        Vector3 pos = transform.position;
+        string roundedPos = $"({Mathf.Round(pos.x * 100f) / 100f}, {Mathf.Round(pos.y * 100f) / 100f}, {Mathf.Round(pos.z * 100f) / 100f})";
+
+        uniqueItemId = itemData.name + "_" + roundedPos;
+    }
+
+    private void Start()
+    {
+        // Comprobamos al arrancar si ya estaba guardado como recogido
+        if (SaveManager.Instance != null && SaveManager.Instance.IsItemCollected(uniqueItemId))
+        {
+            Destroy(gameObject); // Se autodestruye al instante si ya fue recogido y guardado
+        }
+    }
+
+    public bool IsCollectedInSave(System.Collections.Generic.HashSet<string> collectedSet)
+    {
+        return collectedSet.Contains(uniqueItemId);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (yaRecogido) return;
 
-        // Comprobamos si el objeto o su jerarquía pertenecen al Player
-        // Buscamos PlayerStats directamente
         PlayerStats playerStats = other.GetComponent<PlayerStats>();
+        if (playerStats == null) playerStats = other.GetComponentInParent<PlayerStats>();
+        if (playerStats == null) playerStats = other.GetComponentInChildren<PlayerStats>();
 
-        if (playerStats == null)
-        {
-            // Si no está en el mismo objeto, lo buscamos en los padres o hijos por si a caso
-            playerStats = other.GetComponentInParent<PlayerStats>();
-        }
-
-        if (playerStats == null)
-        {
-            playerStats = other.GetComponentInChildren<PlayerStats>();
-        }
-
-        // Si después de buscar por todas partes encontramos el PlayerStats:
         if (playerStats != null)
         {
             yaRecogido = true;
 
             if (itemData == null)
             {
-                Debug.LogError($"[Error] El ítem '{gameObject.name}' NO tiene ningún ScriptableObject (itemData) asignado.");
                 Destroy(gameObject);
                 return;
             }
 
             Debug.Log($"¡Ítem recogido correctamente: {itemData.itemName}!");
 
-            // Aplicamos los modificadores
-            if (itemData.healthModifier != 0)
+            // 1. Aplicamos modificadores
+            ApplyItemEffects(playerStats);
+
+            // 2. Registramos en memoria (SIN GUARDAR EN DISCO TODAVÍA)
+            if (SaveManager.Instance != null)
             {
-                if (itemData.healthModifier > 0)
-                    playerStats.AddHealth(itemData.healthModifier);
-                else
-                    playerStats.GetHurt(Mathf.Abs(itemData.healthModifier));
+                SaveManager.Instance.MarkItemAsCollected(uniqueItemId);
             }
 
-            if (itemData.damageModifier != 0)
-            {
-                playerStats.AddDamageMultiplier(itemData.damageModifier);
-            }
-
-            if (itemData.bulletQuantityModifier != 0)
-            {
-                if (itemData.bulletQuantityModifier > 0)
-                    playerStats.AddBulletsPerSecond(itemData.bulletQuantityModifier);
-                else
-                    playerStats.SubsBulletsPerSecond(Mathf.Abs(itemData.bulletQuantityModifier));
-            }
-
-            if (itemData.bulletSpeedModifier != 0)
-            {
-                if (itemData.bulletSpeedModifier > 0)
-                    playerStats.AddBulletSpeed(itemData.bulletSpeedModifier);
-                else
-                    playerStats.SubsBulletSpeed(Mathf.Abs(itemData.bulletSpeedModifier));
-            }
-
-            if (itemData.shrinksCollision)
-            {
-                playerStats.transform.localScale = Vector3.one * 0.5f;
-                Debug.Log("Colisión reducida.");
-            }
-
-            if (itemData.grantsShield)
-            {
-                Debug.Log("¡Escudo activado!");
-            }
-
-            // Destruimos el ítem del mapa
+            // 3. Destruimos el ítem de la escena actual
             Destroy(gameObject);
         }
-        else
+    }
+
+    private void ApplyItemEffects(PlayerStats playerStats)
+    {
+        if (itemData.healthModifier != 0)
         {
-            // Si sigue sin encontrarlo, te avisa en consola de qué objeto chocó exactamente
-            Debug.LogWarning($"[Aviso] Algo tocó el ítem ({other.gameObject.name}), pero no se encontró el componente PlayerStats en su estructura.");
+            if (itemData.healthModifier > 0) playerStats.AddHealth(itemData.healthModifier);
+            else playerStats.GetHurt(Mathf.Abs(itemData.healthModifier));
+        }
+
+        if (itemData.damageModifier != 0) playerStats.AddDamageMultiplier(itemData.damageModifier);
+
+        if (itemData.bulletQuantityModifier != 0)
+        {
+            if (itemData.bulletQuantityModifier > 0) playerStats.AddBulletsPerSecond(itemData.bulletQuantityModifier);
+            else playerStats.SubsBulletsPerSecond(Mathf.Abs(itemData.bulletQuantityModifier));
+        }
+
+        if (itemData.bulletSpeedModifier != 0)
+        {
+            if (itemData.bulletSpeedModifier > 0) playerStats.AddBulletSpeed(itemData.bulletSpeedModifier);
+            else playerStats.SubsBulletSpeed(Mathf.Abs(itemData.bulletSpeedModifier));
+        }
+
+        if (itemData.shrinksCollision)
+        {
+            playerStats.transform.localScale = Vector3.one * 0.5f;
         }
     }
 }
