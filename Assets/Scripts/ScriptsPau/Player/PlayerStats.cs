@@ -171,4 +171,25 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
 
         isInvincible = false;
     }
+
+    //#####################################################
+    // Sistema de guardado
+    //#####################################################
+
+    public void LoadSaveStats(
+        float health,
+        float damage,
+        float damageMultiplier,
+        float bulletsPerSecond,
+        float bulletSpeed)
+    {
+        currentHealth = Mathf.Clamp(health, 0, totalHealth);
+
+        this.damage = damage;
+        this.damageMultiplier = damageMultiplier;
+        this.bulletsPerSecond = bulletsPerSecond;
+        this.bulletSpeed = bulletSpeed;
+
+        isInvincible = false;
+    }
 }

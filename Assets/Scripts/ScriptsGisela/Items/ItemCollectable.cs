@@ -23,15 +23,6 @@ public class ItemCollectable : MonoBehaviour
         uniqueItemId = itemData.name + "_" + roundedPos;
     }
 
-    private void Start()
-    {
-        // Comprobamos al arrancar si ya estaba guardado como recogido
-        if (SaveManager.Instance != null && SaveManager.Instance.IsItemCollected(uniqueItemId))
-        {
-            Destroy(gameObject); // Se autodestruye al instante si ya fue recogido y guardado
-        }
-    }
-
     public bool IsCollectedInSave(System.Collections.Generic.HashSet<string> collectedSet)
     {
         return collectedSet.Contains(uniqueItemId);
@@ -59,12 +50,6 @@ public class ItemCollectable : MonoBehaviour
 
             // 1. Aplicamos modificadores
             ApplyItemEffects(playerStats);
-
-            // 2. Registramos en memoria (SIN GUARDAR EN DISCO TODAVÍA)
-            if (SaveManager.Instance != null)
-            {
-                SaveManager.Instance.MarkItemAsCollected(uniqueItemId);
-            }
 
             // 3. Destruimos el ítem de la escena actual
             Destroy(gameObject);
