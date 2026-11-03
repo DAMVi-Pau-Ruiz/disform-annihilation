@@ -8,10 +8,27 @@ public class PlayerSaveable : SaveableObject
     [SerializeField] private string id = "PLAYER";
 
     private PlayerStats playerStats;
+    private Vector3 lastPosition;
 
     private void Awake()
     {
         playerStats = GetComponent<PlayerStats>();
+    }
+
+    private void Start()
+    {
+        lastPosition = transform.position;
+
+        NotifySaveChange();
+    }
+
+    private void LateUpdate()
+    {
+        if (transform.position != lastPosition)
+        {
+            lastPosition = transform.position;
+            NotifySaveChange();
+        }
     }
 
     public override string GetID()
@@ -32,6 +49,8 @@ public class PlayerSaveable : SaveableObject
         data.bulletsPerSecond = playerStats.GetBulletsPerSecond();
         data.bulletSpeed = playerStats.GetBulletSpeed();
 
+        data.isActive = gameObject.activeSelf;
+
         return data;
     }
 
@@ -47,12 +66,7 @@ public class PlayerSaveable : SaveableObject
 
         transform.position = data.position;
 
-        playerStats.LoadSaveStats(
-            data.currentHealth,
-            data.damage,
-            data.damageMultiplier,
-            data.bulletsPerSecond,
-            data.bulletSpeed
-        );
+        playerStats.LoadSaveStats(data.currentHealth, data.damage, data.damageMultiplier, data.bulletsPerSecond, data.bulletSpeed);
+        gameObject.SetActive(data.isActive);
     }
 }

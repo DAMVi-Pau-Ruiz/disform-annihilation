@@ -20,10 +20,12 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
 
     private float currentHealth;
     private bool isInvincible;
+    private PlayerSaveable playerSaveable;
 
     private void Awake()
     {
         currentHealth = totalHealth;
+        playerSaveable = GetComponent<PlayerSaveable>();
     }
     //#####################################################
     //Sistema de vida
@@ -89,12 +91,15 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     public void AddBaseDamage(float amount)
     {
         damage += amount;
+
+        NotifySaveChange();
     }
 
     //Añade multi
     public void AddDamageMultiplier(float amount)
     {
         damageMultiplier += amount;
+        NotifySaveChange();
     }
 
     //Getter de cadencia de disparo
@@ -107,12 +112,14 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     public void AddBulletsPerSecond(float amount)
     {
         bulletsPerSecond += amount;
+        NotifySaveChange();
     }
 
     //Quita balas por segnudo
     public void SubsBulletsPerSecond(float amount)
     {
         bulletsPerSecond -= amount;
+        NotifySaveChange();
     }
 
     //Getter de la velocidad de la bala
@@ -125,12 +132,14 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     public void AddBulletSpeed(float amount)
     {
         bulletSpeed += amount;
+        NotifySaveChange();
     }
 
     //Quita velocidad a la bala
     public void SubsBulletSpeed(float amount)
     {
         bulletSpeed -= amount;
+        NotifySaveChange();
     }
 
     //GetHurt de la interfaz de combate
@@ -143,6 +152,8 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
 
         currentHealth -= quantity;
         currentHealth = Mathf.Max(0, currentHealth);
+
+        NotifySaveChange();
 
         Debug.Log("Te has hecho daño. Vida: " + currentHealth);
 
@@ -160,6 +171,7 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     public void AddHealth(float health)
     {
         currentHealth = Mathf.Clamp(currentHealth + health, 0, totalHealth);
+        NotifySaveChange();
     }
 
     //Invulnerabilidad al recibir daño
@@ -191,5 +203,13 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
         this.bulletSpeed = bulletSpeed;
 
         isInvincible = false;
+    }
+
+    private void NotifySaveChange()
+    {
+        if (playerSaveable != null)
+        {
+            playerSaveable.NotifySaveChange();
+        }
     }
 }

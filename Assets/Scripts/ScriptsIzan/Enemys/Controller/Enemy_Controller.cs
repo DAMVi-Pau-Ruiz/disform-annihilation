@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using System.Collections;
 
@@ -18,6 +17,14 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
     private MaterialPropertyBlock bloqueMaterial;
     private MaterialPropertyBlock[] bloquesOriginales;
     private Coroutine corrutinaDestello;
+
+    // Avisamos al spawner cuando cambia la vida o el estado del enemigo.
+    public event System.Action OnStateChanged;
+
+    public bool IsDead()
+    {
+        return estaMuerto;
+    }
 
     private void Awake()
     {
@@ -53,12 +60,25 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
             return;
         }
 
+        OnStateChanged?.Invoke();
+
         if (corrutinaDestello != null)
         {
             StopCoroutine(corrutinaDestello);
         }
 
         corrutinaDestello = StartCoroutine(DestelloDaño());
+    }
+
+    // Permite restaurar la vida guardada.
+    public void SetCurrentHealth(float value)
+    {
+        currentHealth = Mathf.Clamp(value, 0, health);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     private IEnumerator DestelloDaño()
@@ -72,14 +92,9 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
 
             renderizador.GetPropertyBlock(bloqueMaterial);
 
-            // Materiales URP/Lit.
             bloqueMaterial.SetColor("_BaseColor", colorDaño);
             bloqueMaterial.SetColor("_Color", colorDaño);
-
-            // Shader OrganicMetaballs3D.
             bloqueMaterial.SetFloat("_HitFlash", 1f);
-
-            // Shader de la sombra roja.
             bloqueMaterial.SetColor("_ColorSombra", colorDaño);
 
             renderizador.SetPropertyBlock(bloqueMaterial);
@@ -100,9 +115,16 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
 
     private void Die()
     {
+        if (estaMuerto)
+        {
+            return;
+        }
+
         estaMuerto = true;
 
         Debug.Log("El enemigo ha muerto.");
+
+        OnStateChanged?.Invoke();
 
         Destroy(gameObject);
     }
