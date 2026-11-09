@@ -92,6 +92,11 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     {
         damage += amount;
 
+        if (damage <= 0)
+        {
+            damage = 1;
+        }
+
         NotifySaveChange();
     }
 
