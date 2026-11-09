@@ -104,6 +104,12 @@ public class PlayerStats : MonoBehaviour, IHealthSystem
     public void AddDamageMultiplier(float amount)
     {
         damageMultiplier += amount;
+
+        if (damageMultiplier <= 0)
+        {
+            damageMultiplier = 1;
+        }
+
         NotifySaveChange();
     }
 
