@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -6,24 +7,43 @@ public class CameraFollow : MonoBehaviour
     [Header("Player")]
     [SerializeField] private Transform player;
 
-    [Header("Movement")]
-    [SerializeField] private float cameraHeight = 30f;
+    [Header("Camera")]
+    [SerializeField] private float cameraAngle = 55f;
+    [SerializeField] private float cameraDistance = 25f;
+    [SerializeField] private float fieldOfView = 45f;
 
-    [Header("Zoom")]
-    [SerializeField] private float zoomSpeed = 3f;
-    [SerializeField] private float smallRoomZoom = 10f;
-    [SerializeField] private float largeRoomZoom = 20f;
+    [Header("Follow")]
+    [SerializeField] private float followSmoothTime = 0.15f;
 
-    [Header("Room Size")]
-    [SerializeField] private float smallRoomSize = 30f;
+    [Header("Dead Zone")]
+    [Range(0f, 0.45f)]
+    [SerializeField] private float deadZoneHorizontal = 0.2f;
+
+    [Range(0f, 0.45f)]
+    [SerializeField] private float deadZoneVertical = 0.2f;
+
+    [Header("Player Visibility")]
+    [SerializeField] private float playerScreenMargin = 0.08f;
+    [SerializeField] private Renderer playerRenderer;
 
     private Camera cam;
     private RoomInfo currentRoom;
 
+    private Quaternion cameraRotation;
+    private Vector3 focusPosition;
+    private Vector3 focusVelocity;
+
+    private bool initialized;
+
     private void Awake()
     {
         cam = GetComponent<Camera>();
-        cam.orthographic = true;
+
+        cam.orthographic = false;
+        cam.fieldOfView = fieldOfView;
+
+        cameraRotation = Quaternion.Euler(cameraAngle, 0f, 0f);
+        transform.rotation = cameraRotation;
     }
 
     private void LateUpdate()
@@ -33,101 +53,187 @@ public class CameraFollow : MonoBehaviour
 
         DetectRoom();
 
-        if (currentRoom == null)
-            return;
+        if (!initialized)
+        {
+            focusPosition = player.position;
+            focusVelocity = Vector3.zero;
+            initialized = true;
+        }
 
-        // Obtener las dimensiones reales de la sala,
-        // teniendo en cuenta su rotación y escala.
-        Vector2 halfExtents = GetWorldHalfExtents();
+        // La orientación de la cámara permanece fija.
+        transform.rotation = cameraRotation;
 
-        float roomWidth = halfExtents.x * 2f;
-        float roomDepth = halfExtents.y * 2f;
+        // Posición actual de la cámara.
+        UpdateCameraPosition();
 
-        // Elegir zoom según la dimensión más pequeña.
-        float smallestDimension = Mathf.Min(roomWidth, roomDepth);
+        // Comprobar la posición del jugador en pantalla.
+        Vector3 viewportPosition =
+            cam.WorldToViewportPoint(player.position);
 
-        float targetZoom = smallestDimension <= smallRoomSize
-            ? smallRoomZoom
-            : largeRoomZoom;
+        Vector3 desiredFocus = focusPosition;
 
-        // Evitar que la cámara muestre el exterior.
-        float maxZoomByWidth = halfExtents.x / cam.aspect;
-        float maxZoomByDepth = halfExtents.y;
+        float leftLimit = 0.5f - deadZoneHorizontal;
+        float rightLimit = 0.5f + deadZoneHorizontal;
 
-        float maxAllowedZoom = Mathf.Min(
-            maxZoomByWidth,
-            maxZoomByDepth
+        float bottomLimit = 0.5f - deadZoneVertical;
+        float topLimit = 0.5f + deadZoneVertical;
+
+        if (viewportPosition.z > 0f)
+        {
+            float halfHeight =
+                viewportPosition.z *
+                Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad);
+
+            float halfWidth = halfHeight * cam.aspect;
+
+            // Seguimiento horizontal.
+            if (viewportPosition.x < leftLimit)
+            {
+                desiredFocus.x +=
+                    (viewportPosition.x - leftLimit) * 2f * halfWidth;
+            }
+            else if (viewportPosition.x > rightLimit)
+            {
+                desiredFocus.x +=
+                    (viewportPosition.x - rightLimit) * 2f * halfWidth;
+            }
+
+            // Seguimiento vertical sobre el suelo.
+            float pitchSin =
+                Mathf.Sin(cameraAngle * Mathf.Deg2Rad);
+
+            if (viewportPosition.y < bottomLimit)
+            {
+                desiredFocus.z +=
+                    (viewportPosition.y - bottomLimit) *
+                    2f * halfHeight / pitchSin;
+            }
+            else if (viewportPosition.y > topLimit)
+            {
+                desiredFocus.z +=
+                    (viewportPosition.y - topLimit) *
+                    2f * halfHeight / pitchSin;
+            }
+        }
+
+        // Suavizar el movimiento.
+        focusPosition = Vector3.SmoothDamp(
+            focusPosition,
+            desiredFocus,
+            ref focusVelocity,
+            followSmoothTime
         );
 
-        targetZoom = Mathf.Min(targetZoom, maxAllowedZoom);
+        UpdateCameraPosition();
 
-        cam.orthographicSize = Mathf.Lerp(
-            cam.orthographicSize,
-            targetZoom,
-            zoomSpeed * Time.deltaTime
-        );
-
-        // Posición objetivo siguiendo al jugador.
-        Vector3 targetPosition = new Vector3(
-            player.position.x,
-            player.position.y + cameraHeight,
-            player.position.z
-        );
-
-        // Calcular los márgenes visibles de la cámara.
-        float halfHeightCamera = cam.orthographicSize;
-        float halfWidthCamera = halfHeightCamera * cam.aspect;
-
-        float minX = currentRoom.Center.x
-                     - halfExtents.x + halfWidthCamera;
-
-        float maxX = currentRoom.Center.x
-                     + halfExtents.x - halfWidthCamera;
-
-        float minZ = currentRoom.Center.z
-                     - halfExtents.y + halfHeightCamera;
-
-        float maxZ = currentRoom.Center.z
-                     + halfExtents.y - halfHeightCamera;
-
-        // Limitar el movimiento en X.
-        targetPosition.x = minX > maxX
-            ? currentRoom.Center.x
-            : Mathf.Clamp(targetPosition.x, minX, maxX);
-
-        // Limitar el movimiento en Z.
-        targetPosition.z = minZ > maxZ
-            ? currentRoom.Center.z
-            : Mathf.Clamp(targetPosition.z, minZ, maxZ);
-
-        // Seguimiento directo para evitar temblores.
-        transform.position = targetPosition;
-        transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+        // Corrección final: garantizar que el personaje
+        // permanezca dentro de los márgenes de pantalla.
+        KeepPlayerVisible();
     }
 
-    private Vector2 GetWorldHalfExtents()
+    private void UpdateCameraPosition()
     {
-        Vector2 size = currentRoom.RoomSize;
-        Transform roomTransform = currentRoom.transform;
+        Vector3 offset =
+            cameraRotation * new Vector3(0f, 0f, -cameraDistance);
 
-        // Semiejes locales convertidos al espacio del mundo.
-        Vector3 halfAxisX = roomTransform.TransformVector(
-            new Vector3(size.x / 2f, 0f, 0f)
+        transform.position = focusPosition + offset;
+        transform.rotation = cameraRotation;
+    }
+
+    private void KeepPlayerVisible()
+    {
+        Bounds bounds = GetPlayerBounds();
+
+        // Comprobar las esquinas del volumen del jugador.
+        Vector3[] corners = new Vector3[8];
+
+        Vector3 min = bounds.min;
+        Vector3 max = bounds.max;
+
+        int index = 0;
+
+        for (int x = 0; x <= 1; x++)
+        {
+            for (int y = 0; y <= 1; y++)
+            {
+                for (int z = 0; z <= 1; z++)
+                {
+                    corners[index++] = new Vector3(
+                        x == 0 ? min.x : max.x,
+                        y == 0 ? min.y : max.y,
+                        z == 0 ? min.z : max.z
+                    );
+                }
+            }
+        }
+
+        Vector3 viewportMin = Vector3.one;
+        Vector3 viewportMax = Vector3.zero;
+
+        foreach (Vector3 corner in corners)
+        {
+            Vector3 point = cam.WorldToViewportPoint(corner);
+
+            if (point.z <= cam.nearClipPlane)
+                continue;
+
+            viewportMin = Vector3.Min(viewportMin, point);
+            viewportMax = Vector3.Max(viewportMax, point);
+        }
+
+        float margin = playerScreenMargin;
+
+        float correctionX = 0f;
+        float correctionY = 0f;
+
+        if (viewportMin.x < margin)
+            correctionX = viewportMin.x - margin;
+        else if (viewportMax.x > 1f - margin)
+            correctionX = viewportMax.x - (1f - margin);
+
+        if (viewportMin.y < margin)
+            correctionY = viewportMin.y - margin;
+        else if (viewportMax.y > 1f - margin)
+            correctionY = viewportMax.y - (1f - margin);
+
+        if (Mathf.Abs(correctionX) < 0.0001f &&
+            Mathf.Abs(correctionY) < 0.0001f)
+            return;
+
+        float depth = Vector3.Distance(transform.position, bounds.center);
+
+        float halfHeight =
+            depth * Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad);
+
+        float halfWidth = halfHeight * cam.aspect;
+
+        float pitchSin =
+            Mathf.Sin(cameraAngle * Mathf.Deg2Rad);
+
+        // Corrección inmediata para no dejar salir al personaje.
+        focusPosition.x += correctionX * 2f * halfWidth;
+        focusPosition.z += correctionY * 2f * halfHeight / pitchSin;
+
+        focusVelocity = Vector3.zero;
+
+        UpdateCameraPosition();
+    }
+
+    private Bounds GetPlayerBounds()
+    {
+        if (playerRenderer != null)
+            return playerRenderer.bounds;
+
+        Collider playerCollider = player.GetComponentInChildren<Collider>();
+
+        if (playerCollider != null)
+            return playerCollider.bounds;
+
+        // Tamaño aproximado si no hay Renderer ni Collider.
+        return new Bounds(
+            player.position,
+            new Vector3(1f, 2f, 1f)
         );
-
-        Vector3 halfAxisZ = roomTransform.TransformVector(
-            new Vector3(0f, 0f, size.y / 2f)
-        );
-
-        // Calcular cuánto ocupa la sala en los ejes
-        // globales X y Z, incluyendo su rotación.
-        float halfWidth =
-            Mathf.Abs(halfAxisX.x) + Mathf.Abs(halfAxisZ.x);
-
-        float halfDepth =
-            Mathf.Abs(halfAxisX.z) + Mathf.Abs(halfAxisZ.z);
-
-        return new Vector2(halfWidth, halfDepth);
     }
 
     private void DetectRoom()
@@ -140,12 +246,10 @@ public class CameraFollow : MonoBehaviour
         {
             if (room != null && room.Contains(player.position))
             {
-                // Solo actuar al entrar en una sala diferente.
                 if (room != currentRoom)
                 {
                     currentRoom = room;
 
-                    // Activar los spawners de enemigos de esta sala.
                     EnemySpawner[] spawners =
                         currentRoom.GetComponentsInChildren<EnemySpawner>(true);
 
@@ -154,7 +258,6 @@ public class CameraFollow : MonoBehaviour
                         spawner.SpawnEnemies();
                     }
 
-                    // Si la sala se llama ItemRoom, generar los items.
                     if (currentRoom.gameObject.name == "ItemRoom")
                     {
                         ItemSpawner[] itemSpawners =
