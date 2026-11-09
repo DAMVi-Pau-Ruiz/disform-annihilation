@@ -26,7 +26,7 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
         return estaMuerto;
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         currentHealth = health;
 
@@ -44,6 +44,8 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
 
     public void GetHurt(float quantity)
     {
+        Debug.Log("DAÑO RECIBIDO: " + quantity + " | OBJETO: " + gameObject.name);
+
         if (estaMuerto || quantity <= 0)
         {
             return;
@@ -115,6 +117,8 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
 
     private void Die()
     {
+
+        Debug.LogError("EL BOSS HA MUERTO: " + gameObject.name);
         if (estaMuerto)
         {
             return;
