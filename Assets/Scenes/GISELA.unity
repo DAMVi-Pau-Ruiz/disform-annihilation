@@ -171,6 +171,7 @@ GameObject:
   - component: {fileID: 61031619}
   - component: {fileID: 61031618}
   - component: {fileID: 61031617}
+  - component: {fileID: 61031620}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -267,7 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9490196}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -292,6 +293,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 61031615}
   m_CullTransparentMesh: 1
+--- !u!114 &61031620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 61031615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 1, b: 0.14822935, a: 1}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1
 --- !u!4 &112255512 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7047203889788592130, guid: fb2d4e91bea6b8e42ad962cf5e0324fb, type: 3}
@@ -309,6 +325,7 @@ GameObject:
   - component: {fileID: 178667792}
   - component: {fileID: 178667791}
   - component: {fileID: 178667790}
+  - component: {fileID: 178667793}
   m_Layer: 5
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -430,6 +447,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 178667788}
   m_CullTransparentMesh: 1
+--- !u!114 &178667793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178667788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 1, g: 0, b: 1, a: 1}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &307915206
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,6 +2242,7 @@ GameObject:
   - component: {fileID: 1352526105}
   - component: {fileID: 1352526104}
   - component: {fileID: 1352526103}
+  - component: {fileID: 1352526106}
   m_Layer: 5
   m_Name: OptionsButton
   m_TagString: Untagged
@@ -2331,6 +2364,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1352526101}
   m_CullTransparentMesh: 1
+--- !u!114 &1352526106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352526101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0.9614177, b: 1, a: 0.5}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1
 --- !u!4 &1366923798 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3731227690074579371, guid: 4bd0b1931ae3ffa41a06dcfbace324d4, type: 3}
