@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a964d28134f544e84ac97df02ee697, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemSpawner
-  itemRandom: {fileID: 0}
+  itemRandom: {fileID: 5981999970319439687, guid: b4cb2b24480fd58439bb6a3368f3eded, type: 3}
   spawnPoints:
   - {fileID: 1718830078337526070}
 --- !u!1 &7850013840826190530
