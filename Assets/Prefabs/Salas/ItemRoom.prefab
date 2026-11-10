@@ -12,6 +12,11 @@ GameObject:
   - component: {fileID: 3113566584649685336}
   - component: {fileID: 7700391309457181424}
   - component: {fileID: 3529704141789621214}
+  - component: {fileID: 1163402198817662202}
+  - component: {fileID: 6192517499799002055}
+  - component: {fileID: 4854297725610181267}
+  - component: {fileID: 1958386977852365088}
+  - component: {fileID: -5744324748642398597}
   m_Layer: 0
   m_Name: ItemRoom
   m_TagString: Untagged
@@ -130,6 +135,84 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1163402198817662202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320521999200203291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 727c6e6aac1cda84990650aa4e591cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomDoorSettings
+  isCorridor: 0
+  northDoors: 00
+  southDoors: 00
+  eastDoors: 00
+  westDoors: 00
+--- !u!114 &6192517499799002055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320521999200203291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4566893dfd2a5d94c823face516170f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomDoorGenerator
+  doorPrefab: {fileID: 1806559252482131042, guid: b37d751c7bf2cde4aa41142dcd70c5c7, type: 3}
+  wallPrefab: {fileID: 1806559252482131042, guid: 080497450bf3d5d409bef8f476a56a52, type: 3}
+  energyBarrierPrefab: {fileID: 8335075318691950420, guid: 7b5fc46219678174baef8b0dca3acba7, type: 3}
+  wallHeight: 0
+  generateOnStart: 1
+--- !u!114 &4854297725610181267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320521999200203291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa0b27442290e54fa689824bb2044a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  id: ENEMY_SPAWNER_01
+  enemiesPrefabsToSpawn: []
+  enemiesSpawnPoints: []
+--- !u!114 &1958386977852365088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320521999200203291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dccabc96ec337824b95b869c14505bed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomCombatController
+  enemySpawner: {fileID: 4854297725610181267}
+  doorGenerator: {fileID: 6192517499799002055}
+--- !u!114 &-5744324748642398597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320521999200203291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99fd8eea959221f4c89bcdc6a57000bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomFog
+  fogPrefab: {fileID: 2918357810283635836, guid: b485efbe2772c22419036723e4f6becf, type: 3}
+  fogThickness: 0.5
+  heightOffset: 6
 --- !u!1 &3821898838355692122
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,15 +260,6 @@ MonoBehaviour:
   itemRandom: {fileID: 0}
   spawnPoints:
   - {fileID: 1718830078337526070}
-  itemPrefabsList:
-  - itemId: 1
-    prefab: {fileID: 6399806012522493030, guid: a5c2028125eaf154cbfd5a39a12c6e59, type: 3}
-  - itemId: 2
-    prefab: {fileID: 622630464699600835, guid: 98879e3c29200f44d934fadf65456c51, type: 3}
-  - itemId: 3
-    prefab: {fileID: 4120324106466076710, guid: b67c3d1e12dfe5943bd3062497c9b3dc, type: 3}
-  - itemId: 4
-    prefab: {fileID: 7325618997209053052, guid: 7431ef3f486f6434ebf630b9b55e858e, type: 3}
 --- !u!1 &7850013840826190530
 GameObject:
   m_ObjectHideFlags: 0

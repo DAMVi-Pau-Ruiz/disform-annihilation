@@ -930,11 +930,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   player: {fileID: 1896107665}
-  cameraHeight: 30
-  zoomSpeed: 3
-  smallRoomZoom: 10
-  largeRoomZoom: 20
-  smallRoomSize: 30
+  cameraAngle: 55
+  cameraDistance: 25
+  fieldOfView: 45
+  followSmoothTime: 0.15
+  deadZoneHorizontal: 0.2
+  deadZoneVertical: 0.2
+  playerScreenMargin: 0.08
+  playerRenderer: {fileID: 0}
 --- !u!1001 &1567820628
 PrefabInstance:
   m_ObjectHideFlags: 0

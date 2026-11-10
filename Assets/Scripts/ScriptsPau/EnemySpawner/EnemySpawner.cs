@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+
+using System;
 using UnityEngine;
 
 public class EnemySpawner : SaveableObject
@@ -13,23 +14,29 @@ public class EnemySpawner : SaveableObject
     [SerializeField] private GameObject[] enemiesSpawnPoints;
 
     private bool hasSpawned;
+    private bool isLoadingData;
+    private bool allEnemiesDefeatedNotified;
 
     private GameObject[] spawnedEnemies;
     private int[] spawnedEnemyIndices;
     private bool[] pointHasSpawned;
     private Vector3[] lastPositions;
 
+    // Se ejecuta cuando todos los enemigos de esta sala han muerto.
+    public event Action OnAllEnemiesDefeated;
+
+    public bool HasSpawned => hasSpawned;
+
+    public bool AreAllEnemiesDefeated =>
+        hasSpawned && GetAliveEnemyCount() == 0;
+
     private void Awake()
     {
         if (enemiesSpawnPoints == null)
-        {
             enemiesSpawnPoints = new GameObject[0];
-        }
 
         if (enemiesPrefabsToSpawn == null)
-        {
             enemiesPrefabsToSpawn = new GameObject[0];
-        }
 
         int count = enemiesSpawnPoints.Length;
 
@@ -47,18 +54,14 @@ public class EnemySpawner : SaveableObject
     private void LateUpdate()
     {
         if (SaveManager.Instance == null || SaveManager.Instance.IsLoading)
-        {
             return;
-        }
 
         for (int i = 0; i < spawnedEnemies.Length; i++)
         {
             GameObject enemy = spawnedEnemies[i];
 
             if (enemy == null)
-            {
                 continue;
-            }
 
             if (Vector3.Distance(enemy.transform.position, lastPositions[i]) > 0.05f)
             {
@@ -71,33 +74,39 @@ public class EnemySpawner : SaveableObject
     public void SpawnEnemies()
     {
         if (hasSpawned)
-        {
             return;
-        }
+
+        hasSpawned = true;
+        allEnemiesDefeatedNotified = false;
 
         if (enemiesPrefabsToSpawn == null ||
             enemiesPrefabsToSpawn.Length == 0 ||
             enemiesSpawnPoints == null ||
             enemiesSpawnPoints.Length == 0)
         {
+            Debug.LogWarning(
+                "El spawner no tiene enemigos o puntos de aparición. " +
+                "La sala se considerará completada.",
+                this
+            );
+
+            NotifySaveChange();
+            CheckAllEnemiesDefeated();
             return;
         }
-
-        hasSpawned = true;
 
         for (int i = 0; i < enemiesSpawnPoints.Length; i++)
         {
             if (enemiesSpawnPoints[i] == null)
-            {
                 continue;
-            }
 
-            int enemyIndex = Random.Range(0, enemiesPrefabsToSpawn.Length);
+            int enemyIndex = UnityEngine.Random.Range(
+                0,
+                enemiesPrefabsToSpawn.Length
+            );
 
             if (enemiesPrefabsToSpawn[enemyIndex] == null)
-            {
                 continue;
-            }
 
             GameObject enemy = Instantiate(
                 enemiesPrefabsToSpawn[enemyIndex],
@@ -109,6 +118,7 @@ public class EnemySpawner : SaveableObject
         }
 
         NotifySaveChange();
+        CheckAllEnemiesDefeated();
     }
 
     private void RegisterEnemy(int index, GameObject enemy, int enemyIndex)
@@ -119,7 +129,8 @@ public class EnemySpawner : SaveableObject
 
         lastPositions[index] = enemy.transform.position;
 
-        Enemy_Controller controller = enemy.GetComponent<Enemy_Controller>();
+        Enemy_Controller controller =
+            enemy.GetComponent<Enemy_Controller>();
 
         if (controller != null)
         {
@@ -127,19 +138,28 @@ public class EnemySpawner : SaveableObject
         }
         else
         {
-            Debug.LogError("El prefab del enemigo no tiene Enemy_Controller.", enemy);
+            Debug.LogError(
+                "El prefab del enemigo no tiene Enemy_Controller.",
+                enemy
+            );
         }
     }
 
     private void HandleEnemyChanged(int index)
     {
-        if (spawnedEnemies[index] == null)
-        {
+        if (isLoadingData)
             return;
-        }
+
+        if (index < 0 || index >= spawnedEnemies.Length)
+            return;
+
+        GameObject enemy = spawnedEnemies[index];
+
+        if (enemy == null)
+            return;
 
         Enemy_Controller controller =
-            spawnedEnemies[index].GetComponent<Enemy_Controller>();
+            enemy.GetComponent<Enemy_Controller>();
 
         if (controller != null && controller.IsDead())
         {
@@ -147,6 +167,49 @@ public class EnemySpawner : SaveableObject
         }
 
         NotifySaveChange();
+        CheckAllEnemiesDefeated();
+    }
+
+    public int GetAliveEnemyCount()
+    {
+        int count = 0;
+
+        if (spawnedEnemies == null)
+            return 0;
+
+        foreach (GameObject enemy in spawnedEnemies)
+        {
+            if (enemy == null)
+                continue;
+
+            Enemy_Controller controller =
+                enemy.GetComponent<Enemy_Controller>();
+
+            // Si no tiene controlador, lo contamos como vivo
+            // para evitar abrir la sala incorrectamente.
+            if (controller == null || !controller.IsDead())
+                count++;
+        }
+
+        return count;
+    }
+
+    private void CheckAllEnemiesDefeated()
+    {
+        if (!hasSpawned || isLoadingData)
+            return;
+
+        if (GetAliveEnemyCount() > 0)
+            return;
+
+        if (allEnemiesDefeatedNotified)
+            return;
+
+        allEnemiesDefeatedNotified = true;
+
+        Debug.Log("¡Todos los enemigos de esta sala han sido derrotados!", this);
+
+        OnAllEnemiesDefeated?.Invoke();
     }
 
     public override SaveData GetSaveData()
@@ -167,7 +230,8 @@ public class EnemySpawner : SaveableObject
 
             if (enemy != null)
             {
-                Enemy_Controller controller = enemy.GetComponent<Enemy_Controller>();
+                Enemy_Controller controller =
+                    enemy.GetComponent<Enemy_Controller>();
 
                 if (controller != null && !controller.IsDead())
                 {
@@ -193,7 +257,10 @@ public class EnemySpawner : SaveableObject
             return;
         }
 
+        isLoadingData = true;
+
         hasSpawned = data.hasSpawned;
+        allEnemiesDefeatedNotified = false;
 
         for (int i = 0; i < spawnedEnemies.Length; i++)
         {
@@ -206,7 +273,10 @@ public class EnemySpawner : SaveableObject
             pointHasSpawned[i] = false;
         }
 
-        int count = Mathf.Min(data.enemies.Count, enemiesSpawnPoints.Length);
+        int count = Mathf.Min(
+            data.enemies.Count,
+            enemiesSpawnPoints.Length
+        );
 
         for (int i = 0; i < count; i++)
         {
@@ -215,23 +285,16 @@ public class EnemySpawner : SaveableObject
             pointHasSpawned[i] = enemyData.hasSpawned;
             spawnedEnemyIndices[i] = enemyData.enemyIndex;
 
-            // Este punto nunca llegó a generar un enemigo.
-            if (!enemyData.hasSpawned)
-            {
+            if (!enemyData.hasSpawned || !enemyData.isAlive)
                 continue;
-            }
-
-            // El enemigo fue derrotado antes de guardar.
-            if (!enemyData.isAlive)
-            {
-                continue;
-            }
 
             if (enemyData.enemyIndex < 0 ||
                 enemyData.enemyIndex >= enemiesPrefabsToSpawn.Length ||
                 enemiesPrefabsToSpawn[enemyData.enemyIndex] == null)
             {
-                Debug.LogError("No se encuentra el prefab guardado del enemigo.");
+                Debug.LogError(
+                    "No se encuentra el prefab guardado del enemigo."
+                );
                 continue;
             }
 
@@ -245,7 +308,8 @@ public class EnemySpawner : SaveableObject
 
             RegisterEnemy(i, enemy, enemyData.enemyIndex);
 
-            Enemy_Controller controller = enemy.GetComponent<Enemy_Controller>();
+            Enemy_Controller controller =
+                enemy.GetComponent<Enemy_Controller>();
 
             if (controller != null)
             {
@@ -253,6 +317,11 @@ public class EnemySpawner : SaveableObject
             }
         }
 
+        // Terminamos de cargar antes de comprobar los enemigos.
+        isLoadingData = false;
+
         gameObject.SetActive(data.isActive);
+
+        CheckAllEnemiesDefeated();
     }
 }

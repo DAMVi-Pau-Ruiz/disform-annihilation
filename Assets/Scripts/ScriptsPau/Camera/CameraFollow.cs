@@ -60,13 +60,10 @@ public class CameraFollow : MonoBehaviour
             initialized = true;
         }
 
-        // La orientación de la cámara permanece fija.
         transform.rotation = cameraRotation;
 
-        // Posición actual de la cámara.
         UpdateCameraPosition();
 
-        // Comprobar la posición del jugador en pantalla.
         Vector3 viewportPosition =
             cam.WorldToViewportPoint(player.position);
 
@@ -98,7 +95,7 @@ public class CameraFollow : MonoBehaviour
                     (viewportPosition.x - rightLimit) * 2f * halfWidth;
             }
 
-            // Seguimiento vertical sobre el suelo.
+            // Seguimiento vertical.
             float pitchSin =
                 Mathf.Sin(cameraAngle * Mathf.Deg2Rad);
 
@@ -116,7 +113,6 @@ public class CameraFollow : MonoBehaviour
             }
         }
 
-        // Suavizar el movimiento.
         focusPosition = Vector3.SmoothDamp(
             focusPosition,
             desiredFocus,
@@ -126,8 +122,6 @@ public class CameraFollow : MonoBehaviour
 
         UpdateCameraPosition();
 
-        // Corrección final: garantizar que el personaje
-        // permanezca dentro de los márgenes de pantalla.
         KeepPlayerVisible();
     }
 
@@ -144,7 +138,6 @@ public class CameraFollow : MonoBehaviour
     {
         Bounds bounds = GetPlayerBounds();
 
-        // Comprobar las esquinas del volumen del jugador.
         Vector3[] corners = new Vector3[8];
 
         Vector3 min = bounds.min;
@@ -210,7 +203,6 @@ public class CameraFollow : MonoBehaviour
         float pitchSin =
             Mathf.Sin(cameraAngle * Mathf.Deg2Rad);
 
-        // Corrección inmediata para no dejar salir al personaje.
         focusPosition.x += correctionX * 2f * halfWidth;
         focusPosition.z += correctionY * 2f * halfHeight / pitchSin;
 
@@ -224,12 +216,12 @@ public class CameraFollow : MonoBehaviour
         if (playerRenderer != null)
             return playerRenderer.bounds;
 
-        Collider playerCollider = player.GetComponentInChildren<Collider>();
+        Collider playerCollider =
+            player.GetComponentInChildren<Collider>();
 
         if (playerCollider != null)
             return playerCollider.bounds;
 
-        // Tamaño aproximado si no hay Renderer ni Collider.
         return new Bounds(
             player.position,
             new Vector3(1f, 2f, 1f)
@@ -244,12 +236,33 @@ public class CameraFollow : MonoBehaviour
 
         foreach (RoomInfo room in rooms)
         {
-            if (room != null && room.Contains(player.position))
-            {
-                if (room != currentRoom)
-                {
-                    currentRoom = room;
+            if (room == null || !room.Contains(player.position))
+                continue;
 
+            if (room != currentRoom)
+            {
+                currentRoom = room;
+                RoomFog roomFog = currentRoom.GetComponent<RoomFog>();
+
+                if (roomFog != null)
+                {
+                    roomFog.RevealRoom();
+                }
+
+                Debug.Log("Jugador ha entrado en: " + currentRoom.gameObject.name);
+
+                // Iniciar el combate de esta habitación.
+                RoomCombatController combatController =
+                    currentRoom.GetComponent<RoomCombatController>();
+
+                if (combatController != null)
+                {
+                    combatController.StartCombat();
+                }
+                else
+                {
+                    // Compatibilidad con habitaciones que todavía
+                    // no tengan RoomCombatController.
                     EnemySpawner[] spawners =
                         currentRoom.GetComponentsInChildren<EnemySpawner>(true);
 
@@ -257,21 +270,22 @@ public class CameraFollow : MonoBehaviour
                     {
                         spawner.SpawnEnemies();
                     }
-
-                    if (currentRoom.gameObject.name == "ItemRoom")
-                    {
-                        ItemSpawner[] itemSpawners =
-                            currentRoom.GetComponentsInChildren<ItemSpawner>(true);
-
-                        foreach (ItemSpawner itemSpawner in itemSpawners)
-                        {
-                            itemSpawner.GenerarItemsEnSpawnPoints();
-                        }
-                    }
                 }
 
-                return;
+                // Mantener el sistema de generación de objetos.
+                if (currentRoom.gameObject.name == "ItemRoom")
+                {
+                    ItemSpawner[] itemSpawners =
+                        currentRoom.GetComponentsInChildren<ItemSpawner>(true);
+
+                    foreach (ItemSpawner itemSpawner in itemSpawners)
+                    {
+                        itemSpawner.GenerarItemsEnSpawnPoints();
+                    }
+                }
             }
+
+            return;
         }
     }
 }

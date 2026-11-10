@@ -212,7 +212,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 32f8c2bda02dcc84da91e81c5a2e2f99, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -273,58 +273,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!1 &3303516543274920019
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5990735735179160635}
-  - component: {fileID: 4627392580397342957}
-  m_Layer: 0
-  m_Name: EnemySpawnControl
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5990735735179160635
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3303516543274920019}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8781943335281704665}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4627392580397342957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3303516543274920019}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fa0b27442290e54fa689824bb2044a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  enemiesPrefabsToSpawn:
-  - {fileID: 6560515900986881091, guid: 8506151ab8faf0c4e8d78d011b115003, type: 3}
-  - {fileID: 6560515900986881091, guid: bcda3a2094bdc9e4b96fb1223a271cf2, type: 3}
-  enemiesSpawnPoints:
-  - {fileID: 8702298352955861818}
-  - {fileID: 578016445192901183}
-  - {fileID: 5942098304449131131}
-  - {fileID: 5996703185904846384}
 --- !u!1 &5942098304449131131
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,6 +346,11 @@ GameObject:
   - component: {fileID: 8781943335281704665}
   - component: {fileID: 4540965565909941183}
   - component: {fileID: 4369378157048303218}
+  - component: {fileID: 2034433789661804700}
+  - component: {fileID: 6568183191758348047}
+  - component: {fileID: -4718692926645869995}
+  - component: {fileID: 5472938318117355827}
+  - component: {fileID: -6082186774619250545}
   m_Layer: 0
   m_Name: Room_2x2_Type2
   m_TagString: Untagged
@@ -418,7 +371,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5990735735179160635}
   - {fileID: 5220608985849238724}
   - {fileID: 6687504602363958950}
   - {fileID: 9125607598438996696}
@@ -472,6 +424,91 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
+--- !u!114 &2034433789661804700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7372962628853251541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 727c6e6aac1cda84990650aa4e591cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomDoorSettings
+  isCorridor: 0
+  northDoors: 0000
+  southDoors: 0000
+  eastDoors: 0000
+  westDoors: 0000
+--- !u!114 &6568183191758348047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7372962628853251541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4566893dfd2a5d94c823face516170f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomDoorGenerator
+  doorPrefab: {fileID: 1806559252482131042, guid: b37d751c7bf2cde4aa41142dcd70c5c7, type: 3}
+  wallPrefab: {fileID: 1806559252482131042, guid: 080497450bf3d5d409bef8f476a56a52, type: 3}
+  energyBarrierPrefab: {fileID: 8335075318691950420, guid: 7b5fc46219678174baef8b0dca3acba7, type: 3}
+  wallHeight: 0
+  generateOnStart: 1
+--- !u!114 &-4718692926645869995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7372962628853251541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa0b27442290e54fa689824bb2044a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  id: ENEMY_SPAWNER_01
+  enemiesPrefabsToSpawn:
+  - {fileID: 6560515900986881091, guid: 8506151ab8faf0c4e8d78d011b115003, type: 3}
+  - {fileID: 269638029501393174, guid: 5d5019ff85ee18d4fbe529dec64cdc1c, type: 3}
+  - {fileID: 6560515900986881091, guid: bcda3a2094bdc9e4b96fb1223a271cf2, type: 3}
+  enemiesSpawnPoints:
+  - {fileID: 8702298352955861818}
+  - {fileID: 578016445192901183}
+  - {fileID: 5942098304449131131}
+  - {fileID: 5996703185904846384}
+--- !u!114 &5472938318117355827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7372962628853251541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dccabc96ec337824b95b869c14505bed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomCombatController
+  enemySpawner: {fileID: -4718692926645869995}
+  doorGenerator: {fileID: 6568183191758348047}
+--- !u!114 &-6082186774619250545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7372962628853251541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99fd8eea959221f4c89bcdc6a57000bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomFog
+  fogPrefab: {fileID: 2918357810283635836, guid: b485efbe2772c22419036723e4f6becf, type: 3}
+  fogThickness: 0.5
+  heightOffset: 6
 --- !u!1 &8702298352955861818
 GameObject:
   m_ObjectHideFlags: 0

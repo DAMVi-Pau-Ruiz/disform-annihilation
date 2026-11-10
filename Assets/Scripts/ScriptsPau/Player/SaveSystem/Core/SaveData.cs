@@ -16,3 +16,4 @@ public abstract class SaveData
 
     public abstract string GetDataType();
 }
+

@@ -7,56 +7,48 @@ public class RoomDoorGenerator : MonoBehaviour
 {
     private const float SEGMENT_SIZE = 30f;
 
-    [Header("Door Prefab")]
+    [Header("Prefabs")]
     [SerializeField] private GameObject doorPrefab;
+    [SerializeField] private GameObject wallPrefab;
+    [SerializeField] private GameObject energyBarrierPrefab;
 
-    [Header("Door Position")]
-    [SerializeField] private float doorHeight = 0f;
+    [Header("Position")]
+    [SerializeField] private float wallHeight = 0f;
 
     [Header("Generation")]
     [SerializeField] private bool generateOnStart = true;
 
     private RoomInfo roomInfo;
     private RoomDoorSettings doorSettings;
-
-    private Transform generatedDoors;
-
-    private void Awake()
-    {
-        roomInfo = GetComponent<RoomInfo>();
-        doorSettings = GetComponent<RoomDoorSettings>();
-    }
+    private Transform generatedSegments;
 
     private void Start()
     {
         if (generateOnStart)
-            GenerateDoors();
+            GenerateRoomBorders();
     }
 
-    [ContextMenu("Generate Doors")]
-    public void GenerateDoors()
+    [ContextMenu("Generate Room Borders")]
+    public void GenerateRoomBorders()
     {
-        if (roomInfo == null)
-            roomInfo = GetComponent<RoomInfo>();
+        roomInfo = GetComponent<RoomInfo>();
+        doorSettings = GetComponent<RoomDoorSettings>();
 
-        if (doorSettings == null)
-            doorSettings = GetComponent<RoomDoorSettings>();
-
-        if (doorPrefab == null)
+        if (wallPrefab == null)
         {
             Debug.LogWarning(
-                "No hay Door Prefab asignado en " + gameObject.name,
+                "No hay Wall Prefab asignado en " + gameObject.name,
                 this
             );
             return;
         }
 
-        ClearGeneratedDoors();
+        ClearGeneratedSegments();
 
-        GameObject container = new GameObject("GeneratedDoors");
+        GameObject container = new GameObject("GeneratedBorders");
         container.transform.SetParent(transform, false);
 
-        generatedDoors = container.transform;
+        generatedSegments = container.transform;
 
         Vector2 roomSize = roomInfo.RoomSize;
 
@@ -66,41 +58,53 @@ public class RoomDoorGenerator : MonoBehaviour
         int verticalSegments =
             Mathf.RoundToInt(roomSize.y / SEGMENT_SIZE);
 
-        // Norte y sur: puertas colocadas a lo largo del eje X.
-        // En pasillos solo se permiten si son los extremos.
-        if (!doorSettings.IsCorridor || roomSize.x <= roomSize.y)
+        bool allowHorizontalDoors =
+            !doorSettings.IsCorridor || roomSize.x <= roomSize.y;
+
+        bool allowVerticalDoors =
+            !doorSettings.IsCorridor || roomSize.x >= roomSize.y;
+
+        // NORTE
+        GenerateHorizontalSide(
+            doorSettings.NorthDoors,
+            horizontalSegments,
+            roomSize.y / 2f,
+            "North",
+            allowHorizontalDoors
+        );
+
+        // SUR
+        GenerateHorizontalSide(
+            doorSettings.SouthDoors,
+            horizontalSegments,
+            -roomSize.y / 2f,
+            "South",
+            allowHorizontalDoors
+        );
+
+        // ESTE
+        GenerateVerticalSide(
+            doorSettings.EastDoors,
+            verticalSegments,
+            roomSize.x / 2f,
+            "East",
+            allowVerticalDoors
+        );
+
+        // OESTE
+        GenerateVerticalSide(
+            doorSettings.WestDoors,
+            verticalSegments,
+            -roomSize.x / 2f,
+            "West",
+            allowVerticalDoors
+        );
+
+        if (energyBarrierPrefab == null)
         {
-            GenerateHorizontalSide(
-                doorSettings.NorthDoors,
-                horizontalSegments,
-                roomSize.y / 2f,
-                "North"
-            );
-
-            GenerateHorizontalSide(
-                doorSettings.SouthDoors,
-                horizontalSegments,
-                -roomSize.y / 2f,
-                "South"
-            );
-        }
-
-        // Este y oeste: puertas colocadas a lo largo del eje Z.
-        // En pasillos solo se permiten si son los extremos.
-        if (!doorSettings.IsCorridor || roomSize.x >= roomSize.y)
-        {
-            GenerateVerticalSide(
-                doorSettings.EastDoors,
-                verticalSegments,
-                roomSize.x / 2f,
-                "East"
-            );
-
-            GenerateVerticalSide(
-                doorSettings.WestDoors,
-                verticalSegments,
-                -roomSize.x / 2f,
-                "West"
+            Debug.LogWarning(
+                "No has asignado Energy Barrier Prefab en " + gameObject.name,
+                this
             );
         }
     }
@@ -109,29 +113,31 @@ public class RoomDoorGenerator : MonoBehaviour
         bool[] doors,
         int segmentCount,
         float zPosition,
-        string sideName)
+        string sideName,
+        bool allowDoors)
     {
-        if (doors == null)
-            return;
-
         for (int i = 0; i < segmentCount; i++)
         {
-            if (i >= doors.Length || !doors[i])
-                continue;
-
             float xPosition =
                 -roomInfo.RoomSize.x / 2f +
                 (i + 0.5f) * SEGMENT_SIZE;
 
             Vector3 localPosition = new Vector3(
                 xPosition,
-                doorHeight,
+                wallHeight,
                 zPosition
             );
 
-            CreateDoor(
+            bool hasDoor =
+                allowDoors &&
+                doors != null &&
+                i < doors.Length &&
+                doors[i];
+
+            CreateSegment(
                 localPosition,
                 Quaternion.identity,
+                hasDoor,
                 sideName + "_" + i
             );
         }
@@ -141,53 +147,102 @@ public class RoomDoorGenerator : MonoBehaviour
         bool[] doors,
         int segmentCount,
         float xPosition,
-        string sideName)
+        string sideName,
+        bool allowDoors)
     {
-        if (doors == null)
-            return;
-
         for (int i = 0; i < segmentCount; i++)
         {
-            if (i >= doors.Length || !doors[i])
-                continue;
-
             float zPosition =
                 -roomInfo.RoomSize.y / 2f +
                 (i + 0.5f) * SEGMENT_SIZE;
 
             Vector3 localPosition = new Vector3(
                 xPosition,
-                doorHeight,
+                wallHeight,
                 zPosition
             );
 
-            CreateDoor(
+            bool hasDoor =
+                allowDoors &&
+                doors != null &&
+                i < doors.Length &&
+                doors[i];
+
+            CreateSegment(
                 localPosition,
                 Quaternion.Euler(0f, 90f, 0f),
+                hasDoor,
                 sideName + "_" + i
             );
         }
     }
 
-    private void CreateDoor(
+    private void CreateSegment(
         Vector3 localPosition,
         Quaternion localRotation,
-        string doorName)
+        bool hasDoor,
+        string segmentName)
     {
-        GameObject door = Instantiate(
-            doorPrefab,
-            generatedDoors,
+        GameObject prefab = hasDoor ? doorPrefab : wallPrefab;
+
+        if (prefab == null)
+            prefab = wallPrefab;
+
+        GameObject segment = Instantiate(
+            prefab,
+            generatedSegments,
             false
         );
 
-        door.name = doorName;
-        door.transform.localPosition = localPosition;
-        door.transform.localRotation = localRotation;
+        segment.name = (hasDoor ? "Door_" : "Wall_") + segmentName;
+
+        segment.transform.localPosition = localPosition;
+        segment.transform.localRotation = localRotation;
+
+        // Las barreras solamente se generan en las puertas.
+        if (hasDoor && energyBarrierPrefab != null)
+        {
+            GameObject barrier = Instantiate(
+                energyBarrierPrefab,
+                segment.transform,
+                false
+            );
+
+            barrier.name = "EnergyBarrier";
+            barrier.transform.localPosition = Vector3.zero;
+            barrier.transform.localRotation = Quaternion.identity;
+
+            // Empieza desactivada hasta que comience el combate.
+            barrier.SetActive(false);
+        }
     }
 
-    private void ClearGeneratedDoors()
+    public void SetBarriersActive(bool active)
     {
-        Transform previousContainer = transform.Find("GeneratedDoors");
+        if (generatedSegments == null)
+        {
+            Transform existing = transform.Find("GeneratedBorders");
+
+            if (existing != null)
+                generatedSegments = existing;
+        }
+
+        if (generatedSegments == null)
+            return;
+
+        foreach (Transform segment in generatedSegments)
+        {
+            Transform barrier = segment.Find("EnergyBarrier");
+
+            if (barrier != null)
+                barrier.gameObject.SetActive(active);
+        }
+    }
+
+    private void ClearGeneratedSegments()
+    {
+        Transform previousContainer =
+            transform.Find("GeneratedBorders");
 
         if (previousContainer == null)
             return;
@@ -198,3 +253,4 @@ public class RoomDoorGenerator : MonoBehaviour
             DestroyImmediate(previousContainer.gameObject);
     }
 }
+

@@ -36,7 +36,6 @@ public class SaveManager : MonoBehaviour
 
         Instance = this;
 
-        // La carga comienza antes de los Start de los demás scripts.
         isLoading = true;
 
         binarySaveSystem = new BinarySaveSystem();
@@ -108,7 +107,6 @@ public class SaveManager : MonoBehaviour
             }
         }
 
-        // Dejamos que Unity procese los cambios de activación.
         yield return null;
 
         temporaryData.Clear();
