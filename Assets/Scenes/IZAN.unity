@@ -270,11 +270,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   player: {fileID: 1245374608}
-  cameraHeight: 30
-  zoomSpeed: 3
-  smallRoomZoom: 10
-  largeRoomZoom: 20
-  smallRoomSize: 30
+  cameraAngle: 55
+  cameraDistance: 25
+  fieldOfView: 45
+  followSmoothTime: 0.15
+  deadZoneHorizontal: 0.2
+  deadZoneVertical: 0.2
+  playerScreenMargin: 0.08
+  playerRenderer: {fileID: 0}
 --- !u!1001 &876340729
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -283,6 +286,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1800765310587284273, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
+      propertyPath: 'enemiesPrefabsToSpawn.Array.data[0]'
+      value: 
+      objectReference: {fileID: 7956611257409602250, guid: 431bb34f082737a4f9f17b818744b426, type: 3}
+    - target: {fileID: 2800140591233172478, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.4
+      objectReference: {fileID: 0}
     - target: {fileID: 5713212194223099508, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
       propertyPath: m_Name
       value: Room_2x2 BOSS

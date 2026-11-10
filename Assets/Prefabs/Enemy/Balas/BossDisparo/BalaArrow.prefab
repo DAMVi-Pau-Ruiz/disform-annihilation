@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6564228964974504842}
   - component: {fileID: 5659697913868008238}
   - component: {fileID: 1219499440377685574}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BalaArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,8 +139,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Constraints: 4
+  m_CollisionDetection: 2
 --- !u!114 &1219499440377685574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,3 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileArrow
   "da\xF1o": 1
   tiempoVida: 8
+  capasRebote:
+    serializedVersion: 2
+    m_Bits: 256
+  rebotesMaximos: 5

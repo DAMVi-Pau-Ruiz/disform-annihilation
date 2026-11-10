@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6732434247295358149}
   - component: {fileID: 2508446500365669765}
   - component: {fileID: 3018059529117459758}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -126,8 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe66e9ccc1542d448beba4f3b0f5df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerProjectile
-  speed: 15
-  damage: 1
 --- !u!54 &3018059529117459758
 Rigidbody:
   m_ObjectHideFlags: 0
