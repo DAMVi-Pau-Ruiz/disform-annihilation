@@ -18,7 +18,10 @@ public class PlayerStatsUI : MonoBehaviour
         // Actualizamos todas las estadísticas usando los Getters de tu PlayerStats
         statsText.text =
             $"Vida: {playerStats.GetCurrentHealth()} / {playerStats.GetTotalHealth()}\n" +
-            $"Daño: {playerStats.GetTotalDamage():F1}\n" +
+            $"Daño total: {playerStats.GetTotalDamage():F1}\n" +
+            $"Daño multiplicador:{playerStats.GetDamageMultiplier():F1}\n"+
+            //daño base
+            $"Daño base: {playerStats.GetBaseDamage():F1}\n"+
             $"Velocidad: {playerStats.GetBaseSpeed():F1}\n" +
             $"Cadencia: {playerStats.GetBulletsPerSecond():F1} b/s\n" +
             $"Vel. Bala: {playerStats.GetBulletSpeed():F1}";
