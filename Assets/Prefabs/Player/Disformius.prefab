@@ -197,7 +197,7 @@ MonoBehaviour:
   slowMultiplier: 0.5
   damage: 1
   damageMultiplier: 1
-  bulletsPerSecond: 2
+  bulletsPerSecond: 5
   bulletSpeed: 15
 --- !u!114 &924791795604870101
 MonoBehaviour:
