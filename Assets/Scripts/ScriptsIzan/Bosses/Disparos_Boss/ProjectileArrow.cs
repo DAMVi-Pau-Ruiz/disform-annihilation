@@ -3,18 +3,18 @@ using UnityEngine;
 
 public class ProjectileArrow : ProjectileBase
 {
-    private Rigidbody rb;
-
-    private void Awake()
+    protected override void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        base.Awake();
     }
 
     private void FixedUpdate()
     {
-        if (rb == null || rb.linearVelocity.sqrMagnitude < 0.01f)
-            return;
-
-        transform.rotation = Quaternion.LookRotation(rb.linearVelocity);
+        if (rb != null && rb.linearVelocity.sqrMagnitude > 0.01f)
+        {
+            transform.rotation = Quaternion.LookRotation(
+                rb.linearVelocity.normalized
+            );
+        }
     }
 }

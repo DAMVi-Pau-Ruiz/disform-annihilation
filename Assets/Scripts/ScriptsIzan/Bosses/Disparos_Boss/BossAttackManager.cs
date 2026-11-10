@@ -1,36 +1,26 @@
 
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 public class BossAttackManager : MonoBehaviour
 {
-   
-
+    [Header("Jugador")]
     private Transform jugador;
 
-    [Header("Referencias")]
+    [Header("Disparo")]
     [SerializeField] private Transform puntoDisparo;
-
-    [Header("Proyectiles")]
-    [SerializeField] private GameObject proyectilRicochet;
     [SerializeField] private GameObject proyectilRadial;
     [SerializeField] private GameObject proyectilFlecha;
-
-    [Header("Ataque cuerpo a cuerpo")]
-    [SerializeField] private BossMeleeAttack ataqueCuerpo;
-
-    [Header("Configuración")]
-    [SerializeField] private float tiempoEntreAtaques = 2f;
     [SerializeField] private float velocidadProyectil = 10f;
+
+    [Header("Ataques")]
+    [SerializeField] private float tiempoEntreAtaques = 2.5f;
     [SerializeField] private float radioDeteccionCuerpo = 3f;
+    [SerializeField] private BossMeleeAttack ataqueCuerpo;
 
     private int ultimoAtaque = -1;
     private bool atacando;
 
-    public void IniciarBoss()
-    {
-        StartCoroutine(CicloAtaques());
-    }
     private void Awake()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -41,15 +31,26 @@ public class BossAttackManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No se ha encontrado ningún objeto con el tag Player.");
+            Debug.LogError("No se ha encontrado el jugador con tag Player.");
         }
+    }
+
+    public void IniciarBoss()
+    {
+        StartCoroutine(CicloAtaques());
     }
 
     private IEnumerator CicloAtaques()
     {
         while (true)
         {
-            if (jugador == null || atacando)
+            if (jugador == null)
+            {
+                yield return null;
+                continue;
+            }
+
+            if (atacando)
             {
                 yield return null;
                 continue;
@@ -62,27 +63,31 @@ public class BossAttackManager : MonoBehaviour
                 jugador.position
             );
 
-            if (distancia <= radioDeteccionCuerpo)
+            if (distancia <= radioDeteccionCuerpo && ataqueCuerpo != null)
             {
-                yield return StartCoroutine(ataqueCuerpo.EjecutarAtaque());
+                yield return StartCoroutine(
+                    ataqueCuerpo.EjecutarAtaque()
+                );
             }
             else
             {
-                int ataque = ObtenerAtaqueAleatorio();
+                int ataque;
 
-                switch (ataque)
+                do
                 {
-                    case 0:
-                        AtaqueRicochet();
-                        break;
+                    ataque = Random.Range(0, 2);
+                }
+                while (ataque == ultimoAtaque);
 
-                    case 1:
-                        AtaqueRadial();
-                        break;
+                ultimoAtaque = ataque;
 
-                    case 2:
-                        AtaqueFlechas();
-                        break;
+                if (ataque == 0)
+                {
+                    yield return StartCoroutine(AtaqueRadial());
+                }
+                else
+                {
+                    yield return StartCoroutine(AtaqueFlechas());
                 }
             }
 
@@ -92,100 +97,69 @@ public class BossAttackManager : MonoBehaviour
         }
     }
 
-    private int ObtenerAtaqueAleatorio()
+    private IEnumerator AtaqueRadial()
     {
-        int ataque;
+        if (proyectilRadial == null || puntoDisparo == null)
+            yield break;
 
-        do
-        {
-            ataque = Random.Range(0, 3);
-        }
-        while (ataque == ultimoAtaque);
-
-        ultimoAtaque = ataque;
-
-        return ataque;
-    }
-
-    private void AtaqueRicochet()
-    {
-        if (proyectilRicochet == null) return;
-
-        int cantidad = 12;
-
-        for (int i = 0; i < cantidad; i++)
-        {
-            float angulo = i * 360f / cantidad;
-
-            Vector3 direccion = Quaternion.Euler(0, angulo, 0)
-                * transform.forward;
-
-            CrearProyectil(proyectilRicochet, direccion);
-        }
-    }
-
-    private void AtaqueRadial()
-    {
-        if (proyectilRadial == null) return;
-
-        int cantidad = 24;
+        int cantidadProyectiles = 24;
         int huecos = 3;
-        int inicioHueco = Random.Range(0, cantidad);
 
-        for (int i = 0; i < cantidad; i++)
+        float anguloPorProyectil = 360f / cantidadProyectiles;
+        float rotacionInicial = Random.Range(0f, 360f);
+
+        for (int i = 0; i < cantidadProyectiles; i++)
         {
-            bool esHueco = false;
+            // Dejamos tres huecos para que el jugador pueda esquivar.
+            if (i % (cantidadProyectiles / huecos) == 0)
+                continue;
 
-            for (int j = 0; j < huecos; j++)
-            {
-                if (i == (inicioHueco + j) % cantidad)
-                {
-                    esHueco = true;
-                    break;
-                }
-            }
+            float angulo = rotacionInicial + i * anguloPorProyectil;
 
-            if (esHueco) continue;
+            float radianes = angulo * Mathf.Deg2Rad;
 
-            float angulo = i * 360f / cantidad;
-
-            Vector3 direccion = Quaternion.Euler(0, angulo, 0)
-                * transform.forward;
+            Vector3 direccion = new Vector3(
+                Mathf.Sin(radianes),
+                0f,
+                Mathf.Cos(radianes)
+            );
 
             CrearProyectil(proyectilRadial, direccion);
         }
+
+        yield return null;
     }
 
-
-    private void AtaqueFlechas()
+    private IEnumerator AtaqueFlechas()
     {
-        if (proyectilFlecha == null || jugador == null)
-            return;
+        if (proyectilFlecha == null || puntoDisparo == null)
+            yield break;
 
-        StartCoroutine(DispararRafagaFlechas());
-    }
-
-    private IEnumerator DispararRafagaFlechas()
-    {
         int cantidadFlechas = 5;
         float separacion = 0.2f;
 
         for (int i = 0; i < cantidadFlechas; i++)
         {
+            if (jugador == null)
+                yield break;
+
             Vector3 direccion = jugador.position - puntoDisparo.position;
             direccion.y = 0f;
-            direccion.Normalize();
 
-            CrearProyectil(proyectilFlecha, direccion);
+            if (direccion.sqrMagnitude > 0.001f)
+            {
+                CrearProyectil(proyectilFlecha, direccion.normalized);
+            }
 
             yield return new WaitForSeconds(separacion);
         }
     }
 
-
-
     private void CrearProyectil(GameObject prefab, Vector3 direccion)
     {
+        if (prefab == null || direccion.sqrMagnitude < 0.001f)
+            return;
+
         Vector3 posicion = puntoDisparo.position + direccion.normalized * 1.5f;
 
         GameObject nuevo = Instantiate(
@@ -208,7 +182,6 @@ public class BossAttackManager : MonoBehaviour
             rb.linearVelocity = direccion.normalized * velocidadProyectil;
         }
 
-        // Ignorar las colisiones entre los proyectiles y el boss.
         Collider[] collidersBoss = GetComponentsInChildren<Collider>();
         Collider[] collidersProyectil = nuevo.GetComponentsInChildren<Collider>();
 
@@ -220,5 +193,4 @@ public class BossAttackManager : MonoBehaviour
             }
         }
     }
-
 }

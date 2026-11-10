@@ -13,11 +13,11 @@ TagManager:
   - EnemyDetection
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - BossBullet
+  - PlayerBullet
+  - Entorno
+  - Player
+  - Bosses
   - 
   - 
   - 
