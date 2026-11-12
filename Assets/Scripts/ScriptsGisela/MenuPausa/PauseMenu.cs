@@ -54,7 +54,15 @@ public class PauseMenu : MonoBehaviour
 
         if (IsPaused && isInOptions)
         {
-            CloseOptions();
+            MenuOpcionesManager opcionesManager = Object.FindFirstObjectByType<MenuOpcionesManager>();
+            if (opcionesManager != null)
+            {
+                opcionesManager.OnClickIntentarSalir();
+            }
+            else
+            {
+                CloseOptions();
+            }
             return;
         }
 
@@ -82,18 +90,22 @@ public class PauseMenu : MonoBehaviour
         IsPaused = false;
         isInOptions = false;
 
-        // Esperamos un fotograma para que el clic del botón "Reanudar" NO dispare al volver
-        yield return null;
-
+        ActivarScriptsJugador(true);
         Time.timeScale = 1f;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        yield return null;
 
         if (playerInput != null)
         {
-            playerInput.actions?.FindActionMap(gameplayActionMapName)?.Enable();
+            var gameplayMap = playerInput.actions?.FindActionMap(gameplayActionMapName);
+            if (gameplayMap != null) gameplayMap.Enable();
+
             playerInput.SwitchCurrentActionMap(gameplayActionMapName);
         }
 
-        ActivarScriptsJugador(true);
         StartCoroutine(InputCooldown());
     }
 
@@ -106,13 +118,19 @@ public class PauseMenu : MonoBehaviour
         isInOptions = false;
         Time.timeScale = 0.0f;
 
-        // 1. Apagamos los scripts del jugador para que no dispare ni en Update ni por eventos
         ActivarScriptsJugador(false);
 
-        // 2. Apagamos el mapa de juego y cambiamos a UI
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         if (playerInput != null)
         {
-            playerInput.actions?.FindActionMap(gameplayActionMapName)?.Disable();
+            var gameplayMap = playerInput.actions?.FindActionMap(gameplayActionMapName);
+            var uiMap = playerInput.actions?.FindActionMap(uiActionMapName);
+
+            if (gameplayMap != null) gameplayMap.Disable();
+            if (uiMap != null) uiMap.Enable();
+
             playerInput.SwitchCurrentActionMap(uiActionMapName);
         }
 
@@ -128,8 +146,14 @@ public class PauseMenu : MonoBehaviour
     {
         if (objetoJugador == null) return;
 
-        // Apaga o enciende todos los scripts del jugador excepto el propio PlayerInput
-        MonoBehaviour[] scripts = objetoJugador.GetComponentsInChildren<MonoBehaviour>();
+        CharacterController controller = objetoJugador.GetComponent<CharacterController>();
+        if (controller != null) controller.enabled = estado;
+
+        Rigidbody rb = objetoJugador.GetComponent<Rigidbody>();
+        if (rb != null) rb.isKinematic = !estado;
+
+        // Filtramos de forma limpia los scripts tipo MonoBehaviour sin comprobaciones redundantes
+        MonoBehaviour[] scripts = objetoJugador.GetComponents<MonoBehaviour>();
         foreach (MonoBehaviour script in scripts)
         {
             if (script != null && script != playerInput && script != this)
@@ -154,7 +178,13 @@ public class PauseMenu : MonoBehaviour
         if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
         if (MenuPausa != null) MenuPausa.SetActive(true);
         if (MenuOpciones != null) MenuOpciones.SetActive(false);
+        StartCoroutine(InputCallerRefresh());
+    }
+
+    private IEnumerator InputCallerRefresh()
+    {
         StartCoroutine(InputCooldown());
+        yield return null;
     }
 
     public void ResumeButton()

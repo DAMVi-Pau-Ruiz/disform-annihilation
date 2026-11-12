@@ -72,6 +72,10 @@ public class PlayerMovement : MonoBehaviour
                 transform.rotation = targetRotation;
             }
         }
+        if (rb != null && Mathf.Abs(rb.linearVelocity.y) > 0.1f)
+        {
+            Debug.Log("VELOCIDAD VERTICAL DEL JUGADOR: " + rb.linearVelocity.y);
+        }
     }
 
     private void OnMove()
