@@ -137,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
                     direction.x, direction.z
                 ) * Mathf.Rad2Deg;
 
-                targetRotation = Quaternion.Euler(90f, angle, 0f);
+                targetRotation = Quaternion.Euler(0, angle, 0f);
                 hasTargetRotation = true;
             }
         }
