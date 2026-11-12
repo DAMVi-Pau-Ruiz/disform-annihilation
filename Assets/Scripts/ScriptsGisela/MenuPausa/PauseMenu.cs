@@ -82,14 +82,16 @@ public class PauseMenu : MonoBehaviour
         IsPaused = false;
         isInOptions = false;
 
-        // Esperamos un fotograma para que el clic del botón "Reanudar" NO dispare al volver
         yield return null;
 
         Time.timeScale = 1f;
 
         if (playerInput != null)
         {
-            playerInput.actions?.FindActionMap(gameplayActionMapName)?.Enable();
+            var gameplayMap = playerInput.actions?.FindActionMap(gameplayActionMapName);
+            if (gameplayMap != null) gameplayMap.Enable();
+
+            // Opcional: Asegurarnos de que el mapa de UI no bloquee la pausa si comparte la acción
             playerInput.SwitchCurrentActionMap(gameplayActionMapName);
         }
 
@@ -106,13 +108,16 @@ public class PauseMenu : MonoBehaviour
         isInOptions = false;
         Time.timeScale = 0.0f;
 
-        // 1. Apagamos los scripts del jugador para que no dispare ni en Update ni por eventos
         ActivarScriptsJugador(false);
 
-        // 2. Apagamos el mapa de juego y cambiamos a UI
         if (playerInput != null)
         {
-            playerInput.actions?.FindActionMap(gameplayActionMapName)?.Disable();
+            var gameplayMap = playerInput.actions?.FindActionMap(gameplayActionMapName);
+            var uiMap = playerInput.actions?.FindActionMap(uiActionMapName);
+
+            if (gameplayMap != null) gameplayMap.Disable();
+            if (uiMap != null) uiMap.Enable(); // Nos aseguramos de que el mapa UI esté encendido
+
             playerInput.SwitchCurrentActionMap(uiActionMapName);
         }
 
@@ -128,7 +133,6 @@ public class PauseMenu : MonoBehaviour
     {
         if (objetoJugador == null) return;
 
-        // Apaga o enciende todos los scripts del jugador excepto el propio PlayerInput
         MonoBehaviour[] scripts = objetoJugador.GetComponentsInChildren<MonoBehaviour>();
         foreach (MonoBehaviour script in scripts)
         {
@@ -154,7 +158,13 @@ public class PauseMenu : MonoBehaviour
         if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
         if (MenuPausa != null) MenuPausa.SetActive(true);
         if (MenuOpciones != null) MenuOpciones.SetActive(false);
+        StartCoroutine(InputCallerRefresh()); // Pequeño ajuste para refrescar input
+    }
+
+    private IEnumerator InputCallerRefresh()
+    {
         StartCoroutine(InputCooldown());
+        yield return null;
     }
 
     public void ResumeButton()
