@@ -810,6 +810,14 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 1486451961}
+    - target: {fileID: 1771310714559666023, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00036621094
+      objectReference: {fileID: 0}
+    - target: {fileID: 1771310714559666023, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -130.68799
+      objectReference: {fileID: 0}
     - target: {fileID: 1905409385213696032, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
       propertyPath: m_Name
       value: Disformius

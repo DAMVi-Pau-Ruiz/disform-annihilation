@@ -23,14 +23,11 @@ public class PlayerMovement : MonoBehaviour
         stats = GetComponent<PlayerStats>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         OnMove();
         OnRotate();
-    }
 
-    private void FixedUpdate()
-    {
         if (stats == null)
         {
             return;
