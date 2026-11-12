@@ -35,8 +35,12 @@ public class MenuOpcionesManager : MonoBehaviour
     private Resolution[] resolutions;
     public static bool ShowStats { get; private set; } = true;
 
-    // Propiedad estática para que la lea el script de movimiento del jugador
+    // Propiedad estática para la sensibilidad del ratón
     public static float MouseSensitivityValue { get; private set; } = 1f;
+
+    // Propiedad estática para que los scripts de texto del juego sepan qué idioma está activo
+    // (0: Castellano, 1: Català, 2: English)
+    public static int CurrentLanguageIndex { get; private set; } = 0;
 
     // Control de cambios sin guardar
     private bool hasUnsavedChanges = false;
@@ -222,9 +226,18 @@ public class MenuOpcionesManager : MonoBehaviour
 
     public void SetIdioma(int index)
     {
+        CurrentLanguageIndex = index; // Guarda el índice (0: Castellano, 1: Català, 2: English)
         MarcarCambiosPendientes();
-    }
 
+        // Busca todos los textos traducibles de la escena yfuérzalos a actualizarse
+        LocalizedText[] textosTraducibles = Object.FindObjectsByType<LocalizedText>(FindObjectsSortMode.None);
+        foreach (LocalizedText t in textosTraducibles)
+        {
+            t.ActualizarTexto();
+        }
+
+        Debug.Log("Idioma cambiado a índice: " + index);
+    }
     // ==========================================
     // SISTEMA DE GUARDADO Y VALIDACIÓN DE SALIDA
     // ==========================================
@@ -332,9 +345,10 @@ public class MenuOpcionesManager : MonoBehaviour
 
         float sens = PlayerPrefs.GetFloat("MouseSensitivity", 1f);
         if (sensitivitySlider) sensitivitySlider.value = sens;
-        MouseSensitivityValue = sens; // Carga la sensibilidad guardada
+        MouseSensitivityValue = sens;
 
         int idiomaIndex = PlayerPrefs.GetInt("IdiomaIndex", 0);
         if (idiomaDropdown) idiomaDropdown.value = idiomaIndex;
+        CurrentLanguageIndex = idiomaIndex; // Carga el idioma guardado al iniciar
     }
 }

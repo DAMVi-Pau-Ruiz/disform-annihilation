@@ -12,5 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/GISELA/GISELA.unity
     guid: 5deba60a0380f7544a3916ecefcd7802
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 6aed02baf53ddf949b49d8b968faf7f2, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 4423d346512019a4da8b667eb945444a, type: 3}
+    com.unity.localization.settings: {fileID: 11400000, guid: 3cd3ae3dd9c755f478be3ae9acaeba09, type: 2}
   m_UseUCBPForAssetBundles: 0
