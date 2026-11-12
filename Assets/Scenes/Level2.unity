@@ -1017,7 +1017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 869477960988456279, guid: ee1a148bc6a9b8d45ba9c88586cb1768, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 869477960988456279, guid: ee1a148bc6a9b8d45ba9c88586cb1768, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1051,6 +1051,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1421610165565070746, guid: ee1a148bc6a9b8d45ba9c88586cb1768, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00036621094
+      objectReference: {fileID: 0}
+    - target: {fileID: 1421610165565070746, guid: ee1a148bc6a9b8d45ba9c88586cb1768, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -130.68802
+      objectReference: {fileID: 0}
     - target: {fileID: 4220364108019166132, guid: ee1a148bc6a9b8d45ba9c88586cb1768, type: 3}
       propertyPath: playerCamera
       value: 
@@ -1063,6 +1071,11 @@ PrefabInstance:
 --- !u!4 &1170522538 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 869477960988456279, guid: ee1a148bc6a9b8d45ba9c88586cb1768, type: 3}
+  m_PrefabInstance: {fileID: 1170522537}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1203219972 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8937584095035744679, guid: ee1a148bc6a9b8d45ba9c88586cb1768, type: 3}
   m_PrefabInstance: {fileID: 1170522537}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1354377211
@@ -1345,7 +1358,7 @@ MonoBehaviour:
   deadZoneHorizontal: 0.2
   deadZoneVertical: 0.2
   playerScreenMargin: 0.08
-  playerRenderer: {fileID: 0}
+  playerRenderer: {fileID: 1203219972}
 --- !u!1001 &1675794128
 PrefabInstance:
   m_ObjectHideFlags: 0
