@@ -4168,12 +4168,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 852681339}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 807a61a126d357e4cb5d48c0487e6c7d, type: 3}
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  textoCastellano: Opciones
-  textoCatala: Opcions
-  textoEnglish: Options
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:985b58a1a128caa4fa1e572257bf3b7b
+    m_TableEntryReference:
+      m_KeyId: 204390121472
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &854903363
 GameObject:
   m_ObjectHideFlags: 0
@@ -7593,12 +7606,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1698912731}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 807a61a126d357e4cb5d48c0487e6c7d, type: 3}
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  textoCastellano: PAUSA
-  textoCatala: PAUSA
-  textoEnglish: PAUSE
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:985b58a1a128caa4fa1e572257bf3b7b
+    m_TableEntryReference:
+      m_KeyId: 4104300118016
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1703132964
 GameObject:
   m_ObjectHideFlags: 0
@@ -7816,12 +7842,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1739589840}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 807a61a126d357e4cb5d48c0487e6c7d, type: 3}
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  textoCastellano: Volver
-  textoCatala: Tornar
-  textoEnglish: Resume
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:985b58a1a128caa4fa1e572257bf3b7b
+    m_TableEntryReference:
+      m_KeyId: 144705175552
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1756177171
 GameObject:
   m_ObjectHideFlags: 0
@@ -9670,7 +9709,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6168222906891921747, guid: 32f236d928a90fb499b6b28fd4af77b9, type: 3}
   m_PrefabInstance: {fileID: 788106726356385835}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2114717057
+--- !u!114 &2114717061
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9679,12 +9718,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 2114717053}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 807a61a126d357e4cb5d48c0487e6c7d, type: 3}
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedText
-  textoCastellano: Salir
-  textoCatala: Sortir
-  textoEnglish: Exit
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:985b58a1a128caa4fa1e572257bf3b7b
+    m_TableEntryReference:
+      m_KeyId: 85854896128
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2118131060
 GameObject:
   m_ObjectHideFlags: 0
@@ -10327,7 +10379,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6168222906891921747, guid: 32f236d928a90fb499b6b28fd4af77b9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2114717057}
+      addedObject: {fileID: 2114717061}
     - targetCorrespondingSourceObject: {fileID: 7045084253072575619, guid: 32f236d928a90fb499b6b28fd4af77b9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1739589844}

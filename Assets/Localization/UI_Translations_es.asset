@@ -74,6 +74,38 @@ MonoBehaviour:
     m_Localized: Media
     m_Metadata:
       m_Items: []
+  - m_Id: 2623144574976
+    m_Localized: Alta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2761879568384
+    m_Localized: Ultra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2792179220480
+    m_Localized: Castellano
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2942733762560
+    m_Localized: "Catal\xE1n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3072757186560
+    m_Localized: "Ingl\xE9s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3190512271360
+    m_Localized: Guardar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3245348601856
+    m_Localized: "Est\xE1s saliendo sin guardar los cambios. \n\xBFQuieres continuar?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4104300118016
+    m_Localized: Pausa
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
