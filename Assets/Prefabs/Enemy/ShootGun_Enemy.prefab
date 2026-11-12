@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 3211311382981402754}
   - component: {fileID: 5755911313586391143}
   - component: {fileID: 3086940793602375654}
+  - component: {fileID: -6819759588464380278}
   m_Layer: 0
   m_Name: ShootGun_Enemy
   m_TagString: Enemy
@@ -299,6 +300,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_Controller
   health: 7
+  duracionDestello: 0.1
+  "colorDa\xF1o": {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &3086940793602375654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,3 +321,24 @@ MonoBehaviour:
   velocidadBala: 15
   danoBala: 1
   anguloSeparacion: 30
+--- !u!114 &-6819759588464380278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560515900986881091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28f597c258edbf44893d99417885d6fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropController
+  drops:
+  - prefab: {fileID: 1253924726360908936, guid: 78a71ad466bed4a40add8bf48ddf3d80, type: 3}
+    probability: 30
+  - prefab: {fileID: 6399806012522493030, guid: 4bd0b1931ae3ffa41a06dcfbace324d4, type: 3}
+    probability: 25
+  itemRandom: {fileID: 5981999970319439687, guid: b4cb2b24480fd58439bb6a3368f3eded, type: 3}
+  itemProbability: 1
+  dropPoint: {fileID: 0}
+  spawnRadius: 0.5

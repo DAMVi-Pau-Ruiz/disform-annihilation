@@ -21,6 +21,8 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
     // Avisamos al spawner cuando cambia la vida o el estado del enemigo.
     public event System.Action OnStateChanged;
 
+    private DropController dropController;
+
     public bool IsDead()
     {
         return estaMuerto;
@@ -30,6 +32,7 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
     {
         currentHealth = health;
 
+        dropController = GetComponent<DropController>();
         renderizadores = GetComponentsInChildren<Renderer>();
         bloqueMaterial = new MaterialPropertyBlock();
 
@@ -129,6 +132,11 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
         Debug.Log("El enemigo ha muerto.");
 
         OnStateChanged?.Invoke();
+
+        if (dropController != null)
+        {
+            dropController.GenerateDrops();
+        }
 
         Destroy(gameObject);
     }

@@ -1,6 +1,7 @@
 
 using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BossAttackManager : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class BossAttackManager : MonoBehaviour
     [SerializeField] private float tiempoEntreAtaques = 2.5f;
     [SerializeField] private float radioDeteccionCuerpo = 3f;
     [SerializeField] private BossMeleeAttack ataqueCuerpo;
+
+
 
     private int ultimoAtaque = -1;
     private bool atacando;
