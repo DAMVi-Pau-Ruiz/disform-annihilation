@@ -74,6 +74,38 @@ MonoBehaviour:
     m_Localized: Mitjana
     m_Metadata:
       m_Items: []
+  - m_Id: 2623144574976
+    m_Localized: Alta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2761879568384
+    m_Localized: Ultra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2792179220480
+    m_Localized: "Castell\xE0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2942733762560
+    m_Localized: "Catal\xE0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3072757186560
+    m_Localized: "Angl\xE8s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3190512271360
+    m_Localized: Desar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3245348601856
+    m_Localized: "Est\xE0s sortint sense desar els canvis. \nVols continuar?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4104300118016
+    m_Localized: Pausa
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

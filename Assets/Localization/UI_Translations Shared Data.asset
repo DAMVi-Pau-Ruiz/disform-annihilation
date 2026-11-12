@@ -71,8 +71,36 @@ MonoBehaviour:
     m_Key: UI_Quality_Mid
     m_Metadata:
       m_Items: []
-  - m_Id: 2100588822528
-    m_Key: New Entry
+  - m_Id: 2623144574976
+    m_Key: UI_Quality_High
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2761879568384
+    m_Key: UI_Quality_Ultra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2792179220480
+    m_Key: UI_Lang_Castellano
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2942733762560
+    m_Key: UI_Lang_Catala
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3072757186560
+    m_Key: UI_Lang_English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3190512271360
+    m_Key: UI_Btn_Guardar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3245348601856
+    m_Key: UI_Warning_Salir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4104300118016
+    m_Key: UI_Pausa
     m_Metadata:
       m_Items: []
   m_Metadata:
