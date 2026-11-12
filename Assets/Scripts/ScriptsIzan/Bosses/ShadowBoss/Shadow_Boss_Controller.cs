@@ -56,6 +56,14 @@ public class Shadow_Boss_Controller : MonoBehaviour
     [Header("Depuración")]
     [SerializeField] private bool mostrarMensajes = true;
 
+    private SphereCollider esferaBoss;
+
+    [Header("Detección de paredes")]
+    [SerializeField] private LayerMask capasObstaculos;
+    [SerializeField] private float margenPared = 0.05f;
+
+    private Vector3 desplazamientoPendiente;
+
     private Transform jugador;
     private PlayerStats statsJugador;
     private Enemy_Controller vidaEnemigo;
@@ -86,6 +94,8 @@ public class Shadow_Boss_Controller : MonoBehaviour
 
         renderizadores = GetComponentsInChildren<Renderer>();
         colisionadores = GetComponentsInChildren<Collider>();
+
+        esferaBoss = GetComponent<SphereCollider>();
 
         GameObject objetoJugador = GameObject.FindGameObjectWithTag("Player");
 
@@ -118,6 +128,52 @@ public class Shadow_Boss_Controller : MonoBehaviour
         {
             Debug.Log("SOMBRA: Jefe inicializado.");
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (rb == null || desplazamientoPendiente == Vector3.zero)
+            return;
+
+        Vector3 desplazamiento = desplazamientoPendiente;
+        desplazamientoPendiente = Vector3.zero;
+
+        float distancia = desplazamiento.magnitude;
+
+        if (distancia <= 0f)
+            return;
+
+        Vector3 direccion = desplazamiento.normalized;
+
+        if (esferaBoss != null)
+        {
+            Vector3 centro = esferaBoss.transform.TransformPoint(
+                esferaBoss.center
+            );
+
+            Vector3 escala = esferaBoss.transform.lossyScale;
+
+            float radio = esferaBoss.radius * Mathf.Max(
+                Mathf.Abs(escala.x),
+                Mathf.Abs(escala.y),
+                Mathf.Abs(escala.z)
+            );
+
+            if (Physics.SphereCast(
+                centro,
+                radio,
+                direccion,
+                out RaycastHit hit,
+                distancia + margenPared,
+                capasObstaculos,
+                QueryTriggerInteraction.Ignore
+            ))
+            {
+                distancia = Mathf.Max(0f, hit.distance - margenPared);
+            }
+        }
+
+        rb.MovePosition(rb.position + direccion * distancia);
     }
 
 
@@ -200,7 +256,7 @@ public class Shadow_Boss_Controller : MonoBehaviour
     {
         if (rb != null)
         {
-            rb.MovePosition(rb.position + desplazamiento);
+            desplazamientoPendiente += desplazamiento;
         }
         else
         {
@@ -273,20 +329,24 @@ public class Shadow_Boss_Controller : MonoBehaviour
 
         float tiempo = 0f;
 
+        IgnorarColisionJugador(true);
+
         while (tiempo < duracionEmbestida)
         {
             Mover(
                 direccionEmbestida *
                 velocidadEmbestida *
-                Time.deltaTime
+                Time.fixedDeltaTime
             );
 
             ComprobarImpactoEmbestida();
 
-            tiempo += Time.deltaTime;
+            tiempo += Time.fixedDeltaTime;
 
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
+
+        IgnorarColisionJugador(false);
 
         ActualizarIndicador(false);
 
@@ -299,6 +359,30 @@ public class Shadow_Boss_Controller : MonoBehaviour
         if (mostrarMensajes)
         {
             Debug.Log("SOMBRA: Embestida terminada.");
+        }
+    }
+
+    private void IgnorarColisionJugador(bool ignorar)
+    {
+        if (jugador == null) return;
+
+        Collider[] collidersJugador =
+            jugador.GetComponentsInChildren<Collider>();
+
+        foreach (Collider colliderJefe in colisionadores)
+        {
+            if (colliderJefe == null) continue;
+
+            foreach (Collider colliderJugador in collidersJugador)
+            {
+                if (colliderJugador == null) continue;
+
+                Physics.IgnoreCollision(
+                    colliderJefe,
+                    colliderJugador,
+                    ignorar
+                );
+            }
         }
     }
 

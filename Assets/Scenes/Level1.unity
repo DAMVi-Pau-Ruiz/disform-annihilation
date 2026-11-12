@@ -372,6 +372,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 464574283507839060, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 17.27832
+      objectReference: {fileID: 0}
     - target: {fileID: 626437598781140240, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -384,6 +388,14 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 1486451961}
+    - target: {fileID: 1771310714559666023, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00048828125
+      objectReference: {fileID: 0}
+    - target: {fileID: 1771310714559666023, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -130.68799
+      objectReference: {fileID: 0}
     - target: {fileID: 1905409385213696032, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
       propertyPath: m_Name
       value: Disformius
@@ -1584,7 +1596,7 @@ PrefabInstance:
     - target: {fileID: 7700391309457181424, guid: 013f91cbc34a9c54a8b3e0328a7602be, type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 9122c34148f1e5940933d86c54622218, type: 2}
+      objectReference: {fileID: 23800000, guid: d6c88b4e844070e4b8e760e03c963da5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1598,6 +1610,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1800765310587284273, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
+      propertyPath: enemiesPrefabsToSpawn.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1800765310587284273, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
+      propertyPath: 'enemiesPrefabsToSpawn.Array.data[1]'
+      value: 
+      objectReference: {fileID: 5909906980944666852, guid: c9b741a2c64786c4a822fedb7744d5bc, type: 3}
+    - target: {fileID: 1800765310587284273, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
+      propertyPath: 'enemiesPrefabsToSpawn.Array.data[2]'
+      value: 
+      objectReference: {fileID: 269638029501393174, guid: 5d5019ff85ee18d4fbe529dec64cdc1c, type: 3}
     - target: {fileID: 2830505714696021767, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
       propertyPath: m_NavMeshData
       value: 
