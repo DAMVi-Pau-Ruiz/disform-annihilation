@@ -8,9 +8,6 @@ public class ProjectileBase : MonoBehaviour
     [SerializeField] protected float tiempoVida = 8f;
     [SerializeField] private LayerMask capasRebote;
 
-    [Header("Rebotes")]
-    [SerializeField] protected int rebotesMaximos = 5;
-
     protected Rigidbody rb;
     protected Transform propietario;
 
@@ -22,16 +19,25 @@ public class ProjectileBase : MonoBehaviour
         propietario = boss;
     }
 
+    private void FixedUpdate()
+    {
+        if (rb != null)
+        {
+            Debug.Log("VELOCIDAD ACTUAL: " + rb.linearVelocity);
+        }
+    }
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
 
         if (rb == null)
             rb = GetComponentInParent<Rigidbody>();
 
         if (rb == null)
             rb = GetComponentInChildren<Rigidbody>();
-
+            
         if (rb == null)
             Debug.LogError("No se encuentra Rigidbody en " + gameObject.name);
     }
@@ -46,12 +52,17 @@ public class ProjectileBase : MonoBehaviour
         if (EsPropietario(collision.collider))
             return;
 
-        // Comprobar si ha tocado una pared.
-        if (((1 << collision.gameObject.layer) & capasRebote) != 0)
-        {
-            Rebotar(collision);
-            return;
-        }
+        //// Comprobar si ha tocado una pared.
+        //Debug.Log("COLISION CON: " + collision.collider.name);
+        //Debug.Log("LAYER: " + LayerMask.LayerToName(collision.collider.gameObject.layer));
+        //Debug.Log("CAPAS DE REBOTE: " + capasRebote.value);
+
+        //if (((1 << collision.collider.gameObject.layer) & capasRebote) != 0)
+        //{
+        //    Debug.Log("VELOCIDAD ANTES DEL REBOTE: " + rb.linearVelocity); 
+        //    Rebotar(collision);
+        //    return;
+        //}
 
         // Comprobar si ha tocado algo que pueda recibir daño.
         IHealthSystem salud =
@@ -71,43 +82,10 @@ public class ProjectileBase : MonoBehaviour
 
     private void Rebotar(Collision collision)
     {
-        Debug.Log("ENTRANDO EN REBOTAR");
-
-        if (rb == null)
-        {
-            Debug.LogError("Rigidbody es null");
+        if (rb == null || collision.contactCount == 0)
             return;
-        }
 
-        if (collision.contactCount == 0)
-        {
-            Debug.LogError("No hay puntos de contacto");
-            return;
-        }
-
-        if (rebotesActuales >= rebotesMaximos)
-        {
-            Debug.Log("Máximo de rebotes alcanzado");
-            Destroy(gameObject);
-            return;
-        }
-
-        Vector3 normal = collision.GetContact(0).normal;
-        Vector3 velocidadAnterior = rb.linearVelocity;
-
-        Debug.Log("Velocidad anterior: " + velocidadAnterior);
-        Debug.Log("Normal: " + normal);
-
-        Vector3 direccion = Vector3.Reflect(
-            velocidadAnterior.normalized,
-            normal
-        );
-
-        rb.linearVelocity = direccion * velocidadAnterior.magnitude;
-
-        rebotesActuales++;
-
-        Debug.Log("REBOTE REALIZADO: " + rebotesActuales);
+        rb.linearVelocity = -rb.linearVelocity;
     }
 
 

@@ -214,6 +214,7 @@ MonoBehaviour:
   tiempoEntreAtaques: 1.5
   radioDeteccionCuerpo: 3
   ataqueCuerpo: {fileID: 8409824250469049250}
+  materialRebote: {fileID: 13400000, guid: 74c1cf28ed557004fbb41cd19eb826a8, type: 2}
 --- !u!114 &4414891492169814928
 MonoBehaviour:
   m_ObjectHideFlags: 0
