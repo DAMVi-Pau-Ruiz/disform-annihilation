@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 public class MenuOpcionesManager : MonoBehaviour
@@ -24,8 +25,21 @@ public class MenuOpcionesManager : MonoBehaviour
     [Header("Referencias UI de Lenguaje")]
     [SerializeField] private TMP_Dropdown idiomaDropdown;
 
+    [Header("Panel de Alerta de Guardado (Rojo)")]
+    [SerializeField] private GameObject saveWarningPanel;
+    [SerializeField] private TextMeshProUGUI warningMessageText;
+
+    [Header("Referencia al Menú Raíz (Para salir al juego)")]
+    [SerializeField] private GameObject optionsMenuRoot;
+
     private Resolution[] resolutions;
     public static bool ShowStats { get; private set; } = true;
+
+    // Propiedad estática para que la lea el script de movimiento del jugador
+    public static float MouseSensitivityValue { get; private set; } = 1f;
+
+    // Control de cambios sin guardar
+    private bool hasUnsavedChanges = false;
 
     // ==========================================
     // MÉTODOS DE CICLO DE VIDA (Únicamente para llamar)
@@ -40,6 +54,11 @@ public class MenuOpcionesManager : MonoBehaviour
         LlamarInicializacionMenu();
     }
 
+    void Update()
+    {
+        LlamarEscucharTeclaEscape();
+    }
+
     // ==========================================
     // MÉTODOS DE LLAMADA Y GESTIÓN
     // ==========================================
@@ -50,11 +69,31 @@ public class MenuOpcionesManager : MonoBehaviour
 
     private void LlamarInicializacionMenu()
     {
+        OcultarAvisoError();
         InitResolutions();
         InitQualityDropdown();
         InitFPSDropdown();
         InitIdiomaDropdown();
         LoadAllSettings();
+        hasUnsavedChanges = false;
+    }
+
+    private void LlamarEscucharTeclaEscape()
+    {
+        if (optionsMenuRoot != null && optionsMenuRoot.activeSelf)
+        {
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                if (saveWarningPanel != null && saveWarningPanel.activeSelf)
+                {
+                    OnClickBotonNo(); // Si está el panel rojo abierto, ESC equivale a "No" (volver al menú)
+                }
+                else
+                {
+                    OnClickIntentarSalir(); // Si no, actúa como intentar salir
+                }
+            }
+        }
     }
 
     // 1. GESTIÓN DE PESTAÑAS
@@ -125,18 +164,20 @@ public class MenuOpcionesManager : MonoBehaviour
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        MarcarCambiosPendientes();
     }
 
     public void SetFullscreen(bool isFullscreen)
     {
-        Screen.fullScreen = isFullscreen;
-        PlayerPrefs.SetInt("Fullscreen", isFullscreen ? 1 : 0);
+        Resolution currentRes = Screen.currentResolution;
+        Screen.SetResolution(currentRes.width, currentRes.height, isFullscreen);
+        MarcarCambiosPendientes();
     }
 
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);
-        PlayerPrefs.SetInt("QualityIndex", qualityIndex);
+        MarcarCambiosPendientes();
     }
 
     public void SetFPSCap(int index)
@@ -149,7 +190,7 @@ public class MenuOpcionesManager : MonoBehaviour
             case 3: Application.targetFrameRate = 120; break;
             case 4: Application.targetFrameRate = 144; break;
         }
-        PlayerPrefs.SetInt("FPSCapIndex", index);
+        MarcarCambiosPendientes();
     }
 
     public void ToggleShowStats(bool isVisible)
@@ -159,13 +200,14 @@ public class MenuOpcionesManager : MonoBehaviour
         {
             statsUIContainer.SetActive(isVisible);
         }
-        PlayerPrefs.SetInt("ShowStats", isVisible ? 1 : 0);
+        MarcarCambiosPendientes();
     }
 
     // 3. CONTROLES
     public void SetMouseSensitivity(float sensitivity)
     {
-        PlayerPrefs.SetFloat("MouseSensitivity", sensitivity);
+        MouseSensitivityValue = sensitivity; // Actualiza el valor en tiempo real
+        MarcarCambiosPendientes();
     }
 
     // 4. LENGUAJE
@@ -180,7 +222,92 @@ public class MenuOpcionesManager : MonoBehaviour
 
     public void SetIdioma(int index)
     {
-        PlayerPrefs.SetInt("IdiomaIndex", index);
+        MarcarCambiosPendientes();
+    }
+
+    // ==========================================
+    // SISTEMA DE GUARDADO Y VALIDACIÓN DE SALIDA
+    // ==========================================
+    private void MarcarCambiosPendientes()
+    {
+        hasUnsavedChanges = true;
+    }
+
+    public void OnClickGuardarConfiguracion()
+    {
+        try
+        {
+            if (fullscreenToggle) PlayerPrefs.SetInt("Fullscreen", fullscreenToggle.isOn ? 1 : 0);
+            if (qualityDropdown) PlayerPrefs.SetInt("QualityIndex", qualityDropdown.value);
+            if (fpsDropdown) PlayerPrefs.SetInt("FPSCapIndex", fpsDropdown.value);
+            if (statsToggle) PlayerPrefs.SetInt("ShowStats", statsToggle.isOn ? 1 : 0);
+            if (sensitivitySlider) PlayerPrefs.SetFloat("MouseSensitivity", sensitivitySlider.value);
+            if (idiomaDropdown) PlayerPrefs.SetInt("IdiomaIndex", idiomaDropdown.value);
+
+            PlayerPrefs.Save();
+            hasUnsavedChanges = false;
+            OcultarAvisoError();
+            Debug.Log("Configuración guardada con éxito.");
+        }
+        catch (System.Exception e)
+        {
+            MostrarAvisoError("Error al guardar: " + e.Message);
+        }
+    }
+
+    public void OnClickIntentarSalir()
+    {
+        if (hasUnsavedChanges)
+        {
+            MostrarAvisoError("Estás saliendo sin guardar los cambios. ¿Quieres continuar?");
+        }
+        else
+        {
+            CerrarOptionsMenuDirectamente();
+        }
+    }
+
+    private void MostrarAvisoError(string mensaje)
+    {
+        if (warningMessageText != null) warningMessageText.text = mensaje;
+        if (saveWarningPanel != null) saveWarningPanel.SetActive(true);
+    }
+
+    private void OcultarAvisoError()
+    {
+        if (saveWarningPanel != null) saveWarningPanel.SetActive(false);
+    }
+
+    public void OnClickBotonSi()
+    {
+        hasUnsavedChanges = false;
+        OcultarAvisoError();
+        CerrarOptionsMenuDirectamente();
+    }
+
+    public void OnClickBotonNo()
+    {
+        OcultarAvisoError(); // Vuelve al menú de opciones para poder guardar
+    }
+
+    private void CerrarOptionsMenuDirectamente()
+    {
+        PauseMenu pauseMenu = Object.FindFirstObjectByType<PauseMenu>();
+        if (pauseMenu != null)
+        {
+            pauseMenu.CloseOptions();
+        }
+        else
+        {
+            if (optionsMenuRoot != null)
+            {
+                optionsMenuRoot.SetActive(false);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+        }
     }
 
     // CARGAR CONFIGURACIONES GUARDADAS
@@ -205,6 +332,7 @@ public class MenuOpcionesManager : MonoBehaviour
 
         float sens = PlayerPrefs.GetFloat("MouseSensitivity", 1f);
         if (sensitivitySlider) sensitivitySlider.value = sens;
+        MouseSensitivityValue = sens; // Carga la sensibilidad guardada
 
         int idiomaIndex = PlayerPrefs.GetInt("IdiomaIndex", 0);
         if (idiomaDropdown) idiomaDropdown.value = idiomaIndex;
