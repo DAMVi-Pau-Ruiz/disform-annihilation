@@ -49,22 +49,22 @@ public class ProjectileBase : MonoBehaviour
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
+
+        if (collision.collider.GetComponentInParent<PlayerStats>() != null)
+        {
+            AplicarDaño(collision.collider);
+            return;
+        }
         if (EsPropietario(collision.collider))
             return;
+        PlayerStats jugador = collision.collider.GetComponentInParent<PlayerStats>();
 
-        //// Comprobar si ha tocado una pared.
-        //Debug.Log("COLISION CON: " + collision.collider.name);
-        //Debug.Log("LAYER: " + LayerMask.LayerToName(collision.collider.gameObject.layer));
-        //Debug.Log("CAPAS DE REBOTE: " + capasRebote.value);
+        if (jugador != null)
+        {
+            AplicarDaño(collision.collider);
+            return;
+        }
 
-        //if (((1 << collision.collider.gameObject.layer) & capasRebote) != 0)
-        //{
-        //    Debug.Log("VELOCIDAD ANTES DEL REBOTE: " + rb.linearVelocity); 
-        //    Rebotar(collision);
-        //    return;
-        //}
-
-        // Comprobar si ha tocado algo que pueda recibir daño.
         IHealthSystem salud =
             collision.collider.GetComponentInParent<IHealthSystem>();
 

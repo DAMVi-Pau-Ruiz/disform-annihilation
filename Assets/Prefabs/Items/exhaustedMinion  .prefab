@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7112693001735665819}
   - component: {fileID: 3237747618182172723}
   - component: {fileID: -1533185886491529580}
-  - component: {fileID: -1860880631318720619}
+  - component: {fileID: 6066083362638215346}
   m_Layer: 0
   m_Name: 'exhaustedMinion  '
   m_TagString: Untagged
@@ -105,16 +105,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemCollectable
   itemData: {fileID: 11400000, guid: 9bb872dba15a5974c8b0bc99ad68f883, type: 2}
---- !u!70 &-1860880631318720619
-CapsuleCollider2D:
+--- !u!136 &6066083362638215346
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622630464699600835}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -123,22 +120,11 @@ CapsuleCollider2D:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.113696456, y: 0.07505226}
-  m_Size: {x: 2.24493, y: 2.3950238}
-  m_Direction: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
