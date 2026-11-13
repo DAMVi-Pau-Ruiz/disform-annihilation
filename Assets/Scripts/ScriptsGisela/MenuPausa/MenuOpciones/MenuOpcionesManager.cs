@@ -33,30 +33,25 @@ public class MenuOpcionesManager : MonoBehaviour
 
     private Resolution[] resolutions;
     public static bool ShowStats { get; private set; } = true;
-
-    // Propiedad estática para la sensibilidad del ratón
     public static float MouseSensitivityValue { get; private set; } = 1f;
-
-    // Propiedad estática requerida por otros scripts (como LocalizedText.cs)
     public static int CurrentLanguageIndex { get; private set; } = 0;
 
-    // Control de cambios sin guardar
     private bool hasUnsavedChanges = false;
 
     // ==========================================
-    // MÉTODOS DE CICLO DE VIDA
+    // MÉTODOS DE CICLO DE VIDA (1 LÍNEA CADA UNO)
     // ==========================================
     private void Awake()
     {
         LlamarApagarPanelesIniciales();
     }
 
-    void Start()
+    private void Start()
     {
         LlamarInicializacionMenu();
     }
 
-    void Update()
+    private void Update()
     {
         LlamarEscucharTeclaEscape();
     }
@@ -130,7 +125,7 @@ public class MenuOpcionesManager : MonoBehaviour
 
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRateRatio.value + "Hz";
+            string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + Mathf.RoundToInt((float)resolutions[i].refreshRateRatio.value) + "Hz";
             options.Add(option);
             if (resolutions[i].width == Screen.currentResolution.width &&
                 resolutions[i].height == Screen.currentResolution.height)
@@ -139,13 +134,14 @@ public class MenuOpcionesManager : MonoBehaviour
             }
         }
         resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.SetValueWithoutNotify(currentResolutionIndex);
         resolutionDropdown.RefreshShownValue();
     }
 
     private void InitQualityDropdown()
     {
         if (qualityDropdown == null) return;
+        qualityDropdown.RefreshShownValue();
     }
 
     private void InitFPSDropdown()
@@ -159,6 +155,7 @@ public class MenuOpcionesManager : MonoBehaviour
 
     public void SetResolution(int resolutionIndex)
     {
+        if (resolutions == null || resolutionIndex < 0 || resolutionIndex >= resolutions.Length) return;
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         MarcarCambiosPendientes();
@@ -207,33 +204,52 @@ public class MenuOpcionesManager : MonoBehaviour
         MarcarCambiosPendientes();
     }
 
-    // 4. LENGUAJE (MÉTODO POR ÍNDICES PARA LOS BOTONES)
+    // 4. LENGUAJE
     public void CambiarIdiomaPorIndice(int index)
     {
-        MarcarCambiosPendientes();
-
-        var locales = LocalizationSettings.AvailableLocales.Locales;
-
-        if (index >= 0 && index < locales.Count)
-        {
-            Locale localeACambiar = locales[index];
-            LocalizationSettings.SelectedLocale = localeACambiar;
-            CurrentLanguageIndex = index;
-
-            PlayerPrefs.SetInt("IdiomaIndex", index);
-            PlayerPrefs.Save();
-
-            Debug.Log("Idioma cambiado a la posición: " + index + " (" + localeACambiar.Identifier.Code + ")");
-        }
-        else
-        {
-            Debug.LogError("El índice de idioma " + index + " no existe en la configuración de Unity Localization.");
-        }
+        CurrentLanguageIndex = index;
+        SettingsSingleton.Instance.GuardarIdioma(index);
     }
 
     // ==========================================
-    // SISTEMA DE GUARDADO Y VALIDACIÓN DE SALIDA
+    // CARGA Y GUARDADO CON SINGLETON
     // ==========================================
+    private void LoadAllSettings()
+    {
+        var s = SettingsSingleton.Instance;
+
+        if (fullscreenToggle) fullscreenToggle.SetIsOnWithoutNotify(s.Fullscreen);
+
+        if (resolutionDropdown && resolutions != null && s.ResolutionIndex >= 0 && s.ResolutionIndex < resolutions.Length)
+        {
+            resolutionDropdown.SetValueWithoutNotify(s.ResolutionIndex);
+            resolutionDropdown.RefreshShownValue();
+        }
+
+        if (qualityDropdown)
+        {
+            qualityDropdown.SetValueWithoutNotify(s.QualityIndex);
+            qualityDropdown.RefreshShownValue();
+        }
+
+        if (fpsDropdown)
+        {
+            fpsDropdown.SetValueWithoutNotify(s.FPSCapIndex);
+            fpsDropdown.RefreshShownValue();
+        }
+
+        ShowStats = s.ShowStats;
+        if (statsUIContainer) statsUIContainer.SetActive(s.ShowStats);
+        if (statsToggle) statsToggle.SetIsOnWithoutNotify(s.ShowStats);
+
+        MouseSensitivityValue = s.MouseSensitivity;
+        if (sensitivitySlider) sensitivitySlider.SetValueWithoutNotify(s.MouseSensitivity);
+
+        CurrentLanguageIndex = s.LanguageIndex;
+
+        s.AplicarGraficosYAudio();
+    }
+
     private void MarcarCambiosPendientes()
     {
         hasUnsavedChanges = true;
@@ -243,104 +259,68 @@ public class MenuOpcionesManager : MonoBehaviour
     {
         try
         {
-            if (fullscreenToggle) PlayerPrefs.SetInt("Fullscreen", fullscreenToggle.isOn ? 1 : 0);
-            if (qualityDropdown) PlayerPrefs.SetInt("QualityIndex", qualityDropdown.value);
-            if (fpsDropdown) PlayerPrefs.SetInt("FPSCapIndex", fpsDropdown.value);
-            if (statsToggle) PlayerPrefs.SetInt("ShowStats", statsToggle.isOn ? 1 : 0);
-            if (sensitivitySlider) PlayerPrefs.SetFloat("MouseSensitivity", sensitivitySlider.value);
+            bool fs = fullscreenToggle ? fullscreenToggle.isOn : true;
+            int res = resolutionDropdown ? resolutionDropdown.value : -1;
+            int qual = qualityDropdown ? qualityDropdown.value : 0;
+            int fps = fpsDropdown ? fpsDropdown.value : 0;
+            bool stats = statsToggle ? statsToggle.isOn : true;
+            float sens = sensitivitySlider ? sensitivitySlider.value : 1f;
 
-            PlayerPrefs.Save();
+            SettingsSingleton.Instance.GuardarTodo(fs, res, qual, fps, stats, sens);
+
             hasUnsavedChanges = false;
             OcultarAvisoError();
-            Debug.Log("Configuración guardada con éxito.");
         }
         catch (System.Exception e)
         {
-            MostrarAvisoError("Error al guardar: " + e.Message);
+            Debug.LogError("Error al guardar configuración: " + e.Message);
         }
     }
 
+    // ==========================================
+    // GESTIÓN DE SALIDA Y PANEL DE ALERTA ROJO
+    // ==========================================
     public void OnClickIntentarSalir()
     {
         if (hasUnsavedChanges)
         {
-            MostrarAvisoError("Estás saliendo sin guardar los cambios. ¿Quieres continuar?");
+            if (saveWarningPanel) saveWarningPanel.SetActive(true);
         }
         else
         {
-            CerrarOptionsMenuDirectamente();
+            CerrarMenuOpciones();
         }
-    }
-
-    private void MostrarAvisoError(string mensaje)
-    {
-        if (warningMessageText != null) warningMessageText.text = mensaje;
-        if (saveWarningPanel != null) saveWarningPanel.SetActive(true);
-    }
-
-    private void OcultarAvisoError()
-    {
-        if (saveWarningPanel != null) saveWarningPanel.SetActive(false);
     }
 
     public void OnClickBotonSi()
     {
-        hasUnsavedChanges = false;
-        OcultarAvisoError();
-        CerrarOptionsMenuDirectamente();
+        OnClickGuardarConfiguracion();
+        CerrarMenuOpciones();
     }
 
     public void OnClickBotonNo()
     {
+        LoadAllSettings();
+        hasUnsavedChanges = false;
         OcultarAvisoError();
+        CerrarMenuOpciones();
     }
 
-    private void CerrarOptionsMenuDirectamente()
+    private void OcultarAvisoError()
+    {
+        if (saveWarningPanel) saveWarningPanel.SetActive(false);
+    }
+
+    private void CerrarMenuOpciones()
     {
         PauseMenu pauseMenu = Object.FindFirstObjectByType<PauseMenu>();
         if (pauseMenu != null)
         {
             pauseMenu.CloseOptions();
         }
-        else
+        else if (optionsMenuRoot != null)
         {
-            if (optionsMenuRoot != null)
-            {
-                optionsMenuRoot.SetActive(false);
-            }
-            else
-            {
-                gameObject.SetActive(false);
-            }
+            optionsMenuRoot.SetActive(false);
         }
     }
-
-    // CARGAR CONFIGURACIONES GUARDADAS
-    private void LoadAllSettings()
-    {
-        bool isFull = PlayerPrefs.GetInt("Fullscreen", Screen.fullScreen ? 1 : 0) == 1;
-        Screen.fullScreen = isFull;
-        if (fullscreenToggle) fullscreenToggle.isOn = isFull;
-
-        int quality = PlayerPrefs.GetInt("QualityIndex", QualitySettings.GetQualityLevel());
-        QualitySettings.SetQualityLevel(quality);
-        if (qualityDropdown) qualityDropdown.value = quality;
-
-        int fpsIndex = PlayerPrefs.GetInt("FPSCapIndex", 2);
-        SetFPSCap(fpsIndex);
-        if (fpsDropdown) fpsDropdown.value = fpsIndex;
-
-        bool showStatsSaved = PlayerPrefs.GetInt("ShowStats", 1) == 1;
-        ShowStats = showStatsSaved;
-        if (statsToggle) statsToggle.isOn = showStatsSaved;
-        if (statsUIContainer) statsUIContainer.SetActive(showStatsSaved);
-
-        float sens = PlayerPrefs.GetFloat("MouseSensitivity", 1f);
-        if (sensitivitySlider) sensitivitySlider.value = sens;
-        MouseSensitivityValue = sens;
-
-        // Cargar el idioma guardado mediante su índice numérico
-        int indiceGuardado = PlayerPrefs.GetInt("IdiomaIndex", 0);
-        CambiarIdiomaPorIndice(indiceGuardado);
-    }
-}
+} // <--- Esta es la llave que cierra toda la clase MenuOpcionesManager
