@@ -108,6 +108,34 @@ MonoBehaviour:
 '
     m_Metadata:
       m_Items: []
+  - m_Id: 341108711866368
+    m_Localized: Vida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341182720360448
+    m_Localized: "Da\xF1o total"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341313142243328
+    m_Localized: "Da\xF1o multiplicador"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341430540812288
+    m_Localized: "Da\xF1o base"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341520206643200
+    m_Localized: Velocidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341615895494656
+    m_Localized: Cadencia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341692206661632
+    m_Localized: Velocidad bala
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
