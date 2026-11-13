@@ -66,20 +66,8 @@ MonoBehaviour:
     m_Localized: "Il\xB7limitats"
     m_Metadata:
       m_Items: []
-  - m_Id: 1925304664064
-    m_Localized: Baixos
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1951644893184
-    m_Localized: Mitjana
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2623144574976
-    m_Localized: Alta
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2761879568384
-    m_Localized: Ultra
+  - m_Id: 309814695149568
+    m_Localized: Si
     m_Metadata:
       m_Items: []
   - m_Id: 2792179220480
@@ -104,6 +92,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4104300118016
     m_Localized: Pausa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 326157507084288
+    m_Localized: "Castell\xE0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 326214901940224
+    m_Localized: "Catal\xE0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 326274477834240
+    m_Localized: "Ingl\xE9s"
     m_Metadata:
       m_Items: []
   references:

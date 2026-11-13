@@ -63,22 +63,6 @@ MonoBehaviour:
     m_Key: Menu_FPSIlimitados
     m_Metadata:
       m_Items: []
-  - m_Id: 1925304664064
-    m_Key: UI_Quality_Baja
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1951644893184
-    m_Key: UI_Quality_Mid
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2623144574976
-    m_Key: UI_Quality_High
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2761879568384
-    m_Key: UI_Quality_Ultra
-    m_Metadata:
-      m_Items: []
   - m_Id: 2792179220480
     m_Key: UI_Lang_Castellano
     m_Metadata:
@@ -101,6 +85,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4104300118016
     m_Key: UI_Pausa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 309814695149568
+    m_Key: UI_Si
+    m_Metadata:
+      m_Items: []
+  - m_Id: 326157507084288
+    m_Key: Language_Spanish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 326214901940224
+    m_Key: Language_Catalan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 326274477834240
+    m_Key: Language_English
     m_Metadata:
       m_Items: []
   m_Metadata:

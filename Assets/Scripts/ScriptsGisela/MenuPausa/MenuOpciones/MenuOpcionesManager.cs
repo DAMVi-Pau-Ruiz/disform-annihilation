@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 public class MenuOpcionesManager : MonoBehaviour
 {
@@ -22,9 +24,6 @@ public class MenuOpcionesManager : MonoBehaviour
     [Header("Referencias UI de Controles")]
     [SerializeField] private Slider sensitivitySlider;
 
-    [Header("Referencias UI de Lenguaje")]
-    [SerializeField] private TMP_Dropdown idiomaDropdown;
-
     [Header("Panel de Alerta de Guardado (Rojo)")]
     [SerializeField] private GameObject saveWarningPanel;
     [SerializeField] private TextMeshProUGUI warningMessageText;
@@ -38,15 +37,14 @@ public class MenuOpcionesManager : MonoBehaviour
     // Propiedad estática para la sensibilidad del ratón
     public static float MouseSensitivityValue { get; private set; } = 1f;
 
-    // Propiedad estática para que los scripts de texto del juego sepan qué idioma está activo
-    // (0: Castellano, 1: Català, 2: English)
+    // Propiedad estática requerida por otros scripts (como LocalizedText.cs)
     public static int CurrentLanguageIndex { get; private set; } = 0;
 
     // Control de cambios sin guardar
     private bool hasUnsavedChanges = false;
 
     // ==========================================
-    // MÉTODOS DE CICLO DE VIDA (Únicamente para llamar)
+    // MÉTODOS DE CICLO DE VIDA
     // ==========================================
     private void Awake()
     {
@@ -68,7 +66,7 @@ public class MenuOpcionesManager : MonoBehaviour
     // ==========================================
     private void LlamarApagarPanelesIniciales()
     {
-        MostrarGraphicWindow(); // Oculta todo y deja limpia la vista inicial
+        MostrarGraphicWindow();
     }
 
     private void LlamarInicializacionMenu()
@@ -77,7 +75,6 @@ public class MenuOpcionesManager : MonoBehaviour
         InitResolutions();
         InitQualityDropdown();
         InitFPSDropdown();
-        InitIdiomaDropdown();
         LoadAllSettings();
         hasUnsavedChanges = false;
     }
@@ -90,11 +87,11 @@ public class MenuOpcionesManager : MonoBehaviour
             {
                 if (saveWarningPanel != null && saveWarningPanel.activeSelf)
                 {
-                    OnClickBotonNo(); // Si está el panel rojo abierto, ESC equivale a "No" (volver al menú)
+                    OnClickBotonNo();
                 }
                 else
                 {
-                    OnClickIntentarSalir(); // Si no, actúa como intentar salir
+                    OnClickIntentarSalir();
                 }
             }
         }
@@ -149,10 +146,6 @@ public class MenuOpcionesManager : MonoBehaviour
     private void InitQualityDropdown()
     {
         if (qualityDropdown == null) return;
-        qualityDropdown.ClearOptions();
-        List<string> names = new List<string>(QualitySettings.names);
-        qualityDropdown.AddOptions(names);
-        qualityDropdown.RefreshShownValue();
     }
 
     private void InitFPSDropdown()
@@ -210,34 +203,34 @@ public class MenuOpcionesManager : MonoBehaviour
     // 3. CONTROLES
     public void SetMouseSensitivity(float sensitivity)
     {
-        MouseSensitivityValue = sensitivity; // Actualiza el valor en tiempo real
+        MouseSensitivityValue = sensitivity;
         MarcarCambiosPendientes();
     }
 
-    // 4. LENGUAJE
-    private void InitIdiomaDropdown()
+    // 4. LENGUAJE (MÉTODO POR ÍNDICES PARA LOS BOTONES)
+    public void CambiarIdiomaPorIndice(int index)
     {
-        if (idiomaDropdown == null) return;
-        idiomaDropdown.ClearOptions();
-        List<string> idiomas = new List<string> { "Castellano", "Català", "English" };
-        idiomaDropdown.AddOptions(idiomas);
-        idiomaDropdown.RefreshShownValue();
-    }
-
-    public void SetIdioma(int index)
-    {
-        CurrentLanguageIndex = index; // Guarda el índice (0: Castellano, 1: Català, 2: English)
         MarcarCambiosPendientes();
 
-        // Busca todos los textos traducibles de la escena yfuérzalos a actualizarse
-        LocalizedText[] textosTraducibles = Object.FindObjectsByType<LocalizedText>(FindObjectsSortMode.None);
-        foreach (LocalizedText t in textosTraducibles)
+        var locales = LocalizationSettings.AvailableLocales.Locales;
+
+        if (index >= 0 && index < locales.Count)
         {
-            t.ActualizarTexto();
-        }
+            Locale localeACambiar = locales[index];
+            LocalizationSettings.SelectedLocale = localeACambiar;
+            CurrentLanguageIndex = index;
 
-        Debug.Log("Idioma cambiado a índice: " + index);
+            PlayerPrefs.SetInt("IdiomaIndex", index);
+            PlayerPrefs.Save();
+
+            Debug.Log("Idioma cambiado a la posición: " + index + " (" + localeACambiar.Identifier.Code + ")");
+        }
+        else
+        {
+            Debug.LogError("El índice de idioma " + index + " no existe en la configuración de Unity Localization.");
+        }
     }
+
     // ==========================================
     // SISTEMA DE GUARDADO Y VALIDACIÓN DE SALIDA
     // ==========================================
@@ -255,7 +248,6 @@ public class MenuOpcionesManager : MonoBehaviour
             if (fpsDropdown) PlayerPrefs.SetInt("FPSCapIndex", fpsDropdown.value);
             if (statsToggle) PlayerPrefs.SetInt("ShowStats", statsToggle.isOn ? 1 : 0);
             if (sensitivitySlider) PlayerPrefs.SetFloat("MouseSensitivity", sensitivitySlider.value);
-            if (idiomaDropdown) PlayerPrefs.SetInt("IdiomaIndex", idiomaDropdown.value);
 
             PlayerPrefs.Save();
             hasUnsavedChanges = false;
@@ -300,7 +292,7 @@ public class MenuOpcionesManager : MonoBehaviour
 
     public void OnClickBotonNo()
     {
-        OcultarAvisoError(); // Vuelve al menú de opciones para poder guardar
+        OcultarAvisoError();
     }
 
     private void CerrarOptionsMenuDirectamente()
@@ -347,8 +339,8 @@ public class MenuOpcionesManager : MonoBehaviour
         if (sensitivitySlider) sensitivitySlider.value = sens;
         MouseSensitivityValue = sens;
 
-        int idiomaIndex = PlayerPrefs.GetInt("IdiomaIndex", 0);
-        if (idiomaDropdown) idiomaDropdown.value = idiomaIndex;
-        CurrentLanguageIndex = idiomaIndex; // Carga el idioma guardado al iniciar
+        // Cargar el idioma guardado mediante su índice numérico
+        int indiceGuardado = PlayerPrefs.GetInt("IdiomaIndex", 0);
+        CambiarIdiomaPorIndice(indiceGuardado);
     }
 }
