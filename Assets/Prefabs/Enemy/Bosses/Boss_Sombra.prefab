@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6615912644747992512}
   - component: {fileID: 2642577714366910657}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Collider_Embestida
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,8 @@ GameObject:
   - component: {fileID: 7013570714202622158}
   - component: {fileID: 730097563679808494}
   - component: {fileID: 9050747453794224648}
-  m_Layer: 0
+  - component: {fileID: 8338916172123792925}
+  m_Layer: 10
   m_Name: Boss_Sombra
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -255,6 +256,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.3519042
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8338916172123792925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7956611257409602250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28f597c258edbf44893d99417885d6fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropController
+  drops:
+  - prefab: {fileID: 1253924726360908936, guid: 78a71ad466bed4a40add8bf48ddf3d80, type: 3}
+    probability: 100
+  - prefab: {fileID: 6399806012522493030, guid: 4bd0b1931ae3ffa41a06dcfbace324d4, type: 3}
+    probability: 50
+  itemRandom: {fileID: 5981999970319439687, guid: b4cb2b24480fd58439bb6a3368f3eded, type: 3}
+  itemProbability: 100
+  dropPoint: {fileID: 0}
+  spawnRadius: 0.5
 --- !u!1 &8950841251478766314
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,7 +288,7 @@ GameObject:
   - component: {fileID: 1564725784592100768}
   - component: {fileID: 5999343840739979967}
   - component: {fileID: 6741616078213825190}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HumoSombra
   m_TagString: Untagged
   m_Icon: {fileID: 0}

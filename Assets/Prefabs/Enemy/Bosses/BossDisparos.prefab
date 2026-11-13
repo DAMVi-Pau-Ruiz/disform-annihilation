@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5291572301479559889}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PuntoDisparo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,8 @@ GameObject:
   - component: {fileID: 8409824250469049250}
   - component: {fileID: -4271059918312671849}
   - component: {fileID: -82165097765530138}
-  m_Layer: 0
+  - component: {fileID: -752039324282303742}
+  m_Layer: 10
   m_Name: BossDisparos
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -208,13 +209,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossAttackManager
   puntoDisparo: {fileID: 5291572301479559889}
-  proyectilRadial: {fileID: 5090404499523230836, guid: 2b10b40f0abf5df42a54b89195678db4, type: 3}
-  proyectilFlecha: {fileID: 4924823739961729844, guid: d3c6a70e8b697444abcbc216d56faa56, type: 3}
+  proyectilRadial: {fileID: 5801883865153357003, guid: f9e7a8eb2788c594aa89e31930b0ba5a, type: 3}
+  proyectilFlecha: {fileID: 5801883865153357003, guid: 933500c9f01e73a4aaebf50138874ff9, type: 3}
   velocidadProyectil: 10
   tiempoEntreAtaques: 1.5
   radioDeteccionCuerpo: 3
   ataqueCuerpo: {fileID: 8409824250469049250}
-  materialRebote: {fileID: 13400000, guid: 74c1cf28ed557004fbb41cd19eb826a8, type: 2}
 --- !u!114 &4414891492169814928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,3 +274,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c3f1a0eb519c34ebf3a599d080d1b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ConfiguracionColisiones
+--- !u!114 &-752039324282303742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5909906980944666852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28f597c258edbf44893d99417885d6fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropController
+  drops:
+  - prefab: {fileID: 1253924726360908936, guid: 78a71ad466bed4a40add8bf48ddf3d80, type: 3}
+    probability: 100
+  - prefab: {fileID: 6399806012522493030, guid: 4bd0b1931ae3ffa41a06dcfbace324d4, type: 3}
+    probability: 75
+  itemRandom: {fileID: 5981999970319439687, guid: b4cb2b24480fd58439bb6a3368f3eded, type: 3}
+  itemProbability: 100
+  dropPoint: {fileID: 0}
+  spawnRadius: 0.5

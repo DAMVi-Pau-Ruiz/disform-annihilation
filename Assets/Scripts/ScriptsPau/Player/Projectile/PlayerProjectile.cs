@@ -27,6 +27,12 @@ public class PlayerProjectile : MonoBehaviour
             return;
         }
 
+        // Ignorar proyectiles del boss.
+        if (other.gameObject.layer == LayerMask.NameToLayer("Projectile"))
+        {
+            return;
+        }
+
         // Ignorar detectores que sean Trigger.
         if (other.isTrigger)
         {

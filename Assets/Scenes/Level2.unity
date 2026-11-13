@@ -384,6 +384,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1800765310587284273, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
+      propertyPath: 'enemiesPrefabsToSpawn.Array.data[0]'
+      value: 
+      objectReference: {fileID: 5909906980944666852, guid: c9b741a2c64786c4a822fedb7744d5bc, type: 3}
     - target: {fileID: 5713212194223099508, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
       propertyPath: m_Name
       value: Room_2x2 BOSS (1)
@@ -583,6 +587,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1800765310587284273, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
+      propertyPath: 'enemiesPrefabsToSpawn.Array.data[0]'
+      value: 
+      objectReference: {fileID: 5909906980944666852, guid: c9b741a2c64786c4a822fedb7744d5bc, type: 3}
     - target: {fileID: 2830505714696021767, guid: d3b0e5282ce6c4a40a9720a767da401b, type: 3}
       propertyPath: m_NavMeshData
       value: 
