@@ -1,4 +1,4 @@
-
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemySpawner))]
@@ -8,6 +8,9 @@ public class RoomCombatController : MonoBehaviour
     [Header("References")]
     [SerializeField] private EnemySpawner enemySpawner;
     [SerializeField] private RoomDoorGenerator doorGenerator;
+
+    [Header("Door Settings")]
+    [SerializeField] private float doorCloseDelay = 0.5f;
 
     private bool combatStarted;
     private bool roomCompleted;
@@ -60,16 +63,24 @@ public class RoomCombatController : MonoBehaviour
 
         Debug.Log("¡Comienza el combate en " + gameObject.name + "!");
 
-        // Cerramos todas las puertas.
-        doorGenerator.SetBarriersActive(true);
+        // Cerramos las puertas después del retraso.
+        StartCoroutine(CloseDoorsWithDelay());
 
-        // Generamos los enemigos. Si ya se habían generado,
-        // EnemySpawner no volverá a crearlos.
+        // Generamos los enemigos.
         enemySpawner.SpawnEnemies();
 
         // Por si la sala no tiene enemigos que generar.
         if (enemySpawner.AreAllEnemiesDefeated)
             HandleAllEnemiesDefeated();
+    }
+
+    private IEnumerator CloseDoorsWithDelay()
+    {
+        yield return new WaitForSeconds(doorCloseDelay);
+
+        // Cerramos todas las puertas.
+        if (!roomCompleted)
+            doorGenerator.SetBarriersActive(true);
     }
 
     private void HandleAllEnemiesDefeated()
@@ -82,7 +93,7 @@ public class RoomCombatController : MonoBehaviour
 
         Debug.Log("¡Sala completada! " + gameObject.name);
 
-        // Desactivamos todas las barreras de esta habitación.
+        // Abrimos todas las puertas inmediatamente.
         doorGenerator.SetBarriersActive(false);
     }
 }
