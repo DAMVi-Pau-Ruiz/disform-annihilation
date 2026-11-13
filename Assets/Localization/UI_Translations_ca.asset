@@ -106,6 +106,34 @@ MonoBehaviour:
     m_Localized: "Ingl\xE9s"
     m_Metadata:
       m_Items: []
+  - m_Id: 341108711866368
+    m_Localized: Vida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341182720360448
+    m_Localized: Dany total
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341313142243328
+    m_Localized: Multiplicador dany
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341430540812288
+    m_Localized: Dany base
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341520206643200
+    m_Localized: Velocitat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341615895494656
+    m_Localized: "C\xE0dencia"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341692206661632
+    m_Localized: Velocitat bala
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -2196,6 +2196,62 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoVida.m_TableEntryReference.m_KeyId
+      value: 341108711866368
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoVelBala.m_TableEntryReference.m_KeyId
+      value: 341692206661632
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoCadencia.m_TableEntryReference.m_KeyId
+      value: 341615895494656
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoDanoBase.m_TableEntryReference.m_KeyId
+      value: 341430540812288
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoDanoMult.m_TableEntryReference.m_KeyId
+      value: 341313142243328
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoDanoTotal.m_TableEntryReference.m_KeyId
+      value: 341182720360448
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoVelocidad.m_TableEntryReference.m_KeyId
+      value: 341520206643200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoVida.m_TableReference.m_TableCollectionName
+      value: GUID:985b58a1a128caa4fa1e572257bf3b7b
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoVelBala.m_TableReference.m_TableCollectionName
+      value: GUID:985b58a1a128caa4fa1e572257bf3b7b
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoCadencia.m_TableReference.m_TableCollectionName
+      value: GUID:985b58a1a128caa4fa1e572257bf3b7b
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoDanoBase.m_TableReference.m_TableCollectionName
+      value: GUID:985b58a1a128caa4fa1e572257bf3b7b
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoDanoMult.m_TableReference.m_TableCollectionName
+      value: GUID:985b58a1a128caa4fa1e572257bf3b7b
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoDanoTotal.m_TableReference.m_TableCollectionName
+      value: GUID:985b58a1a128caa4fa1e572257bf3b7b
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693684650774348187, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
+      propertyPath: textoVelocidad.m_TableReference.m_TableCollectionName
+      value: GUID:985b58a1a128caa4fa1e572257bf3b7b
+      objectReference: {fileID: 0}
     - target: {fileID: 7732575096362935716, guid: ff2b10c71005b6046b4d050293d11263, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

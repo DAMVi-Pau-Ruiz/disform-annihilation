@@ -109,6 +109,34 @@ MonoBehaviour:
     m_Localized: "Angl\xE9s"
     m_Metadata:
       m_Items: []
+  - m_Id: 341108711866368
+    m_Localized: Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341182720360448
+    m_Localized: Total damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341313142243328
+    m_Localized: Damage multiplier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341430540812288
+    m_Localized: Base damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341520206643200
+    m_Localized: Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341615895494656
+    m_Localized: Fire rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341692206661632
+    m_Localized: Bullet speed
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

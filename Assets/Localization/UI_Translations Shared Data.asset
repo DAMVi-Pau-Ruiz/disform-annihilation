@@ -103,6 +103,34 @@ MonoBehaviour:
     m_Key: Language_English
     m_Metadata:
       m_Items: []
+  - m_Id: 341108711866368
+    m_Key: Stats_Vida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341182720360448
+    m_Key: 'Stats_DanoTotal '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341313142243328
+    m_Key: 'Stats_DanoMult '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341430540812288
+    m_Key: Stats_DanoBase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341520206643200
+    m_Key: 'Stats_Velocidad '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341615895494656
+    m_Key: Stats_Cadencia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 341692206661632
+    m_Key: Stats_VelBala
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
