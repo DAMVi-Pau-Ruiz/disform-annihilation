@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         stats = GetComponent<PlayerStats>();
+        playerCamera = Camera.main;
     }
 
     private void FixedUpdate()

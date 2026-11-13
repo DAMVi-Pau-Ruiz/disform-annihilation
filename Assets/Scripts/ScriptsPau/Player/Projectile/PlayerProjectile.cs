@@ -26,43 +26,33 @@ public class PlayerProjectile : MonoBehaviour
         {
             return;
         }
-
-        // Ignorar proyectiles del boss.
-        if (other.gameObject.layer == LayerMask.NameToLayer("Projectile"))
-        {
-            return;
-        }
-
+        
         // Ignorar detectores que sean Trigger.
         if (other.isTrigger)
         {
             return;
         }
 
-        bool esEnemigo =
-            other.CompareTag("Enemy") ||
-            (other.transform.parent != null &&
-             other.transform.parent.CompareTag("Enemy"));
-
-        if (esEnemigo)
+        // Ignorar proyectiles del boss.
+        if (other.gameObject.layer == LayerMask.NameToLayer("Projectile"))
         {
-            IHealthSystem health =
-                other.GetComponent<IHealthSystem>() ??
-                other.GetComponentInParent<IHealthSystem>();
-
-            if (health != null)
-            {
-                float damage = stats != null
-                    ? stats.GetTotalDamage()
-                    : 0;
-
-                health.GetHurt(damage);
-            }
-
-            Debug.Log("¡Impacto confirmado contra el CUERPO del enemigo!");
-
-            Destroy(gameObject);
             return;
+        }
+        
+        if (other.CompareTag("Player"))
+        {
+            return;
+        }
+
+        IHealthSystem health = other.GetComponent<IHealthSystem>() ?? other.GetComponentInParent<IHealthSystem>();
+
+        if (health != null)
+        {
+            float damage = stats != null
+                ? stats.GetTotalDamage()
+                : 0;
+
+            health.GetHurt(damage);
         }
 
         Destroy(gameObject);

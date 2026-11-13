@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4220364108019166132}
   - component: {fileID: 724956264066017153}
   - component: {fileID: 2200431173893536740}
+  - component: {fileID: -3285406312842443629}
   - component: {fileID: 4516833045044939006}
   m_Layer: 0
   m_Name: Disformius 1
@@ -141,6 +142,19 @@ MonoBehaviour:
   damageMultiplier: 1
   bulletsPerSecond: 2
   bulletSpeed: 15
+--- !u!114 &-3285406312842443629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296233776641799061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2802d89da05a0fb45b5949f5b51a05a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  money: 0
 --- !u!114 &4516833045044939006
 MonoBehaviour:
   m_ObjectHideFlags: 0

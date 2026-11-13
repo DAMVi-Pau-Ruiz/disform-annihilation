@@ -46,6 +46,13 @@ public class CameraFollow : MonoBehaviour
         transform.rotation = cameraRotation;
     }
 
+    private void Start()
+    {
+        GameObject jugador = GameObject.FindGameObjectWithTag("Player");
+        player = jugador.transform;
+        playerRenderer = jugador.GetComponent<Renderer>();
+    }
+
     private void LateUpdate()
     {
         if (player == null)
