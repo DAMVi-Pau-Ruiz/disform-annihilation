@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5291572301479559889}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PuntoDisparo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   - component: {fileID: -4271059918312671849}
   - component: {fileID: -82165097765530138}
   - component: {fileID: -752039324282303742}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BossDisparos
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -209,8 +209,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossAttackManager
   puntoDisparo: {fileID: 5291572301479559889}
-  proyectilRadial: {fileID: 5090404499523230836, guid: 2b10b40f0abf5df42a54b89195678db4, type: 3}
-  proyectilFlecha: {fileID: 4924823739961729844, guid: d3c6a70e8b697444abcbc216d56faa56, type: 3}
+  proyectilRadial: {fileID: 5801883865153357003, guid: f9e7a8eb2788c594aa89e31930b0ba5a, type: 3}
+  proyectilFlecha: {fileID: 5801883865153357003, guid: 933500c9f01e73a4aaebf50138874ff9, type: 3}
   velocidadProyectil: 10
   tiempoEntreAtaques: 1.5
   radioDeteccionCuerpo: 3

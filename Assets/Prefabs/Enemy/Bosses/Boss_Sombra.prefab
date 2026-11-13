@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6615912644747992512}
   - component: {fileID: 2642577714366910657}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Collider_Embestida
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 730097563679808494}
   - component: {fileID: 9050747453794224648}
   - component: {fileID: 8338916172123792925}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Boss_Sombra
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 1564725784592100768}
   - component: {fileID: 5999343840739979967}
   - component: {fileID: 6741616078213825190}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HumoSombra
   m_TagString: Untagged
   m_Icon: {fileID: 0}
