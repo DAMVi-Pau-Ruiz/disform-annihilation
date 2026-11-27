@@ -145,4 +145,18 @@ public class Enemy_Controller : MonoBehaviour, IHealthSystem
     {
         return currentHealth;
     }
+
+
+    public void DesaparecerPorDivision()
+    {
+        if (estaMuerto)
+            return;
+
+        estaMuerto = true;
+
+        OnStateChanged?.Invoke();
+
+        Destroy(gameObject);
+    }
+
 }
