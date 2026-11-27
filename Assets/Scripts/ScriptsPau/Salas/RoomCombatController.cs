@@ -10,7 +10,7 @@ public class RoomCombatController : MonoBehaviour
     [SerializeField] private RoomDoorGenerator doorGenerator;
 
     [Header("Door Settings")]
-    [SerializeField] private float doorCloseDelay = 0.5f;
+    [SerializeField] private float doorCloseDelay = 0.1f;
 
     private bool combatStarted;
     private bool roomCompleted;
