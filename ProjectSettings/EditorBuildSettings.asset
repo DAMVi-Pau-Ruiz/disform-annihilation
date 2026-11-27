@@ -11,6 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GISELA/GISELA.unity
     guid: 5deba60a0380f7544a3916ecefcd7802
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: c0d07313778909848a773c5d7d3fe717
+  - enabled: 1
+    path: Assets/Scenes/Level1.unity
+    guid: 6ad4544aabad22249aa3babce9725048
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 6aed02baf53ddf949b49d8b968faf7f2, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 4423d346512019a4da8b667eb945444a, type: 3}
