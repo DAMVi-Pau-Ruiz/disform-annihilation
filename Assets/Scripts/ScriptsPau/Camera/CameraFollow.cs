@@ -280,15 +280,12 @@ public class CameraFollow : MonoBehaviour
                 }
 
                 // Mantener el sistema de generación de objetos.
-                if (currentRoom.gameObject.name == "ItemRoom")
-                {
-                    ItemSpawner[] itemSpawners =
-                        currentRoom.GetComponentsInChildren<ItemSpawner>(true);
+                ItemSpawner[] itemSpawners =
+                    currentRoom.GetComponentsInChildren<ItemSpawner>(true);
 
-                    foreach (ItemSpawner itemSpawner in itemSpawners)
-                    {
-                        itemSpawner.GenerarItemsEnSpawnPoints();
-                    }
+                foreach (ItemSpawner itemSpawner in itemSpawners)
+                {
+                    itemSpawner.GenerarItemsEnSpawnPoints();
                 }
             }
 
